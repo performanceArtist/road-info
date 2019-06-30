@@ -1,0 +1,9 @@
+.info-modal {
+  &__row {
+    padding: 0.5rem;
+
+    &_warning {
+      color: $red;
+    }
+  }
+}

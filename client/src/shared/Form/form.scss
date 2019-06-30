@@ -1,0 +1,14 @@
+.form {
+  &__status {
+    &_error {
+      text-align: center;
+      font-weight: bold;
+      color: $red;
+      margin: 1rem 0;
+    }
+  }
+
+  &__footer {
+    text-align: right;
+  }
+}

@@ -1,0 +1,38 @@
+.login {
+  width: 23rem;
+  margin: auto;
+  background: $light-grey;
+  border: 1px solid $medium-grey;
+  border-radius: 0.2rem;
+
+  &__wrapper {
+    padding: 2rem 4rem;
+  }
+
+  &__title {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+
+  &__form {
+    text-align: left;
+    width: 15rem;
+    margin: auto;
+  }
+
+  &__form-status {
+    color: $red;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+
+  &__submit-container {
+    text-align: right;
+    margin-top: 0.6rem;
+    padding-right: 0.2rem;
+  }
+}

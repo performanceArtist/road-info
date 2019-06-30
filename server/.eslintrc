@@ -1,0 +1,12 @@
+{
+    "extends": ["airbnb", "airbnb-typescript", "prettier"],
+    "plugins": [
+        "eslint-plugin-prettier"
+    ],
+    "env": {
+        "node": true
+    },
+    "rules": {
+
+    }
+}

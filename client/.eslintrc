@@ -1,0 +1,23 @@
+{
+    "extends": ["airbnb", "airbnb-typescript", "prettier"],
+    "parser": "babel-eslint",
+    "plugins": [
+        "react",
+        "eslint-plugin-prettier"
+    ],
+    "env": {
+        "browser": true,
+        "jest": true
+    },
+    "rules": {
+        "class-methods-use-this": 0,
+        "linebreak-style":"off",
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+        "jsx-quotes": ["error"],
+        "react/jsx-one-expression-per-line": "off",
+        "import/extensions": {
+            "jsx": "always"
+        },
+        "jsx-a11y/click-events-have-key-events": false
+    }
+}

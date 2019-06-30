@@ -1,0 +1,28 @@
+.profile {
+  display: flex;
+  align-items: center;
+
+  &__username {
+    display: inline-block;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+  }
+
+  &__profile-icon {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    background-image: url('images/profile.png');
+    background-size: cover;
+    margin-right: 0.5rem;
+  }
+
+  &__logout-icon {
+    display: inline-block;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    background-image: url('images/logout.png');
+    background-size: cover;
+  }
+}
