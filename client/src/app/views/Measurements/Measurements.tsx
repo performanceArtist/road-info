@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ControlForm from '../../components/ControlForm/ControlForm';
+import CallSetup from './CallSetup';
 
 const Measurements = () => (
   <div className="measurements">
@@ -12,6 +13,9 @@ const Measurements = () => (
         { name: 'Плотнометр' }
       ]}
     />
+    <div className="measurements__input">
+      <CallSetup />
+    </div>
   </div>
 );
 

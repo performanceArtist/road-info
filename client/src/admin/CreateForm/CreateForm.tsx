@@ -17,6 +17,10 @@ class CreateForm extends React.Component {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = {
+      apiStatus: { error: false, message: null }
+    };
   }
 
   async handleSubmit(event) {
@@ -32,18 +36,33 @@ class CreateForm extends React.Component {
     };
 
     try {
-      await post('/admin/create', formData);
+      const res = await post('/admin/create', formData);
+      if (res.data.status === 'ok') {
+        this.setState({
+          apiStatus: { error: false, message: 'Пользователь создан успешно' }
+        });
+      } else {
+        this.setState({
+          apiStatus: { error: true, message: 'Ошибка создания пользователя' }
+        });
+      }
     } catch (error) {
       console.log(error);
     }
   }
 
   render() {
+    const { apiStatus } = this.state;
+
     return (
       <div className="create-form">
-        <Form props={{ onSubmit: this.handleSubmit }}>
+        <Form
+          status={apiStatus.message}
+          error={apiStatus.error}
+          props={{ onSubmit: this.handleSubmit }}
+        >
           <Form.Header>
-            <h2>Create user</h2>
+            <h2>Создание пользователя</h2>
           </Form.Header>
           <Form.Content>
             <Input

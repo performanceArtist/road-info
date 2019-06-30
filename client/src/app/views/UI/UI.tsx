@@ -3,13 +3,13 @@ import React from 'react';
 import { Toggle } from '../../components/Toggle/Toggle';
 import Button from '../../../shared/Button/Button';
 import Dropdown from '../../components/Dropdown/Dropdown';
-import Buttons from '../../components/Buttons/Buttons';
+import CallTest from './CallTest';
 
 const UI = () => (
   <div className="ui">
     <div className="ui__wrapper">
       <div className="ui__row">
-        <Buttons />
+        <CallTest />
       </div>
       <div className="ui__row">
         <Toggle label="kek/pok" />

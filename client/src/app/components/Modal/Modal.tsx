@@ -37,6 +37,10 @@ class Modal extends React.Component<ModalProps, ModalState> {
     <div className="modal__content">{children}</div>
   );
 
+  static Footer: React.SFC = ({ children }) => (
+    <div className="modal__footer">{children}</div>
+  );
+
   handleClick(event: React.SyntheticEvent) {
     const target = event.target as HTMLElement;
     const { onClose } = this.props;

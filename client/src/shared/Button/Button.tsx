@@ -7,7 +7,7 @@ interface ButtonProps {
 }
 
 const Button: React.SFC<ButtonProps> = ({
-  handleClick = () => {
+  onClick = () => {
     console.log('hmm');
   },
   disabled = false,
@@ -17,7 +17,7 @@ const Button: React.SFC<ButtonProps> = ({
     type="button"
     className={disabled ? 'button button_disabled' : 'button'}
     disabled={disabled}
-    onClick={handleClick}
+    onClick={onClick}
   >
     {text}
   </button>

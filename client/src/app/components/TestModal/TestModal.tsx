@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import Modal from '../Modal/Modal';
 import { openModal, closeModal } from '../../redux/modal/actions';
 
-const actions = { openModal, closeModal };
-
 interface TestModalProps {
   counter: number;
 }
@@ -29,7 +27,9 @@ class TestModal extends React.Component<TestModalProps, {}> {
       <Modal open={true} onClose={closeModal}>
         <Modal.Header>Test #{counter}</Modal.Header>
         <Modal.Content>Ok</Modal.Content>
-        <button onClick={this.onNextModalClick}>New modal</button>
+        <Modal.Footer>
+          <button onClick={this.onNextModalClick}>New modal</button>
+        </Modal.Footer>
       </Modal>
     );
   }
@@ -37,5 +37,5 @@ class TestModal extends React.Component<TestModalProps, {}> {
 
 export default connect(
   null,
-  actions
+  { openModal, closeModal }
 )(TestModal);

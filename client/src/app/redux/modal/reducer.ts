@@ -2,6 +2,9 @@ import { MODAL } from './actions';
 
 import TestModal from '../../components/TestModal/TestModal';
 import InfoModal from '../../components/InfoModal/InfoModal';
+import MaterialModal from '../../components/MaterialModal/MaterialModal';
+import SetupModal from '../../components/SetupModal/SetupModal';
+import NormModal from '../../components/NormModal/NormModal';
 
 import { ConnectedComponentClass } from 'react-redux';
 
@@ -10,7 +13,10 @@ export const ModalMap: Record<
   ConnectedComponentClass<any, any> | React.SFC | React.Component
 > = {
   Test: TestModal,
-  Info: InfoModal
+  Info: InfoModal,
+  Material: MaterialModal,
+  Setup: SetupModal,
+  Norm: NormModal
 };
 
 export interface ModalPayload {

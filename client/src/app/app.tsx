@@ -17,7 +17,7 @@ import NotFound from './views/NotFound/NotFound';
 
 const App = () => {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <div className="container">
         <Header title="Кондор 2.0" />
         <ModalManager />
@@ -61,7 +61,7 @@ const App = () => {
         </main>
       </div>
       <Footer />
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 

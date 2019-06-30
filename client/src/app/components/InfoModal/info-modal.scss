@@ -1,6 +1,10 @@
 .info-modal {
   &__row {
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
     padding: 0.5rem;
+    border: 0.1rem solid;
 
     &_warning {
       color: $red;
