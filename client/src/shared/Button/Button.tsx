@@ -1,25 +1,27 @@
 import React from 'react';
 
+import './button.scss';
+
 interface ButtonProps {
+  type?: string;
   handleClick?(): void;
   disabled?: boolean;
   text?: string;
 }
 
 const Button: React.SFC<ButtonProps> = ({
-  onClick = () => {
-    console.log('hmm');
-  },
+  onClick = () => {},
   disabled = false,
-  text = 'Click me'
+  type = 'button',
+  children = null
 }) => (
   <button
-    type="button"
+    type={type}
     className={disabled ? 'button button_disabled' : 'button'}
     disabled={disabled}
     onClick={onClick}
   >
-    {text}
+    {children || 'Click me'}
   </button>
 );
 

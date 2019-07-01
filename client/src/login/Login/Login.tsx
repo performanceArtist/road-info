@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
-import Form from '../../shared/Form/Form';
-import Input from '../../shared/Input/Input';
+import Form from '@shared/Form/Form';
+import Input from '@shared/Input/Input';
 
 interface LoginState {
   networkError: string | null;

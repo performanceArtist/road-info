@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Modal from '../Modal/Modal';
-import Form from '../../../shared/Form/Form';
-import Input from '../../../shared/Input/Input';
+import Form from '@shared/Form/Form';
+import Input from '@shared/Input/Input';
 
 import { openModal, closeModal } from '../../redux/modal/actions';
 

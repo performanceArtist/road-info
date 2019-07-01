@@ -1,7 +1,9 @@
 import React from 'react';
 import uuid from 'short-uuid';
 
-import Form from '../../../shared/Form/Form';
+import Form from '@shared/Form/Form';
+import Button from '@shared/Button/Button';
+
 import { Toggle } from '../Toggle/Toggle';
 
 const ControlForm = ({ devices }) => {
@@ -22,7 +24,7 @@ const ControlForm = ({ devices }) => {
           <Form.Content>{deviceControls}</Form.Content>
           <Form.Footer>
             <div className="control-form__submit">
-              <button type="submit">Старт</button>
+              <Button type="submit">Старт</Button>
             </div>
           </Form.Footer>
         </Form>

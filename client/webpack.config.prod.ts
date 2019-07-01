@@ -21,7 +21,12 @@ const config = {
 
   resolve: {
     modules: ['node_modules', 'client'],
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    alias: {
+      '@shared': path.resolve(__dirname, 'src/shared'),
+      '@redux': path.resolve(__dirname, 'src/redux'),
+      '@components': path.resolve(__dirname, 'src/components')
+    }
   },
   optimization: {
     splitChunks: {

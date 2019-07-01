@@ -2,8 +2,9 @@ import React from 'react';
 
 import { post } from 'axios';
 
-import Form from '../../shared/Form/Form';
-import Input from '../../shared/Input/Input';
+import Form from '@shared/Form/Form';
+import Input from '@shared/Input/Input';
+import Button from '@shared/Button/Button';
 
 interface UserType {
   login: string;
@@ -91,7 +92,7 @@ class CreateForm extends React.Component {
             />
           </Form.Content>
           <Form.Footer>
-            <button type="submit">Submit</button>
+            <Button type="submit">Submit</Button>
           </Form.Footer>
         </Form>
       </div>

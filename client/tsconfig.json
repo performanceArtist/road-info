@@ -8,8 +8,20 @@
     "outDir": "./dist/",
     "noImplicitAny": true,
     "module": "es6",
+    "target": "es6",
     "moduleResolution": "node",
-    "target": "es5",
+    "baseUrl": "./src",
+    "paths": {
+      "@shared/*": [
+        "shared/*"
+      ],
+      "@redux/*": [
+        "redux/*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+    },
     "jsx": "react",
     "allowJs": true,
     "allowSyntheticDefaultImports": true

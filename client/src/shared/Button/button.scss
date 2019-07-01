@@ -1,2 +1,15 @@
 .button {
+  cursor: pointer;
+  background: $white;
+  padding: 0.5rem;
+  border: 0.2rem solid $black;
+  outline: none;
+
+  &:hover {
+    background: $light-grey;
+  }
+
+  &:active {
+    background: $white;
+  }
 }
