@@ -27,10 +27,12 @@ const InfoModal: React.SFC<InfoModalProps> = ({ notices, closeModal }) => {
     </div>
   ));
   return (
-    <Modal open={true} onClose={closeModal}>
-      <Modal.Header>Информация</Modal.Header>
-      <Modal.Content>{rows}</Modal.Content>
-    </Modal>
+    <div className="info-modal">
+      <Modal open={true} onClose={closeModal}>
+        <Modal.Header>Информация</Modal.Header>
+        <Modal.Content>{rows}</Modal.Content>
+      </Modal>
+    </div>
   );
 };
 

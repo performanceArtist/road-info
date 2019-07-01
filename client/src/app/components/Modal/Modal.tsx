@@ -6,6 +6,7 @@ interface ModalState {
 
 interface ModalProps {
   open?: boolean;
+  coordinates?: { x: number; y: number };
   onClose(): void;
   children: JSX.Element[] | JSX.Element | string;
 }
@@ -60,7 +61,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
   }
 
   render() {
-    const { children, open } = this.props;
+    const { children, coordinates, open } = this.props;
 
     if (!open) {
       return null;
@@ -68,7 +69,23 @@ class Modal extends React.Component<ModalProps, ModalState> {
 
     return (
       <div className="modal" onClick={this.handleClick}>
-        <div className="modal__wrapper">{children}</div>
+        <div
+          className={
+            coordinates
+              ? 'modal__wrapper modal__wrapper_absolute'
+              : 'modal__wrapper'
+          }
+          style={
+            coordinates
+              ? {
+                  left: coordinates.x,
+                  top: coordinates.y
+                }
+              : {}
+          }
+        >
+          {children}
+        </div>
       </div>
     );
   }

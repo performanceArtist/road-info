@@ -18,13 +18,14 @@ interface MaterialModalProps {
 
 const MaterialModal: React.SFC<MaterialModalProps> = ({
   material,
+  coordinates,
   closeModal
 }) => {
   const { name, density } = material;
   const [checked, setChecked] = useState(false);
 
   return (
-    <Modal open={true} onClose={closeModal}>
+    <Modal open={true} coordinates={coordinates} onClose={closeModal}>
       <div className="material-modal">
         <Modal.Header>Параметры эталона</Modal.Header>
         <Modal.Content>

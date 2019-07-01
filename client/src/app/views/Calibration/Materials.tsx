@@ -10,7 +10,15 @@ const actions = { openModal };
 const Materials = ({ openModal, materials }) => {
   const buttons = materials.map(material => (
     <div className="materials__button" key={uuid.generate()}>
-      <Button onClick={() => openModal('Material', { counter: 1, material })}>
+      <Button
+        onClick={event => {
+          openModal('Material', {
+            counter: 1,
+            coordinates: { x: event.clientX, y: event.clientY },
+            material
+          });
+        }}
+      >
         {material.name}
       </Button>
     </div>

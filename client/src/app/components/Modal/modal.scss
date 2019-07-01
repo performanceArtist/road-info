@@ -14,10 +14,15 @@
   }
 
   &__wrapper {
-    background-color: #fefefe;
     margin: 15% auto;
-    border: 1px solid #888;
-    width: 42%;
+    background-color: $white;
+    border: 1px solid $medium-grey;
+    max-width: 40%;
+  }
+
+  &__wrapper_absolute {
+    position: absolute;
+    margin: 0;
   }
 
   &__header {
@@ -27,7 +32,7 @@
   }
 
   &__close-button {
-    color: #aaa;
+    color: $black;
     float: right;
     font-size: 1.75rem;
     font-weight: bold;

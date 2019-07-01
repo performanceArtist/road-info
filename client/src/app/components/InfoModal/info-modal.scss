@@ -1,13 +1,21 @@
+@mixin collapse-border($color: black, $thickness: 0.2rem) {
+  box-shadow: $thickness 0 0 0 $color, 0 $thickness 0 0 $color,
+    $thickness $thickness 0 0 $color,
+    /* Just to fix the corner */ $thickness 0 0 0 $color inset,
+    0 $thickness 0 0 $color inset;
+}
+
 .info-modal {
   &__row {
     font-size: 0.9rem;
     font-weight: bold;
     text-transform: uppercase;
-    padding: 0.5rem;
-    border: 0.1rem solid;
+    @include collapse-border($black);
+    padding: 0.7rem;
+    padding-top: 0.9rem;
 
     &_warning {
-      color: $red;
+      color: red;
     }
   }
 }
