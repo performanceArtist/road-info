@@ -1,5 +1,11 @@
 .measurements {
+  display: flex;
+
   &__input {
     padding: 1rem;
+  }
+
+  &__results {
+    margin-left: 2.5rem;
   }
 }

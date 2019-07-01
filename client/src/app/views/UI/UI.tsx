@@ -14,7 +14,7 @@ const UI = () => (
         <CallTest />
       </div>
       <div className="ui__row">
-        <Toggle label="kek/pok" />
+        <Toggle label="on/off" />
       </div>
       <div className="ui__row">
         <Button />

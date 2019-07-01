@@ -1,0 +1,12 @@
+.diagnostics {
+  &__row {
+    display: flex;
+  }
+
+  &__chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5rem;
+  }
+}

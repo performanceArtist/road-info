@@ -16,3 +16,9 @@ $red: #dd0000;
   -ms-user-select: none;
   user-select: none;
 }
+
+@mixin collapse-border($color: black, $thickness: 0.2rem) {
+  box-shadow: $thickness 0 0 0 $color, 0 $thickness 0 0 $color,
+    $thickness $thickness 0 0 $color, $thickness 0 0 0 $color inset,
+    0 $thickness 0 0 $color inset;
+}

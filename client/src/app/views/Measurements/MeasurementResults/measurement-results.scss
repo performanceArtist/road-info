@@ -1,0 +1,27 @@
+.measurement-results {
+  &__wrapper {
+  }
+
+  &__measurement {
+    padding: 1rem 1rem;
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+  }
+
+  &__row {
+    display: flex;
+  }
+
+  &__row-item {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    @include collapse-border($black);
+    padding: 0.1rem 1.8rem;
+  }
+}
