@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import Button from '@shared/Button/Button';
 import { openModal } from '@redux/modal/actions';
 
 const actions = { openModal };
 
 const CallSetup = ({ openModal }) => (
-  <button onClick={() => openModal('Setup', { counter: 1 })}>
+  <Button onClick={() => openModal('Setup', { counter: 1 })}>
     Ввод параметров
-  </button>
+  </Button>
 );
 
 export default connect(

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Modal from '@components/Modal/Modal';
 import { openModal, closeModal } from '@redux/modal/actions';
+import Button from '@shared/Button/Button';
 
 interface TestModalProps {
   counter: number;
@@ -28,7 +29,7 @@ class TestModal extends React.Component<TestModalProps, {}> {
         <Modal.Header>Test #{counter}</Modal.Header>
         <Modal.Content>Ok</Modal.Content>
         <Modal.Footer>
-          <button onClick={this.onNextModalClick}>New modal</button>
+          <Button onClick={this.onNextModalClick}>New modal</Button>
         </Modal.Footer>
       </Modal>
     );

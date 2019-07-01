@@ -18,7 +18,7 @@ const UI = () => (
         <Button />
       </div>
       <div className="ui__row">
-        <Dropdown />
+        <Dropdown options={['one', 'two']} />
       </div>
     </div>
   </div>

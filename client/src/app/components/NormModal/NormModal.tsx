@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Modal from '@components/Modal/Modal';
 import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
+import Button from '@shared/Button/Button';
 
 import { closeModal } from '@redux/modal/actions';
 
@@ -17,7 +18,7 @@ const NormModal: React.SFC<{}> = ({ closeModal }) => {
           <Input label="Коэффициент уплотнения" props={{ type: 'number' }} />
           <Input label="Колейность, мм" props={{ type: 'number' }} />
           <Input label="IRI м/км" props={{ type: 'number' }} />
-          <button type="submit">Сохранить</button>
+          <Button type="submit">Сохранить</Button>
         </Form>
       </Modal.Content>
     </Modal>

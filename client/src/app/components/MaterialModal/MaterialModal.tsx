@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import Modal from '@components/Modal/Modal';
 import Input from '@shared/Input/Input';
+import Button from '@shared/Button/Button';
 import { closeModal } from '@redux/modal/actions';
 
 interface Material {
@@ -36,6 +37,8 @@ const MaterialModal: React.SFC<MaterialModalProps> = ({
               label="Плотность материала, кг/см3"
               props={{
                 type: 'number',
+                min: 0,
+                step: 0.01,
                 disabled: checked,
                 defaultValue: density
               }}
@@ -46,12 +49,12 @@ const MaterialModal: React.SFC<MaterialModalProps> = ({
             />
             <Input
               label="Усреднённое значение(N)"
-              props={{ type: 'number', disabled: !checked }}
+              props={{ type: 'number', min: 0, step: 0.01, disabled: !checked }}
             />
           </div>
-          <button type="submit" onClick={closeModal}>
+          <Button type="submit" onClick={closeModal}>
             Сохранить
-          </button>
+          </Button>
         </Modal.Content>
       </div>
     </Modal>

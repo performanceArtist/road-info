@@ -10,32 +10,34 @@ $dropdown-width: 22.5rem;
 
   &:after {
     content: '';
-    border: solid $black;
-    border-width: 0 3px 3px 0;
+    border: solid black;
+    border-width: 0 0.3rem 0.3rem 0;
     display: inline-block;
-    padding: 3px;
+    padding: 0.3rem;
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
+
+    pointer-events: none;
     position: absolute;
     right: 0;
     top: 0;
-    background: $light-green;
     z-index: 1;
-    text-align: center;
-    width: 2.6rem;
-    height: 100%;
-    pointer-events: none;
-    box-sizing: border-box;
-    line-height: 2rem;
+    margin: 0.5rem;
   }
 
   &__select {
-    background: $light-grey;
+    background: $medium-grey;
     border: none;
     font-size: 0.875rem;
     height: 2.125rem;
     padding: 0.3125rem;
     width: $dropdown-width;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+    outline: none;
   }
 
   &__option {

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Modal from '@components/Modal/Modal';
 import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
+import Button from '@shared/Button/Button';
 
 import { openModal, closeModal } from '@redux/modal/actions';
 
@@ -39,9 +40,9 @@ class SetupModal extends React.Component<SetupModalProps, {}> {
               </div>
               <div className="setup__left">
                 <Input label="Количество полос" props={{ type: 'number' }} />
-                <button type="button" onClick={this.onNextModalClick}>
+                <Button type="button" onClick={this.onNextModalClick}>
                   Нормативные значения
-                </button>
+                </Button>
               </div>
               <div className="setup__right">
                 <Input label="Полоса" props={{ type: 'text' }} />

@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
+import Button from '@shared/Button/Button';
 
 interface LoginState {
   networkError: string | null;
@@ -104,9 +105,9 @@ class Login extends React.Component<{}, LoginState> {
             </Form.Content>
             <Form.Footer>
               <div className="login__submit-container">
-                <button className="login__submit" type="submit">
+                <Button className="login__submit" type="submit">
                   Ok
-                </button>
+                </Button>
               </div>
             </Form.Footer>
           </Form>
