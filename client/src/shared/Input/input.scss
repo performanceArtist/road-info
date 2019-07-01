@@ -25,6 +25,10 @@
     &:focus {
       outline: none;
     }
+
+    &:disabled {
+      background: $light-grey;
+    }
   }
 
   &__input-status {

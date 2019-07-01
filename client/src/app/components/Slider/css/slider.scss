@@ -1,0 +1,143 @@
+@import 'bubble';
+
+.slider {
+  display: inline-block;
+
+  &__input {
+    margin-bottom: 0.5em;
+  }
+
+  &__slider {
+    background: $light-grey;
+    position: relative;
+    border-radius: 0.1em;
+  }
+
+  &__bubble {
+    @extend %bubble;
+    @extend %unselectable;
+    margin-bottom: $pointer-size;
+    position: absolute;
+    line-height: 200%;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &__done {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    border: 0;
+    background: $asphalt;
+    border-radius: 0.1em;
+  }
+
+  &__first-done {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    border: 0;
+    background: #e6e6e6;
+    border-radius: 0.1em;
+  }
+
+  &__head {
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    background: $asphalt;
+    position: absolute;
+    z-index: 2;
+    width: 25px;
+    height: 25px;
+  }
+
+  &__error-container {
+    margin-top: 2.5rem;
+  }
+
+  .slider_hor {
+    width: 24rem;
+    height: 14px;
+    margin-top: 45px;
+    margin-left: 5px;
+
+    .slider__done,
+    .slider__first-done {
+      height: 100%;
+      width: 0;
+    }
+
+    .slider__head {
+      top: -6px;
+      left: 0;
+    }
+
+    .slider__bubble {
+      top: -45px;
+      left: -5px;
+      width: 36px;
+      height: 30px;
+
+      &:after {
+        bottom: 0;
+        left: 50%;
+        border-top-color: $bubble-color;
+        border-bottom: 0;
+        margin-left: -$pointer-size;
+        margin-bottom: -$pointer-size;
+      }
+    }
+
+    .slider__label {
+      @extend %unselectable;
+      position: absolute;
+      width: 20px;
+      margin-left: 0px;
+      text-align: center;
+      margin-top: 20px;
+    }
+  }
+
+  .slider_ver {
+    width: 14px;
+    height: 300px;
+
+    .slider__done,
+    .slider__first-done {
+      height: 0;
+      width: 100%;
+    }
+
+    .slider__head {
+      top: 0;
+      left: -6px;
+    }
+
+    .slider__bubble {
+      top: -5px;
+      left: 28px;
+      width: 36px;
+      height: 30px;
+
+      &:after {
+        left: 0;
+        top: 50%;
+        border-right-color: $bubble-color;
+        border-left: 0;
+        margin-top: -$pointer-size;
+        margin-left: -$pointer-size;
+      }
+    }
+
+    .slider__label {
+      @extend %unselectable;
+      position: absolute;
+      width: 20px;
+      left: -25px;
+      text-align: center;
+    }
+  }
+}
