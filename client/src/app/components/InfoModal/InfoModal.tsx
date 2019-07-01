@@ -4,7 +4,8 @@ import uuid from 'short-uuid';
 import { connect } from 'react-redux';
 
 import Modal from '../Modal/Modal';
-import { closeModal } from '../../redux/modal/actions';
+//import { closeModal } from '@redux/modal/actions';
+import { closeModal } from '@redux/modal/actions';
 
 interface Notice {
   message: string;

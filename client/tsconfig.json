@@ -16,10 +16,10 @@
         "shared/*"
       ],
       "@redux/*": [
-        "redux/*"
+        "app/redux/*"
       ],
       "@components/*": [
-        "components/*"
+        "app/components/*"
       ],
     },
     "jsx": "react",
