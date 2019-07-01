@@ -1,8 +1,9 @@
 .button {
   cursor: pointer;
   background: $white;
-  padding: 0.5rem;
-  border: 0.15rem solid $black;
+  min-width: 4.5rem;
+  padding: 0.35rem;
+  border: 0.15rem solid $dark-grey;
   outline: none;
 
   &:hover {

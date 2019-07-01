@@ -10,7 +10,7 @@ $dropdown-width: 22.5rem;
 
   &:after {
     content: '';
-    border: solid black;
+    border: solid $black;
     border-width: 0 0.3rem 0.3rem 0;
     display: inline-block;
     padding: 0.3rem;
@@ -26,7 +26,7 @@ $dropdown-width: 22.5rem;
   }
 
   &__select {
-    background: $medium-grey;
+    background: $light-grey;
     border: none;
     font-size: 0.875rem;
     height: 2.125rem;

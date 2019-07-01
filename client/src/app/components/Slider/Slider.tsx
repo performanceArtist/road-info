@@ -1,13 +1,12 @@
 import React from 'react';
-import uuid from 'short-uuid';
 
 import Model from './js/model/model';
 import View from './js/view/view';
 import Controller from './js/controller/controller';
 
-function init(selector, options = {}) {
-  const model = new Model(selector, options);
-  const view = new View(model);
+function init(root: HTMLElement, options = {}) {
+  const model = new Model(options);
+  const view = new View(model, root);
   const controller = new Controller(model, view);
 
   return {
@@ -20,16 +19,17 @@ class Slider extends React.Component {
   constructor(props) {
     super(props);
 
-    this.id = uuid.generate();
+    this.ref = React.createRef();
   }
 
   componentDidMount() {
-    const { options = {} } = this.props;
-    init(`#${this.id}`, options);
+    const { current: node } = this.ref;
+    const { options } = this.props;
+    init(node, options);
   }
 
   render() {
-    return <div id={this.id} />;
+    return <div ref={this.ref} />;
   }
 }
 
