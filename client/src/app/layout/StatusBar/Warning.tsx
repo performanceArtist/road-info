@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { openModal } from '../../redux/modal/actions';
-import Icon from '../../components/Icon/Icon';
+import { openModal } from '@redux/modal/actions';
+import Icon from '@components/Icon/Icon';
 
 const actions = { openModal };
 

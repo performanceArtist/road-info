@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Profile, Role } from '../../components/Profile/Profile';
-import Clock from '../../components/Clock/Clock';
+import { Profile, Role } from '@components/Profile/Profile';
+import Clock from '@components/Clock/Clock';
 import Warning from './Warning';
 
 const StatusBar = () => (

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MeasureTable from '../../components/MeasureTable/MeasureTable';
+import MeasureTable from '@components/MeasureTable/MeasureTable';
 
 const Diagnostics = () => (
   <div className="diagnostics">

@@ -24,8 +24,8 @@ const config = {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@shared': path.resolve(__dirname, 'src/shared'),
-      '@redux': path.resolve(__dirname, 'src/redux'),
-      '@components': path.resolve(__dirname, 'src/components')
+      '@redux': path.resolve(__dirname, 'src/app/redux'),
+      '@components': path.resolve(__dirname, 'src/app/components')
     }
   },
   optimization: {

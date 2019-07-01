@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Button from '@shared/Button/Button';
-import { Toggle } from '../../components/Toggle/Toggle';
-import Dropdown from '../../components/Dropdown/Dropdown';
+import { Toggle } from '@components/Toggle/Toggle';
+import Dropdown from '@components/Dropdown/Dropdown';
 import CallTest from './CallTest';
 
 const UI = () => (

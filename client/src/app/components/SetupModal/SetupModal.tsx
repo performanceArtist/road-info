@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Modal from '../Modal/Modal';
+import Modal from '@components/Modal/Modal';
 import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
 
-import { openModal, closeModal } from '../../redux/modal/actions';
+import { openModal, closeModal } from '@redux/modal/actions';
 
 interface SetupModalProps {
   counter: number;

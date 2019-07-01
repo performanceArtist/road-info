@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { ModalMap, ModalPayload } from '../../redux/modal/reducer';
+import { ModalMap, ModalPayload } from '@redux/modal/reducer';
 
 const mapStateToProps = state => ({ currentModals: state.modalReducer });
 

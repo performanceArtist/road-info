@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import uuid from 'short-uuid';
 
-import { openModal } from '../../redux/modal/actions';
+import { openModal } from '@redux/modal/actions';
 import Button from '@shared/Button/Button';
 
 const actions = { openModal };

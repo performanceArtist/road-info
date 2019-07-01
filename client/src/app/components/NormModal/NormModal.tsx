@@ -2,11 +2,11 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import Modal from '../Modal/Modal';
+import Modal from '@components/Modal/Modal';
 import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
 
-import { closeModal } from '../../redux/modal/actions';
+import { closeModal } from '@redux/modal/actions';
 
 const NormModal: React.SFC<{}> = ({ closeModal }) => {
   return (

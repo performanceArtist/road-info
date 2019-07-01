@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Modal from '../Modal/Modal';
-import { openModal, closeModal } from '../../redux/modal/actions';
+import Modal from '@components/Modal/Modal';
+import { openModal, closeModal } from '@redux/modal/actions';
 
 interface TestModalProps {
   counter: number;

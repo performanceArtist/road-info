@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 
-import Modal from '../Modal/Modal';
+import Modal from '@components/Modal/Modal';
 import Input from '@shared/Input/Input';
-import { closeModal } from '../../redux/modal/actions';
+import { closeModal } from '@redux/modal/actions';
 
 interface Material {
   name: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ControlForm from '../../components/ControlForm/ControlForm';
+import ControlForm from '@components/ControlForm/ControlForm';
 import CallSetup from './CallSetup';
 
 const Measurements = () => (

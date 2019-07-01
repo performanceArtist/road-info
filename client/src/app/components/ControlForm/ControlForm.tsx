@@ -4,7 +4,7 @@ import uuid from 'short-uuid';
 import Form from '@shared/Form/Form';
 import Button from '@shared/Button/Button';
 
-import { Toggle } from '../Toggle/Toggle';
+import { Toggle } from '@components/Toggle/Toggle';
 
 const ControlForm = ({ devices }) => {
   const deviceControls = devices.map(({ name }) => (
