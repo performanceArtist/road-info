@@ -17,7 +17,7 @@ import NotFound from './views/NotFound/NotFound';
 
 const App = () => {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <div className="container">
         <Header title="Кондор 2.0" />
         <ModalManager />
@@ -26,16 +26,15 @@ const App = () => {
           <div className="app__navigation">
             <Navigation
               links={[
-                { url: '/', title: 'Главная', icon: Icon.HOME },
+                {
+                  url: '/',
+                  title: 'Измерения',
+                  icon: Icon.GRAPH
+                },
                 {
                   url: '/calibration',
                   title: 'Калибровка',
                   icon: Icon.OPTIONS
-                },
-                {
-                  url: '/measurements',
-                  title: 'Измерения',
-                  icon: Icon.GRAPH
                 },
                 {
                   url: '/diagnostics',
@@ -49,10 +48,9 @@ const App = () => {
           </div>
           <div className="app__content">
             <Switch>
-              <Route exact path="/" component={Index} />
+              <Route exact path="/" component={Measurements} />
               <Route path="/calibration" component={Calibration} />
               <Route path="/diagnostics" component={Diagnostics} />
-              <Route path="/measurements" component={Measurements} />
               <Route path="/history" component={History} />
               <Route path="/ui" component={UI} />
               <Route path="*" component={NotFound} />
@@ -61,7 +59,7 @@ const App = () => {
         </main>
       </div>
       <Footer />
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
