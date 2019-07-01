@@ -3,10 +3,32 @@
     display: flex;
   }
 
+  &__chart-container {
+    margin-left: 5rem;
+    width: 800px;
+  }
+
   &__chart {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 5rem;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .diagnostics {
+    &__chart-container {
+      margin-left: 5rem;
+      width: 600px;
+    }
+  }
+}
+
+@media screen and (max-width: 1250px) {
+  .diagnostics {
+    &__chart-container {
+      margin-left: 5rem;
+      width: 400px;
+    }
   }
 }

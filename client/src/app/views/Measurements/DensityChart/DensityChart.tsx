@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ResponsiveContainer,
   LineChart,
   Line,
   Tooltip,
@@ -18,19 +19,21 @@ const data = [
 ];
 
 const renderLineChart = (
-  <LineChart width={600} height={400} data={data}>
-    <Line
-      type="monotone"
-      name="Плотность, г/см3"
-      dataKey="uv"
-      stroke="#8884d8"
-    />
-    <CartesianGrid stroke="#ccc" />
-    <XAxis dataKey="name" />
-    <YAxis />
-    <Tooltip />
-    <Legend />
-  </LineChart>
+  <ResponsiveContainer height={400} width="100%">
+    <LineChart data={data}>
+      <Line
+        type="monotone"
+        name="Плотность, г/см3"
+        dataKey="uv"
+        stroke="#8884d8"
+      />
+      <CartesianGrid stroke="#ccc" />
+      <XAxis dataKey="name" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+    </LineChart>
+  </ResponsiveContainer>
 );
 
 export default renderLineChart;

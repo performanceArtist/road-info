@@ -18,7 +18,9 @@ const Diagnostics = () => (
           { name: 'Дорожный просвет', value: '45', unit: 'см' }
         ]}
       />
-      <div className="diagnostics__chart">{VoltageChart}</div>
+      <div className="diagnostics__chart">
+        <div className="diagnostics__chart-container">{VoltageChart}</div>
+      </div>
     </div>
   </div>
 );

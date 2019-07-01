@@ -8,7 +8,7 @@ import CallSetup from './CallSetup';
 
 const Measurements = () => (
   <div className="measurements">
-    <div className="measurements__column">
+    <div className="measurements__form">
       <ControlForm
         devices={[
           { name: 'Защит. юбка' },
@@ -21,8 +21,8 @@ const Measurements = () => (
         <CallSetup />
       </div>
     </div>
-    <div className="measurements__column">{DensityChart}</div>
-    <div className="measurements__column">
+    <div className="measurements__info">
+      <div className="measurements__chart">{DensityChart}</div>
       <div className="measurements__results">
         <MeasurementResults
           measurements={[

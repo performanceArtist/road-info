@@ -1,4 +1,5 @@
 import React from 'react';
+import uuid from 'short-uuid';
 
 interface Measurement {
   title: string;
@@ -15,7 +16,7 @@ const MeasurementResults: React.SFC<MeasurementResultsProps> = ({
   measurements = []
 }) => {
   const rows = measurements.map(({ title, min, average, max }) => (
-    <div className="measurement-results__measurement">
+    <div className="measurement-results__measurement" key={uuid.generate()}>
       <div className="measurement-results__title">{title}</div>
       <div className="measurement-results__row">
         <div className="measurement-results__row-item">{min}</div>

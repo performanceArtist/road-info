@@ -8,4 +8,28 @@
   &__results {
     margin-left: 2.5rem;
   }
+
+  &__form {
+    display: inline-block;
+  }
+
+  &__info {
+    display: flex;
+  }
+
+  &__chart {
+    display: flex;
+    align-items: center;
+    width: 500px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .measurements {
+    display: block;
+
+    &__form {
+      margin-bottom: 3rem;
+    }
+  }
 }
