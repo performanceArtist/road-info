@@ -10,10 +10,10 @@ import TaskPanel from './TaskPanel/TaskPanel';
 
 const dataF = [
   { distance: 100, thickness: 1, density: 0.5, iri: 2.1, rutting: 210 },
-  { distance: 200, thickness: 2, density: 0.2, iri: 1.7, rutting: 170 },
+  { distance: 200, thickness: 2, density: 0.3, iri: 1.7, rutting: 170 },
   { distance: 300, thickness: 0.8, density: 0.12, iri: 3.2, rutting: 300 },
-  { distance: 400, thickness: 1.2, density: 0.24, iri: 3, rutting: 320 },
-  { distance: 500, thickness: 1.5, density: 0.19, iri: 4.2, rutting: 420 }
+  { distance: 400, thickness: 1.2, density: 0.26, iri: 3, rutting: 320 },
+  { distance: 500, thickness: 1.5, density: 0.28, iri: 4.2, rutting: 420 }
 ];
 
 const Measurements: React.SFC = ({ taskData }) => {

@@ -8,7 +8,7 @@ const actions = { openModal };
 
 const CallTask = ({ openModal }) => (
   <Button onClick={() => openModal('Task', { counter: 1 })}>
-    Добавить задание
+    Новое задание
   </Button>
 );
 
