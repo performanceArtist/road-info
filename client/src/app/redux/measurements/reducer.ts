@@ -1,16 +1,51 @@
 import { MEASUREMENT } from './actions';
 
-import { Measurement } from '@views/Measurements/DensityChart/DensityChart';
+import {
+  DensityChartInfo,
+  DensityChartData
+} from '@views/Measurements/DensityChart/DensityChart';
 
-interface DataType {
+const fakeData = [
+  { distance: 100, thickness: 1, density: 1.5, iri: 2.1, rutting: 210 },
+  { distance: 200, thickness: 2, density: 1.3, iri: 1.7, rutting: 170 },
+  { distance: 300, thickness: 0.8, density: 0.8, iri: 3.2, rutting: 300 },
+  { distance: 400, thickness: 1.2, density: 1, iri: 3, rutting: 320 },
+  { distance: 500, thickness: 1.5, density: 0.9, iri: 4.2, rutting: 420 }
+];
+
+const fakeInfo = [
+  {
+    name: 'density',
+    mainColor: 'black',
+    units: 'Плотность, г/см3'
+  },
+  { name: 'iri', mainColor: 'blue', units: 'IRI, м/км' },
+  { name: 'rutting', mainColor: 'teal', units: 'Колейность, мм' },
+  {
+    name: 'thickness',
+    mainColor: 'wheat',
+    units: 'Толщина слоя, мм'
+  }
+];
+
+const fakeState: TaskType = {
+  fetching: false,
+  error: null,
+  formData: {},
+  chartData: fakeData,
+  chartInfo: fakeInfo
+};
+
+interface TaskType {
   fetching: boolean;
   error: Error | null;
   formData: Object;
-  data: Array<Measurement>;
+  chartData: Array<DensityChartData>;
+  chartInfo: Array<DensityChartInfo>;
 }
 
-const initialState: { taskData: Array<DataType> } = {
-  taskData: []
+const initialState: { taskData: Array<TaskType> } = {
+  taskData: [fakeState]
 };
 
 export default function reducer(state = initialState, { type, payload }) {
@@ -22,20 +57,24 @@ export default function reducer(state = initialState, { type, payload }) {
       if (taskData[index]) {
         taskData[index].formData = formData;
         return {
+          ...state,
           taskData
         };
       } else {
         return {
+          ...state,
           taskData: taskData.concat({
             fetching: false,
             error: null,
             formData,
-            data: []
+            chartData: [],
+            chartInfo: []
           })
         };
       }
     case MEASUREMENT.TASK.REMOVE:
       return {
+        ...state,
         taskData: state.taskData.filter((el, i) => i !== payload.index)
       };
     default:
