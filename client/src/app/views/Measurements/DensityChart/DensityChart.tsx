@@ -10,30 +10,64 @@ import {
   YAxis
 } from 'recharts';
 
-const data = [
-  { name: '26.06.19', uv: 2.1 },
-  { name: '27.06.19', uv: 1.7 },
-  { name: '28.06.19', uv: 3.2 },
-  { name: '29.06.19', uv: 3 },
-  { name: '30.06.19', uv: 4.2 }
-];
+export interface Measurement {
+  distance: number;
+  density: number;
+  iri: number;
+  rutting: number;
+  thickness: number;
+}
 
-const renderLineChart = (
-  <ResponsiveContainer height={400} width="100%">
+interface DensityChartProps {
+  data?: Array<Measurement>;
+}
+
+const DensityChart: React.SFC<DensityChartProps> = ({ data = [] }) => (
+  <ResponsiveContainer>
     <LineChart data={data}>
+      <CartesianGrid stroke="#ccc" />
+      <XAxis dataKey="distance" />
+      <YAxis yAxisId="density" tick={false} tickLine={false} axisLine={false} />
+      <YAxis yAxisId="iri" tick={false} tickLine={false} axisLine={false} />
+      <YAxis yAxisId="rutting" tick={false} tickLine={false} axisLine={false} />
+      <YAxis
+        yAxisId="thickness"
+        tick={false}
+        tickLine={false}
+        axisLine={false}
+      />
       <Line
-        type="monotone"
+        yAxisId="density"
+        type="linear"
         name="Плотность, г/см3"
-        dataKey="uv"
+        dataKey="density"
         stroke="#8884d8"
       />
-      <CartesianGrid stroke="#ccc" />
-      <XAxis dataKey="name" />
-      <YAxis />
+      <Line
+        yAxisId="iri"
+        type="linear"
+        name="IRI, м/км"
+        dataKey="iri"
+        stroke="#8884d8"
+      />
+      <Line
+        yAxisId="rutting"
+        type="linear"
+        name="Колейность, мм"
+        dataKey="rutting"
+        stroke="#8884d8"
+      />
+      <Line
+        yAxisId="thickness"
+        type="linear"
+        name="Толщина слоя, мм"
+        dataKey="thickness"
+        stroke="#8884d8"
+      />
       <Tooltip />
-      <Legend />
+      <Legend layout="vertical" verticalAlign="middle" align="right" />
     </LineChart>
   </ResponsiveContainer>
 );
 
-export default renderLineChart;
+export default DensityChart;

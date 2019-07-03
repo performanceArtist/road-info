@@ -1,0 +1,24 @@
+.task-panel {
+  &__header {
+    display: flex;
+    align-items: center;
+  }
+
+  &__name {
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-right: 1rem;
+    width: 10rem;
+    word-break: break-all;
+  }
+
+  &__icon-container {
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    margin-right: 0.5rem;
+  }
+}

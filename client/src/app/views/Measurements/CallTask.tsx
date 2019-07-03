@@ -6,13 +6,13 @@ import { openModal } from '@redux/modal/actions';
 
 const actions = { openModal };
 
-const CallSetup = ({ openModal }) => (
-  <Button onClick={() => openModal('Setup', { counter: 1 })}>
-    Ввод параметров
+const CallTask = ({ openModal }) => (
+  <Button onClick={() => openModal('Task', { counter: 1 })}>
+    Добавить задание
   </Button>
 );
 
 export default connect(
   null,
   actions
-)(CallSetup);
+)(CallTask);

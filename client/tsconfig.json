@@ -21,6 +21,9 @@
       "@components/*": [
         "app/components/*"
       ],
+      "@views/*": [
+        "app/views/*"
+      ],
     },
     "jsx": "react",
     "allowJs": true,

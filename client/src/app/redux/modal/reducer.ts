@@ -1,10 +1,10 @@
 import { MODAL } from './actions';
 
-import TestModal from '../../components/TestModal/TestModal';
-import InfoModal from '../../components/InfoModal/InfoModal';
-import MaterialModal from '../../components/MaterialModal/MaterialModal';
-import SetupModal from '../../components/SetupModal/SetupModal';
-import NormModal from '../../components/NormModal/NormModal';
+import TestModal from '@components/TestModal/TestModal';
+import InfoModal from '@components/InfoModal/InfoModal';
+import MaterialModal from '@components/MaterialModal/MaterialModal';
+import NormModal from '@components/NormModal/NormModal';
+import TaskModal from '@views/Measurements/TaskModal/TaskModal';
 
 import { ConnectedComponentClass } from 'react-redux';
 
@@ -15,7 +15,7 @@ export const ModalMap: Record<
   Test: TestModal,
   Info: InfoModal,
   Material: MaterialModal,
-  Setup: SetupModal,
+  Task: TaskModal,
   Norm: NormModal
 };
 
