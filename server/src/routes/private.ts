@@ -31,4 +31,9 @@ router.use(express.static(path.join(__dirname, '../static/private')));
 
 router.get('/api/', (req, res) => res.json({ username: 'username' }));
 
+router.post('/api/task', (req, res) => {
+  console.log(req.body);
+  res.send({ status: 'ok', message: 'yeah' });
+});
+
 export default router;

@@ -1,5 +1,7 @@
-function* rootSaga() {
-  yield '';
-}
+import { all } from 'redux-saga/effects';
 
-export default rootSaga;
+import measurementsWatcher from './measurements/saga';
+
+export default function* rootSaga() {
+  yield all([measurementsWatcher()]);
+}

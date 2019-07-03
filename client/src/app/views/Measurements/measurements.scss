@@ -1,26 +1,38 @@
 .measurements {
   display: flex;
 
-  &__input {
-    padding: 1rem;
-  }
-
-  &__results {
-    margin-left: 2.5rem;
-  }
-
   &__form {
     display: inline-block;
+    width: 23rem;
+  }
+
+  &__input {
+    padding: 1rem;
+    text-align: center;
   }
 
   &__info {
     display: flex;
   }
 
+  &__results {
+    margin-left: 2.5rem;
+  }
+
   &__chart {
-    display: flex;
-    align-items: center;
-    width: 500px;
+    @extend %unselectable;
+    min-width: 400px;
+    min-height: 200px;
+    width: 625px;
+    height: 400px;
+    padding: 1.2rem;
+    background: $light-grey;
+    resize: both;
+    overflow: hidden;
+
+    .recharts-cartesian-axis-tick-value {
+      font-size: 0.8rem;
+    }
   }
 }
 

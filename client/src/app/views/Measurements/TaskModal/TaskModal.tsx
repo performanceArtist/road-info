@@ -36,25 +36,28 @@ class TaskModal extends React.Component<TaskModalProps, {}> {
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: [event.target.value] });
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     const { saveSettings, closeModal, index } = this.props;
 
-    console.log(this.state, index);
     saveSettings(this.state, index);
     closeModal();
   }
 
   render() {
-    const { closeModal } = this.props;
+    const { closeModal, taskData, index } = this.props;
     const { test } = this.state;
 
     return (
       <Modal open={true} onClose={closeModal}>
-        <Modal.Header>Ввод значений</Modal.Header>
+        <Modal.Header>
+          {taskData[index]
+            ? `Редактирование "${taskData[index].formData.test}"`
+            : 'Новое задание'}
+        </Modal.Header>
         <Modal.Content>
           <Form props={{ onSubmit: this.handleSubmit }}>
             <div className="task">

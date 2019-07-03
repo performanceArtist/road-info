@@ -6,23 +6,26 @@ enum ToggleType {
 }
 
 interface ToggleProps {
-  handleChange?(): void;
+  onChange?: Function;
   type?: ToggleType;
   checked?: boolean;
   label?: string;
+  name?: string;
 }
 
 const Toggle: React.SFC<ToggleProps> = ({
-  handleChange = () => {},
+  onChange = () => {},
   type = ToggleType.CHECKBOX,
   checked = false,
-  label = ''
+  label = '',
+  name = ''
 }) => (
   <label className="toggle">
     <input
       type={type}
+      name={name}
       defaultChecked={checked}
-      onChange={handleChange}
+      onChange={onChange}
       className="toggle__input"
     />
     <div className="toggle__switch" />
