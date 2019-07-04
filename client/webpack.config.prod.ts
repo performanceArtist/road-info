@@ -25,7 +25,8 @@ const config = {
     alias: {
       '@shared': path.resolve(__dirname, 'src/shared'),
       '@redux': path.resolve(__dirname, 'src/app/redux'),
-      '@components': path.resolve(__dirname, 'src/app/components')
+      '@components': path.resolve(__dirname, 'src/app/components'),
+      '@views': path.resolve(__dirname, 'src/app/views')
     }
   },
   optimization: {
