@@ -20,7 +20,7 @@ const UI = () => (
         <Button />
       </div>
       <div className="ui__row">
-        <Dropdown options={['one', 'two']} />
+        <Dropdown label="Test" options={['one', 'two']} />
       </div>
       <div className="ui__row">
         <Slider

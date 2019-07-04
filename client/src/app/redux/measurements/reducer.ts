@@ -48,7 +48,7 @@ const initialState: {
   taskData: Array<TaskType>;
   currentTask: number | null;
 } = {
-  taskData: [fakeState],
+  taskData: [],
   currentTask: null
 };
 

@@ -14,11 +14,11 @@ interface ProfileProps {
   user?: User | null;
 }
 
-function deleteCookie(name) {
+function deleteCookie(name: string) {
   document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
-function getCookie(cname) {
+function getCookie(cname: string) {
   var name = cname + '=';
   var decodedCookie = decodeURIComponent(document.cookie);
   var ca = decodedCookie.split(';');
@@ -35,12 +35,6 @@ function getCookie(cname) {
 }
 
 const Profile: React.SFC<ProfileProps> = ({ user = null }) => {
-  if (!user) {
-    return <a>Log in</a>;
-  }
-
-  const { username, role } = user;
-
   return (
     <div className="profile">
       <div className="profile__username">{getCookie('login')}</div>

@@ -37,9 +37,6 @@ export async function createAdmin() {
       group_id: 2
     });
     await admin.create();
-    await knex('users')
-      .where({ login: 'admin' })
-      .del();
   } catch (err) {
     console.log(err);
   }

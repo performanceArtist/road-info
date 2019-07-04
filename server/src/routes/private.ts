@@ -33,7 +33,7 @@ router.get('/api/', (req, res) => res.json({ username: 'username' }));
 
 router.post('/api/task', (req, res) => {
   console.log(req.body);
-  res.send({ status: 'ok', message: 'yeah' });
+  res.json({ status: 'ok', message: 'yeah' });
 });
 
 export default router;

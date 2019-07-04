@@ -14,12 +14,12 @@ const TaskPanel = ({
   setCurrentTask
 }) => {
   const elements = tasks.map((formData, index) => {
-    const { test } = formData;
+    const { name } = formData;
 
     return (
       <div className="task" key={`task-${index}`}>
         <header className="task-panel__header">
-          <div className="task-panel__name">{test}</div>
+          <div className="task-panel__name">{name}</div>
           <Toggle
             type={ToggleType.RADIO}
             name="start"

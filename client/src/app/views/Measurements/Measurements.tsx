@@ -7,6 +7,7 @@ import DensityChart from './DensityChart/DensityChart';
 import MeasurementResults from './MeasurementResults/MeasurementResults';
 import CallTask from './CallTask';
 import TaskPanel from './TaskPanel/TaskPanel';
+import ChartSettings from './ChartSettings/ChartSettings';
 
 const Measurements: React.SFC = ({ taskData, currentTask }) => {
   const { chartData = [], chartInfo = [] } = taskData[currentTask]

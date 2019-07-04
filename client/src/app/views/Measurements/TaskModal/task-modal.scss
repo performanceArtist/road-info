@@ -1,10 +1,17 @@
-.setup {
-  display: flex;
-  &__text {
-    margin-right: 1rem;
+.task {
+  &__dropdowns {
+    display: inline-block;
+    width: 45%;
+    margin-right: 5%;
   }
 
-  &__left {
-    margin-right: 1rem;
+  &__title {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.5rem 0;
+  }
+
+  &__slider {
+    margin-top: 2rem;
   }
 }

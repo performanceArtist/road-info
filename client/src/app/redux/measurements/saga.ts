@@ -27,6 +27,7 @@ function* createWorker(action) {
       type: MEASUREMENT.POST.SUCCESS
     });
   } catch (error) {
+    console.log(error);
     yield put({ type: MEASUREMENT.POST.FAILURE, error: error });
   }
 }
