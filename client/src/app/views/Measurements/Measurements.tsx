@@ -8,9 +8,42 @@ import MeasurementResults from './MeasurementResults/MeasurementResults';
 import CallTask from './CallTask';
 import TaskPanel from './TaskPanel/TaskPanel';
 
-const Measurements: React.SFC = ({ taskData }) => {
-  const { chartData, chartInfo } = taskData[0];
+const Measurements: React.SFC = ({ taskData, currentTask }) => {
+  const { chartData = [], chartInfo = [] } = taskData[currentTask]
+    ? taskData[currentTask]
+    : {};
   const tasks = taskData.map(({ formData }) => formData);
+
+  const objectReduce = (
+    data = [],
+    callback = (a, b) => {
+      a + b;
+    }
+  ) => {
+    return data.reduce((acc, object) => {
+      const results = {};
+      Object.keys(object).forEach(property => {
+        results[property] = callback(acc[property], object[property]);
+      });
+
+      return results;
+    }, data[0] || { density: 0, rutting: 0, iri: 0, thickness: 0 });
+  };
+  const objectMap = (object, callback) => {
+    const result = {};
+
+    Object.keys(object).forEach(key => (result[key] = callback(object[key])));
+    return result;
+  };
+
+  const min = objectReduce(chartData, (a, b) => (a < b ? a : b));
+  const max = objectReduce(chartData, (a, b) => (a > b ? a : b));
+  const sums = objectReduce(chartData, (a, b) => a + b);
+  const dataLength = chartData.length;
+  const average = objectMap(
+    sums,
+    x => Math.round((100 * x) / dataLength) / 100 || 0
+  );
 
   return (
     <div className="measurements">
@@ -29,10 +62,30 @@ const Measurements: React.SFC = ({ taskData }) => {
         <div className="measurements__results">
           <MeasurementResults
             measurements={[
-              { title: 'Плотность, г/см3', min: 0, average: 2.5, max: 5 },
-              { title: 'IRI, м/км', min: 0, average: 2.5, max: 5 },
-              { title: 'Колейность, мм', min: 0, average: 2.5, max: 5 },
-              { title: 'Толщина слоя, мм', min: 0, average: 2.5, max: 5 }
+              {
+                title: 'Плотность, г/см3',
+                min: min.density,
+                average: average.density,
+                max: max.density
+              },
+              {
+                title: 'IRI, м/км',
+                min: min.iri,
+                average: average.iri,
+                max: max.iri
+              },
+              {
+                title: 'Колейность, мм',
+                min: min.rutting,
+                average: average.rutting,
+                max: max.rutting
+              },
+              {
+                title: 'Толщина слоя, мм',
+                min: min.thickness,
+                average: average.thickness,
+                max: max.thickness
+              }
             ]}
           />
         </div>
@@ -41,8 +94,8 @@ const Measurements: React.SFC = ({ taskData }) => {
   );
 };
 
-const mapStateToProps = ({ measurementsReducer }) => ({
-  ...measurementsReducer
+const mapStateToProps = ({ measurements }) => ({
+  ...measurements
 });
 
 export default connect(mapStateToProps)(Measurements);

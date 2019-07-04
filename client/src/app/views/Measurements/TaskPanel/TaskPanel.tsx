@@ -1,5 +1,4 @@
 import React from 'react';
-import uuid from 'short-uuid';
 import { connect } from 'react-redux';
 
 import { Toggle, ToggleType } from '@components/Toggle/Toggle';
@@ -7,19 +6,28 @@ import { Icon, IconImage } from '@components/Icon/Icon';
 import { openModal } from '@redux/modal/actions';
 import { removeTask, MEASUREMENT } from '@redux/measurements/actions';
 
-const TaskPanel = ({ tasks = [], openModal, removeTask, postData }) => {
+const TaskPanel = ({
+  tasks = [],
+  openModal,
+  removeTask,
+  postData,
+  setCurrentTask
+}) => {
   const elements = tasks.map((formData, index) => {
     const { test } = formData;
 
     return (
-      <div className="task" key={uuid.generate()}>
+      <div className="task" key={`task-${index}`}>
         <header className="task-panel__header">
           <div className="task-panel__name">{test}</div>
           <Toggle
             type={ToggleType.RADIO}
             name="start"
             onChange={event => {
-              if (event.target.checked) postData(formData, index);
+              if (event.target.checked) {
+                setCurrentTask(index);
+                postData(formData, index);
+              }
             }}
           />
           <div className="task-panel__icon-container">
@@ -57,6 +65,10 @@ export default connect(
     postData: (formData, index) => ({
       type: MEASUREMENT.POST.REQUEST,
       payload: { formData, index }
+    }),
+    setCurrentTask: index => ({
+      type: MEASUREMENT.TASK.SET_CURRENT,
+      payload: { index }
     })
   }
 )(TaskPanel);

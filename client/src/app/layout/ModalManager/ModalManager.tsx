@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { ModalMap, ModalPayload } from '@redux/modal/reducer';
 
-const mapStateToProps = state => ({ currentModals: state.modalReducer });
+const mapStateToProps = state => ({ currentModals: state.modals });
 
 const ModalManager = ({
   currentModals

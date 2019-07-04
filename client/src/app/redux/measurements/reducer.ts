@@ -13,7 +13,7 @@ const fakeData = [
   { distance: 500, thickness: 1.5, density: 0.9, iri: 4.2, rutting: 420 }
 ];
 
-const fakeInfo = [
+const defaultInfo = [
   {
     name: 'density',
     mainColor: 'black',
@@ -31,9 +31,9 @@ const fakeInfo = [
 const fakeState: TaskType = {
   fetching: false,
   error: null,
-  formData: {},
+  formData: { test: 'Name' },
   chartData: fakeData,
-  chartInfo: fakeInfo
+  chartInfo: defaultInfo
 };
 
 interface TaskType {
@@ -44,8 +44,12 @@ interface TaskType {
   chartInfo: Array<DensityChartInfo>;
 }
 
-const initialState: { taskData: Array<TaskType> } = {
-  taskData: [fakeState]
+const initialState: {
+  taskData: Array<TaskType>;
+  currentTask: number | null;
+} = {
+  taskData: [fakeState],
+  currentTask: null
 };
 
 export default function reducer(state = initialState, { type, payload }) {
@@ -67,8 +71,8 @@ export default function reducer(state = initialState, { type, payload }) {
             fetching: false,
             error: null,
             formData,
-            chartData: [],
-            chartInfo: []
+            chartData: fakeData,
+            chartInfo: defaultInfo
           })
         };
       }
@@ -77,6 +81,8 @@ export default function reducer(state = initialState, { type, payload }) {
         ...state,
         taskData: state.taskData.filter((el, i) => i !== payload.index)
       };
+    case MEASUREMENT.TASK.SET_CURRENT:
+      return { ...state, currentTask: payload.index };
     default:
       return state;
   }

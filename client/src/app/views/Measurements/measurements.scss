@@ -23,16 +23,12 @@
     @extend %unselectable;
     min-width: 400px;
     min-height: 200px;
-    width: 625px;
-    height: 400px;
+    width: 500px;
+    height: 325px;
     padding: 1.2rem;
     background: $light-grey;
     resize: both;
     overflow: hidden;
-
-    .recharts-cartesian-axis-tick-value {
-      font-size: 0.8rem;
-    }
   }
 }
 

@@ -4,8 +4,8 @@ import modalReducer from './modal/reducer';
 import measurementsReducer from './measurements/reducer';
 
 const rootReducer = combineReducers({
-  modalReducer,
-  measurementsReducer
+  modals: modalReducer,
+  measurements: measurementsReducer
 });
 
 export default rootReducer;

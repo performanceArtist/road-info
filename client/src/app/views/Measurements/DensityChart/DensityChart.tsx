@@ -21,7 +21,7 @@ export interface DensityChartData {
 export interface DensityChartInfo {
   name: string;
   units?: string;
-  breakpoint?: number;
+  breakpoint?: { start: number; finish: number };
   mainColor?: string;
   warningColor?: string;
 }
@@ -38,7 +38,7 @@ function getGradients(
   return info.map(
     ({
       name = '',
-      breakpoint = 1,
+      breakpoint = { start: 1, finish: 2 },
       mainColor = 'green',
       warningColor = 'red'
     }) => {
@@ -55,8 +55,11 @@ function getGradients(
         }),
         { min: 0, max: 0 }
       );
-      const breakpointPercentage = `${(1 - (breakpoint - min) / (max - min)) *
-        100}%`;
+      const { start, finish } = breakpoint;
+      const startPercentage = `${(1 - (start - min) / (max - min)) * 100}%`;
+      const finishPercentage = `${(1 - (finish - min) / (max - min)) * 100}%`;
+
+      console.log(startPercentage, finishPercentage, min, max);
 
       return (
         <linearGradient
@@ -68,8 +71,8 @@ function getGradients(
           key={uuid.generate()}
         >
           <stop offset="0%" stopColor={mainColor} />
-          <stop offset={breakpointPercentage} stopColor={mainColor} />
-          <stop offset={breakpointPercentage} stopColor={warningColor} />
+          <stop offset={startPercentage} stopColor={mainColor} />
+          <stop offset={startPercentage} stopColor={warningColor} />
           <stop offset="100%" stopColor={warningColor} />
         </linearGradient>
       );
@@ -78,7 +81,7 @@ function getGradients(
 }
 
 function getLineCharts(charts: Array<DensityChartInfo> = []) {
-  return charts.map(({ name, units = 'м' }) => (
+  return charts.map(({ name, units = 'm' }) => (
     <Line
       yAxisId={name}
       type="linear"
@@ -97,14 +100,17 @@ const DensityChart: React.SFC<DensityChartProps> = ({
   data = [],
   info = []
 }) => {
-  console.log(getLineCharts(info));
   return (
     <ResponsiveContainer>
       <LineChart data={data}>
         <defs>{getGradients(data, info)}</defs>
         {getLineCharts(info)}
         <CartesianGrid stroke="#ccc" />
-        <XAxis dataKey="distance" interval="preserveStartEnd" />
+        <XAxis
+          dataKey="distance"
+          interval="preserveStartEnd"
+          tick={{ fontSize: '0.8rem' }}
+        />
         <Tooltip />
         <Legend
           layout="vertical"

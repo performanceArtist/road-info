@@ -83,8 +83,8 @@ class TaskModal extends React.Component<TaskModalProps, {}> {
   }
 }
 
-const mapStateToProps = ({ measurementsReducer }) => ({
-  ...measurementsReducer
+const mapStateToProps = ({ measurements }) => ({
+  ...measurements
 });
 
 export default connect(
