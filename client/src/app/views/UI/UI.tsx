@@ -6,6 +6,7 @@ import Dropdown from '@components/Dropdown/Dropdown';
 import Slider from '@components/Slider/Slider';
 
 import CallTest from './CallTest';
+import Start from '@components/Start/Start';
 
 const UI = () => (
   <div className="ui">
@@ -42,6 +43,9 @@ const UI = () => (
             step: 100
           }}
         />
+      </div>
+      <div className="ui__row">
+        <Start />
       </div>
     </div>
   </div>

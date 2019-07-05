@@ -32,8 +32,7 @@ const fakeState: TaskType = {
   fetching: false,
   error: null,
   formData: { test: 'Name' },
-  chartData: fakeData,
-  chartInfo: defaultInfo
+  chartData: fakeData
 };
 
 interface TaskType {
@@ -41,15 +40,22 @@ interface TaskType {
   error: Error | null;
   formData: Object;
   chartData: Array<DensityChartData>;
-  chartInfo: Array<DensityChartInfo>;
 }
 
 const initialState: {
   taskData: Array<TaskType>;
   currentTask: number | null;
+  chartInfo: Array<DensityChartInfo>;
+  channelStatus: string;
+  serverStatus: string;
 } = {
-  taskData: [],
-  currentTask: null
+  taskData: [
+    { fetching: false, error: null, formData: { name: 'Test' }, chartData: [] }
+  ],
+  currentTask: 0,
+  chartInfo: defaultInfo,
+  channelStatus: 'off',
+  serverStatus: 'unknown'
 };
 
 export default function reducer(state = initialState, { type, payload }) {
@@ -71,8 +77,7 @@ export default function reducer(state = initialState, { type, payload }) {
             fetching: false,
             error: null,
             formData,
-            chartData: fakeData,
-            chartInfo: defaultInfo
+            chartData: []
           })
         };
       }
@@ -83,6 +88,23 @@ export default function reducer(state = initialState, { type, payload }) {
       };
     case MEASUREMENT.TASK.SET_CURRENT:
       return { ...state, currentTask: payload.index };
+    case MEASUREMENT.SERVER.ADD_MEASUREMENT:
+      const newData = [...state.taskData];
+      const current = newData[state.currentTask];
+      if (current) {
+        current.chartData = current.chartData.concat(payload);
+        return { ...state, taskData: newData };
+      } else {
+        return { ...state };
+      }
+    case MEASUREMENT.SERVER.CHANNEL_ON:
+      return { ...state, channelStatus: 'on' };
+    case MEASUREMENT.SERVER.CHANNEL_OFF:
+      return { ...state, channelStatus: 'off', serverStatus: 'unknown' };
+    case MEASUREMENT.SERVER.SERVER_OFF:
+      return { ...state, serverStatus: 'off' };
+    case MEASUREMENT.SERVER.SERVER_ON:
+      return { ...state, serverStatus: 'on' };
     default:
       return state;
   }

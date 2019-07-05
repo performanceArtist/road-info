@@ -9,7 +9,9 @@ const config = {
     login: ['@babel/polyfill', path.join(__dirname, 'src/login/main.tsx')],
     admin: ['@babel/polyfill', path.join(__dirname, 'src/admin/main.tsx')]
   },
-
+  node: {
+    fs: 'empty'
+  },
   resolve: {
     modules: ['node_modules', 'client'],
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -17,7 +19,7 @@ const config = {
       '@shared': path.resolve(__dirname, 'src/shared'),
       '@redux': path.resolve(__dirname, 'src/app/redux'),
       '@components': path.resolve(__dirname, 'src/app/components'),
-      '@views': path.resolve(__dirname, 'src/app/views'),
+      '@views': path.resolve(__dirname, 'src/app/views')
     }
   },
   optimization: {

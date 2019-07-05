@@ -31,8 +31,11 @@ router.use(express.static(path.join(__dirname, '../static/private')));
 
 router.get('/api/', (req, res) => res.json({ username: 'username' }));
 
+import { generateMeasurements } from '../models/Measurement';
+
 router.post('/api/task', (req, res) => {
   console.log(req.body);
+  generateMeasurements();
   res.json({ status: 'ok', message: 'yeah' });
 });
 

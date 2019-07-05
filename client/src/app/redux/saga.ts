@@ -1,7 +1,8 @@
 import { all } from 'redux-saga/effects';
 
-import measurementsWatcher from './measurements/saga';
+import createWatcher from './measurements/create';
+import listenWatcher from './measurements/listen';
 
 export default function* rootSaga() {
-  yield all([measurementsWatcher()]);
+  yield all([listenWatcher(), createWatcher()]);
 }

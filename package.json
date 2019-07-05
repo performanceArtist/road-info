@@ -30,6 +30,7 @@
     "@types/recharts": "^1.1.17",
     "@types/redux": "^3.6.0",
     "@types/redux-saga": "^0.10.5",
+    "@types/socket.io": "^2.1.2",
     "@types/webpack-env": "^1.13.9",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
@@ -79,6 +80,7 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.18.0",
     "morgan": "^1.9.1",
-    "pg": "^7.11.0"
+    "pg": "^7.11.0",
+    "socket.io": "^2.2.0"
   }
 }

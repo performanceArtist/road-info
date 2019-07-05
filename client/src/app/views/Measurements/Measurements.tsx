@@ -8,11 +8,10 @@ import MeasurementResults from './MeasurementResults/MeasurementResults';
 import CallTask from './CallTask';
 import TaskPanel from './TaskPanel/TaskPanel';
 import ChartSettings from './ChartSettings/ChartSettings';
+import Start from '@components/Start/Start';
 
-const Measurements: React.SFC = ({ taskData, currentTask }) => {
-  const { chartData = [], chartInfo = [] } = taskData[currentTask]
-    ? taskData[currentTask]
-    : {};
+const Measurements: React.SFC = ({ taskData, currentTask, chartInfo }) => {
+  const { chartData = [] } = taskData[currentTask] ? taskData[currentTask] : {};
   const tasks = taskData.map(({ formData }) => formData);
 
   const objectReduce = (
@@ -56,6 +55,7 @@ const Measurements: React.SFC = ({ taskData, currentTask }) => {
           <div className="measurements__input">
             <CallTask />
           </div>
+          <Start />
         </div>
         <div className="measurements__chart">
           <DensityChart data={chartData} info={chartInfo} />

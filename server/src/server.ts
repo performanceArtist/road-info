@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const socketIO = require('socket.io');
 
 import loginRouter from './routes/public';
 import appRouter from './routes/private';
@@ -29,4 +30,9 @@ app.get('*', (req, res) => {
   res.status(404).send('<h1>Not Found</h1>');
 });
 
-app.listen(5000, () => console.log('Listening on port 5000!'));
+const server = app.listen(5000, () => console.log('Listening on port 5000!'));
+export const io = socketIO(server);
+
+io.on('connection', socket => {
+  console.log('Connection opened');
+});

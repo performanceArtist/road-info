@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { Toggle, ToggleType } from '@components/Toggle/Toggle';
 import { Icon, IconImage } from '@components/Icon/Icon';
 import { openModal } from '@redux/modal/actions';
 import { removeTask, MEASUREMENT } from '@redux/measurements/actions';
+import { startChannel } from '@redux/measurements/listen';
 
 const TaskPanel = ({
   tasks = [],
   openModal,
   removeTask,
   postData,
-  setCurrentTask
+  setCurrentTask,
+  startChannel
 }) => {
+  useEffect(() => {
+    startChannel();
+  }, []);
+
   const elements = tasks.map((formData, index) => {
     const { name } = formData;
 
@@ -69,6 +75,7 @@ export default connect(
     setCurrentTask: index => ({
       type: MEASUREMENT.TASK.SET_CURRENT,
       payload: { index }
-    })
+    }),
+    startChannel
   }
 )(TaskPanel);

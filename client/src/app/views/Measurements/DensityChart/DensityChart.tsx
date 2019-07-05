@@ -59,8 +59,6 @@ function getGradients(
       const startPercentage = `${(1 - (start - min) / (max - min)) * 100}%`;
       const finishPercentage = `${(1 - (finish - min) / (max - min)) * 100}%`;
 
-      console.log(startPercentage, finishPercentage, min, max);
-
       return (
         <linearGradient
           id={name}
@@ -113,12 +111,8 @@ const DensityChart: React.SFC<DensityChartProps> = ({
         />
         <Tooltip />
         <Legend
-          layout="vertical"
-          verticalAlign="middle"
-          align="right"
           wrapperStyle={{
-            fontSize: '0.9rem',
-            paddingLeft: '1.5rem'
+            fontSize: '0.9rem'
           }}
         />
       </LineChart>
