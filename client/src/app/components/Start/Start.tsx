@@ -7,9 +7,13 @@ import { startChannel, stopChannel } from '@redux/measurements/listen';
 const Start = props => {
   const { startChannel, stopChannel } = props;
   return (
-    <div>
-      <Button onClick={startChannel}>Открыть канал</Button>
-      <Button onClick={stopChannel}>Закрыть</Button>
+    <div className="start">
+      <div classsName="start__button">
+        <Button onClick={startChannel}>Открыть канал</Button>
+      </div>
+      <div classsName="start__button">
+        <Button onClick={stopChannel}>Закрыть</Button>
+      </div>
     </div>
   );
 };

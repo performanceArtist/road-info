@@ -1,9 +1,9 @@
 .input {
   display: block;
-  text-align: center;
+  text-align: left;
 
   &__label {
-    text-align: left;
+    display: inline-block;
     font-size: 1.1rem;
     padding: 0.4rem;
   }
@@ -28,6 +28,10 @@
 
     &:disabled {
       background: $light-grey;
+    }
+
+    &[type='checkbox'] {
+      width: auto;
     }
   }
 

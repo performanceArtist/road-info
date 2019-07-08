@@ -1,4 +1,7 @@
 .task-panel {
+  max-height: 370px;
+  overflow-y: auto;
+
   &__header {
     display: flex;
     align-items: center;

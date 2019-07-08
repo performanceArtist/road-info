@@ -1,0 +1,8 @@
+.start {
+  display: flex;
+  justify-content: space-evenly;
+
+  &__button {
+    display: inline-block;
+  }
+}

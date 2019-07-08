@@ -2,14 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import ControlForm from '@components/ControlForm/ControlForm';
-import Start from '@components/Start/Start';
 
 import DensityChart from './DensityChart/DensityChart';
 import MeasurementResults from './MeasurementResults/MeasurementResults';
 import CallTask from './CallTask';
 import TaskPanel from './TaskPanel/TaskPanel';
 import ChartSettings from './ChartSettings/ChartSettings';
-import Zoom from './DensityChart/Test';
 
 const testData = [
   { distance: 0, density: 3.97835, thickness: 1.94446, rutting: 0, iri: 0 },
@@ -54,23 +52,17 @@ const Measurements: React.SFC = ({ taskData, currentTaskId, chartInfo }) => {
   const min = objectReduce(chartData, (a, b) => (a < b ? a : b));
   const max = objectReduce(chartData, (a, b) => (a > b ? a : b));
   const sums = objectReduce(chartData, (a, b) => a + b);
-  const dataLength = chartData.length;
-  const average = objectMap(
-    sums,
-    x => Math.round((100 * x) / dataLength) / 100 || 0
-  );
+  const average = objectMap(sums, x => x / chartData.length || 0);
 
   return (
     <div className="measurements">
       <div className="measurements__info">
         <div className="measurements__form">
-          <div className="measurements__tasks">
-            <TaskPanel tasks={taskData} />
-          </div>
+          <TaskPanel tasks={taskData} />
           <div className="measurements__input">
             <CallTask />
           </div>
-          <Start />
+          <ChartSettings />
         </div>
         <div className="measurements__chart">
           <DensityChart data={testData} info={chartInfo} />
@@ -105,7 +97,6 @@ const Measurements: React.SFC = ({ taskData, currentTaskId, chartInfo }) => {
             ]}
           />
         </div>
-        <Zoom data={testData} />
       </div>
     </div>
   );

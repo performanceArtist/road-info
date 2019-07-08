@@ -22,8 +22,8 @@ const defaultInfo = [
     units: 'Плотность, г/см3',
     show: true
   },
-  { name: 'iri', mainColor: 'blue', units: 'IRI, м/км', show: true },
-  { name: 'rutting', mainColor: 'teal', units: 'Колейность, мм', show: true },
+  { name: 'iri', mainColor: 'blue', units: 'IRI, м/км', show: false },
+  { name: 'rutting', mainColor: 'teal', units: 'Колейность, мм', show: false },
   {
     name: 'thickness',
     mainColor: 'wheat',
@@ -103,6 +103,11 @@ export default function reducer(state = initialState, { type, payload }) {
       } else {
         return state;
       }
+    case MEASUREMENT.CHART.CHANGE_VISIBILITY:
+      const newInfo = [...state.chartInfo];
+      const target = newInfo.find(({ name }) => name === payload.name);
+      target.show = payload.show;
+      return { ...state, charInfo: newInfo };
     case MEASUREMENT.SERVER.CHANNEL_ON:
       return { ...state, channelStatus: 'on' };
     case MEASUREMENT.SERVER.CHANNEL_OFF:

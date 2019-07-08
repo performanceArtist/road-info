@@ -38,20 +38,20 @@ interface DensityChartProps {
 const initialDomains = {
   distance: { left: 'dataMin', right: 'dataMax' },
   density: {
-    top: 'dataMax+0.1',
-    bottom: 'dataMin-0.1'
+    top: 'dataMax+0.5',
+    bottom: 'dataMin-0.5'
   },
   thickness: {
-    top: 'dataMax+0.1',
-    bottom: 'dataMin-0.1'
+    top: 'dataMax+0.5',
+    bottom: 'dataMin-0.5'
   },
   rutting: {
-    top: 'dataMax+0.1',
-    bottom: 'dataMin-0.1'
+    top: 'dataMax+0.5',
+    bottom: 'dataMin-0.5'
   },
   iri: {
-    top: 'dataMax+0.1',
-    bottom: 'dataMin-0.1'
+    top: 'dataMax+0.5',
+    bottom: 'dataMin-0.5'
   }
 };
 
@@ -89,7 +89,6 @@ class DensityChart extends React.Component<DensityChartProps> {
 
   zoom() {
     let { refAreaLeft, refAreaRight } = this.state;
-    const { data } = this.props;
 
     if (refAreaLeft === refAreaRight || refAreaRight === '') {
       this.setState({
@@ -111,15 +110,15 @@ class DensityChart extends React.Component<DensityChartProps> {
           left: refAreaLeft,
           right: refAreaRight
         },
-        density: this.getAxisYDomain(refAreaLeft, refAreaRight, 'density', 0.1),
+        density: this.getAxisYDomain(refAreaLeft, refAreaRight, 'density', 1),
         thickness: this.getAxisYDomain(
           refAreaLeft,
           refAreaRight,
           'thickness',
-          0.1
+          1
         ),
-        rutting: this.getAxisYDomain(refAreaLeft, refAreaRight, 'rutting', 0.1),
-        iri: this.getAxisYDomain(refAreaLeft, refAreaRight, 'iri', 0.1)
+        rutting: this.getAxisYDomain(refAreaLeft, refAreaRight, 'rutting', 1),
+        iri: this.getAxisYDomain(refAreaLeft, refAreaRight, 'iri', 1)
       }
     });
   }
@@ -137,7 +136,6 @@ class DensityChart extends React.Component<DensityChartProps> {
     const { domains } = this.state;
 
     return info.map(({ name, units = 'm', show }) => {
-      if (!show) return null;
       return [
         <Line
           yAxisId={name}
@@ -149,6 +147,7 @@ class DensityChart extends React.Component<DensityChartProps> {
           dot={false}
           activeDot={false}
           isAnimationActive={false}
+          hide={!show}
         />,
         <YAxis
           type="number"
