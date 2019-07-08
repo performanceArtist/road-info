@@ -1,3 +1,5 @@
+import uuid from 'short-uuid';
+
 import { MEASUREMENT } from './actions';
 
 import {
@@ -17,42 +19,44 @@ const defaultInfo = [
   {
     name: 'density',
     mainColor: 'black',
-    units: 'Плотность, г/см3'
+    units: 'Плотность, г/см3',
+    show: true
   },
-  { name: 'iri', mainColor: 'blue', units: 'IRI, м/км' },
-  { name: 'rutting', mainColor: 'teal', units: 'Колейность, мм' },
+  { name: 'iri', mainColor: 'blue', units: 'IRI, м/км', show: true },
+  { name: 'rutting', mainColor: 'teal', units: 'Колейность, мм', show: true },
   {
     name: 'thickness',
     mainColor: 'wheat',
-    units: 'Толщина слоя, мм'
+    units: 'Толщина слоя, мм',
+    show: true
   }
 ];
 
-const fakeState: TaskType = {
-  fetching: false,
-  error: null,
-  formData: { test: 'Name' },
-  chartData: fakeData
-};
-
 interface TaskType {
+  id: string;
   fetching: boolean;
   error: Error | null;
   formData: Object;
   chartData: Array<DensityChartData>;
 }
 
+const testState: TaskType = {
+  id: uuid.generate(),
+  fetching: false,
+  error: null,
+  formData: { name: 'Test' },
+  chartData: []
+};
+
 const initialState: {
   taskData: Array<TaskType>;
-  currentTask: number | null;
+  currentTaskId: string | null;
   chartInfo: Array<DensityChartInfo>;
   channelStatus: string;
   serverStatus: string;
 } = {
-  taskData: [
-    { fetching: false, error: null, formData: { name: 'Test' }, chartData: [] }
-  ],
-  currentTask: 0,
+  taskData: [testState],
+  currentTaskId: null,
   chartInfo: defaultInfo,
   channelStatus: 'off',
   serverStatus: 'unknown'
@@ -61,11 +65,12 @@ const initialState: {
 export default function reducer(state = initialState, { type, payload }) {
   switch (type) {
     case MEASUREMENT.TASK.SAVE:
-      const { formData, index } = payload;
+      const { formData, taskId } = payload;
       const taskData = [...state.taskData];
+      const task = taskData.find(({ id }) => id === taskId);
 
-      if (taskData[index]) {
-        taskData[index].formData = formData;
+      if (task) {
+        task.formData = formData;
         return {
           ...state,
           taskData
@@ -74,6 +79,7 @@ export default function reducer(state = initialState, { type, payload }) {
         return {
           ...state,
           taskData: taskData.concat({
+            id: uuid.generate(),
             fetching: false,
             error: null,
             formData,
@@ -84,18 +90,18 @@ export default function reducer(state = initialState, { type, payload }) {
     case MEASUREMENT.TASK.REMOVE:
       return {
         ...state,
-        taskData: state.taskData.filter((el, i) => i !== payload.index)
+        taskData: state.taskData.filter(({ id }) => id !== payload.taskId)
       };
     case MEASUREMENT.TASK.SET_CURRENT:
-      return { ...state, currentTask: payload.index };
+      return { ...state, currentTaskId: payload.taskId };
     case MEASUREMENT.SERVER.ADD_MEASUREMENT:
       const newData = [...state.taskData];
-      const current = newData[state.currentTask];
+      const current = newData.find(({ id }) => id === state.currentTaskId);
       if (current) {
         current.chartData = current.chartData.concat(payload);
         return { ...state, taskData: newData };
       } else {
-        return { ...state };
+        return state;
       }
     case MEASUREMENT.SERVER.CHANNEL_ON:
       return { ...state, channelStatus: 'on' };

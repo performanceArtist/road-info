@@ -28,11 +28,9 @@ class TaskModal extends React.Component<TaskModalProps, {}> {
   constructor(props: TaskModalProps) {
     super(props);
 
-    const { taskData, index } = props;
+    const { task } = props;
 
-    this.state = taskData[index]
-      ? { ...taskData[index].formData }
-      : { ...defaults };
+    this.state = task ? { ...task.formData } : { ...defaults };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -44,22 +42,20 @@ class TaskModal extends React.Component<TaskModalProps, {}> {
 
   handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    const { saveSettings, closeModal, index } = this.props;
+    const { saveSettings, closeModal, task } = this.props;
 
-    saveSettings(this.state, index);
+    saveSettings(this.state, task ? task.id : null);
     closeModal();
   }
 
   render() {
-    const { closeModal, taskData, index } = this.props;
+    const { closeModal, task } = this.props;
     const { name } = this.state;
 
     return (
       <Modal open={true} onClose={closeModal}>
         <Modal.Header>
-          {taskData[index]
-            ? `Редактировать "${taskData[index].formData.name}"`
-            : 'Новое задание'}
+          {task ? `Редактировать "${task.formData.name}"` : 'Новое задание'}
         </Modal.Header>
         <Modal.Content>
           <Form props={{ onSubmit: this.handleSubmit }}>
@@ -115,11 +111,7 @@ class TaskModal extends React.Component<TaskModalProps, {}> {
   }
 }
 
-const mapStateToProps = ({ measurements }) => ({
-  ...measurements
-});
-
 export default connect(
-  mapStateToProps,
+  null,
   { saveSettings, closeModal }
 )(TaskModal);

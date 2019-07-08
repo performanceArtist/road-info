@@ -4,11 +4,16 @@ import { connect } from 'react-redux';
 import { Toggle, ToggleType } from '@components/Toggle/Toggle';
 import { Icon, IconImage } from '@components/Icon/Icon';
 import { openModal } from '@redux/modal/actions';
-import { removeTask, MEASUREMENT } from '@redux/measurements/actions';
+import {
+  removeTask,
+  postData,
+  setCurrentTask
+} from '@redux/measurements/actions';
 import { startChannel } from '@redux/measurements/listen';
 
 const TaskPanel = ({
   tasks = [],
+  currentTaskId,
   openModal,
   removeTask,
   postData,
@@ -19,20 +24,22 @@ const TaskPanel = ({
     startChannel();
   }, []);
 
-  const elements = tasks.map((formData, index) => {
+  const elements = tasks.map(task => {
+    const { id, formData } = task;
     const { name } = formData;
 
     return (
-      <div className="task" key={`task-${index}`}>
+      <div className="task" key={`task-${id}`}>
         <header className="task-panel__header">
           <div className="task-panel__name">{name}</div>
           <Toggle
             type={ToggleType.RADIO}
             name="start"
+            checked={currentTaskId === id}
             onChange={event => {
               if (event.target.checked) {
-                setCurrentTask(index);
-                postData(formData, index);
+                setCurrentTask(id);
+                postData(formData, id);
               }
             }}
           />
@@ -41,14 +48,14 @@ const TaskPanel = ({
               <Icon
                 size="small"
                 image={IconImage.EDIT}
-                onClick={() => openModal('Task', { counter: 1, index })}
+                onClick={() => openModal('Task', { counter: 1, task })}
               />
             </div>
             <div className="task-panel__icon">
               <Icon
                 size="small"
                 image={IconImage.DELETE}
-                onClick={() => removeTask(index)}
+                onClick={() => removeTask(id)}
               />
             </div>
             <div className="task-panel__icon">
@@ -63,19 +70,17 @@ const TaskPanel = ({
   return <div className="task-panel">{elements}</div>;
 };
 
+const mapStateToProps = ({ measurements }) => ({
+  currentTaskId: measurements.currentTaskId
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   {
     openModal,
     removeTask,
-    postData: (formData, index) => ({
-      type: MEASUREMENT.POST.REQUEST,
-      payload: { formData, index }
-    }),
-    setCurrentTask: index => ({
-      type: MEASUREMENT.TASK.SET_CURRENT,
-      payload: { index }
-    }),
+    postData,
+    setCurrentTask,
     startChannel
   }
 )(TaskPanel);

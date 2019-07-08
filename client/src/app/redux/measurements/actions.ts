@@ -30,11 +30,21 @@ export const MEASUREMENT = {
 
 export const saveSettings = (
   formData: TaskFormType,
-  index: number | null = null
+  id: string | null = null
 ) => {
-  return { type: MEASUREMENT.TASK.SAVE, payload: { formData, index } };
+  return { type: MEASUREMENT.TASK.SAVE, payload: { formData, taskId: id } };
 };
 
-export const removeTask = (index: number) => {
-  return { type: MEASUREMENT.TASK.REMOVE, payload: { index } };
+export const postData = (formData: TaskFormType, id: string | null = null) => ({
+  type: MEASUREMENT.POST.REQUEST,
+  payload: { formData, taskId: id }
+});
+
+export const setCurrentTask = (id: string | null = null) => ({
+  type: MEASUREMENT.TASK.SET_CURRENT,
+  payload: { taskId: id }
+});
+
+export const removeTask = (id: string | null = null) => {
+  return { type: MEASUREMENT.TASK.REMOVE, payload: { taskId: id } };
 };
