@@ -8,6 +8,7 @@ const actions = { openModal };
 
 const Warning = ({ openModal }) => (
   <Icon
+    title="Опасность"
     onClick={() =>
       openModal('Info', {
         counter: 1,

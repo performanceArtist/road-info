@@ -65,7 +65,7 @@ const Measurements: React.SFC = ({ taskData, currentTaskId, chartInfo }) => {
           <ChartSettings />
         </div>
         <div className="measurements__chart">
-          <DensityChart data={testData} info={chartInfo} />
+          <DensityChart data={chartData} info={chartInfo} />
         </div>
         <div className="measurements__results">
           <MeasurementResults

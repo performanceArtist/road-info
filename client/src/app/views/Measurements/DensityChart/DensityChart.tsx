@@ -12,7 +12,7 @@ import {
   Brush,
   ReferenceArea
 } from 'recharts';
-import Button from '@shared/Button/Button';
+import { Icon, IconImage } from '@components/Icon/Icon';
 
 export interface DensityChartData {
   distance: number;
@@ -135,14 +135,14 @@ class DensityChart extends React.Component<DensityChartProps> {
     const { info } = this.props;
     const { domains } = this.state;
 
-    return info.map(({ name, units = 'm', show }) => {
+    return info.map(({ name, units = 'm', breakpoint, mainColor, show }) => {
       return [
         <Line
           yAxisId={name}
           type="linear"
           name={units}
           dataKey={name}
-          stroke={`url(#${name})`}
+          stroke={breakpoint ? `url(#${name})` : mainColor}
           strokeWidth={2}
           dot={false}
           activeDot={false}
@@ -166,10 +166,12 @@ class DensityChart extends React.Component<DensityChartProps> {
     return info.map(
       ({
         name = '',
-        breakpoint = { start: 1, finish: 2 },
+        breakpoint = null,
         mainColor = 'green',
         warningColor = 'red'
       }) => {
+        if (!breakpoint) return null;
+
         const { min, max } = data.reduce(
           (result, dataPoint) => ({
             min:
@@ -196,9 +198,9 @@ class DensityChart extends React.Component<DensityChartProps> {
             y2="100%"
             key={uuid.generate()}
           >
-            <stop offset="0%" stopColor={mainColor} />
+            <stop offset="0%" stopColor={warningColor} />
             <stop offset={startPercentage} stopColor={mainColor} />
-            <stop offset={startPercentage} stopColor={warningColor} />
+            <stop offset={finishPercentage} stopColor={mainColor} />
             <stop offset="100%" stopColor={warningColor} />
           </linearGradient>
         );
@@ -242,7 +244,7 @@ class DensityChart extends React.Component<DensityChartProps> {
                 fontSize: '0.9rem'
               }}
             />
-            {/*<Brush dataKey="distance" height={15} stroke="ccc" />*/}
+            <Brush dataKey="distance" height={15} stroke="ccc" />
             {refAreaLeft && refAreaRight ? (
               <ReferenceArea
                 yAxisId="density"
@@ -253,7 +255,13 @@ class DensityChart extends React.Component<DensityChartProps> {
             ) : null}
           </LineChart>
         </ResponsiveContainer>
-        <Button onClick={this.zoomOut}>Zoom Out</Button>
+        <div className="chart-controls">
+          <Icon
+            size="small"
+            image={IconImage.ZOOM_OUT}
+            onClick={this.zoomOut}
+          />
+        </div>
       </>
     );
   }

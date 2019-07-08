@@ -20,13 +20,14 @@ const defaultInfo = [
     name: 'density',
     mainColor: 'black',
     units: 'Плотность, г/см3',
+    breakpoint: { start: 1, finish: 3 },
     show: true
   },
   { name: 'iri', mainColor: 'blue', units: 'IRI, м/км', show: false },
   { name: 'rutting', mainColor: 'teal', units: 'Колейность, мм', show: false },
   {
     name: 'thickness',
-    mainColor: 'wheat',
+    mainColor: 'green',
     units: 'Толщина слоя, мм',
     show: true
   }

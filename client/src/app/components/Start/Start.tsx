@@ -12,7 +12,7 @@ const Start = props => {
         <Button onClick={startChannel}>Открыть канал</Button>
       </div>
       <div classsName="start__button">
-        <Button onClick={stopChannel}>Закрыть</Button>
+        <Button onClick={stopChannel}>Закрыть канал</Button>
       </div>
     </div>
   );
