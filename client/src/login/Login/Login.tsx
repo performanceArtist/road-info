@@ -32,11 +32,12 @@ class Login extends React.Component<{}, LoginState> {
   async handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
 
-    const { username, password } = event.target.elements;
-    const data = { username: username.value, password: password.value };
+    const target = event.target as HTMLFormElement;
+    const { username, password } = target;
+    const formData = { username: username.value, password: password.value };
 
     try {
-      const response = await axios.post('/login', data);
+      const response = await axios.post('/login', formData);
       const { token, login, status } = response.data;
 
       if (!token || !login || status === 'error') {
@@ -105,9 +106,7 @@ class Login extends React.Component<{}, LoginState> {
             </Form.Content>
             <Form.Footer>
               <div className="login__submit-container">
-                <Button className="login__submit" type="submit">
-                  Ok
-                </Button>
+                <Button type="submit">Ok</Button>
               </div>
             </Form.Footer>
           </Form>

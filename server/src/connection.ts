@@ -1,5 +1,8 @@
 import config from './config';
 import { io } from './server';
+import { UserType } from './models/User';
+import { MeasurementType } from './models/Measurement';
+import { EventEmitter } from 'events';
 
 const EventEmitter = require('events');
 const util = require('util');
@@ -8,7 +11,6 @@ const knex = require('knex')({
   version: '7.2',
   connection: config.database
 });
-
 const { Client } = require('pg');
 const client = new Client(config.database);
 
@@ -19,11 +21,7 @@ function DbEventEmitter() {
 util.inherits(DbEventEmitter, EventEmitter);
 const dbEventEmitter = new DbEventEmitter();
 
-dbEventEmitter.on('new_user', user => {
-  console.log('New user: ' + user.login);
-});
-
-dbEventEmitter.on('new_measurement', async measurement => {
+dbEventEmitter.on('new_measurement', async (measurement: MeasurementType) => {
   const section = await knex('measurement_sections')
     .select('*')
     .where({ id: measurement.measurement_section_id })
@@ -43,13 +41,23 @@ dbEventEmitter.on('new_measurement', async measurement => {
 
 client.connect();
 
-// Listen for all pg_notify channel messages
-client.on('notification', async data => {
-  const payload = JSON.parse(data.payload);
-  dbEventEmitter.emit(data.channel, payload);
-});
+// listen for all pg_notify channel messages
+client.on(
+  'notification',
+  async (data: { payload: string; channel: string }) => {
+    const payload = JSON.parse(data.payload);
+    dbEventEmitter.emit(data.channel, payload);
+  }
+);
 
-client.query('LISTEN new_user');
 client.query('LISTEN new_measurement');
+
+// test
+/*
+client.query('LISTEN new_user');
+dbEventEmitter.on('new_user', (user: UserType) => {
+  console.log('New user: ' + user.login);
+});
+*/
 
 export default knex;

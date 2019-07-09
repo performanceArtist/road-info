@@ -13,7 +13,6 @@ router.use('/', async (req, res, next) => {
     if (!token || !login) throw new Error('No auth');
 
     const payload = jwt.verify(token, config.auth.key);
-
     const user = await knex('users')
       .where({ login: payload.login })
       .first();

@@ -1,5 +1,11 @@
 import knex from '../connection';
 
+export interface MeasurementType {
+  density: number;
+  depth: number;
+  measurement_section_id: number;
+}
+
 export async function generateMeasurements() {
   const distance = 100 * (Math.round(Math.random() * 30) + 10);
 

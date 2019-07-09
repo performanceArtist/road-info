@@ -3,10 +3,9 @@ import React from 'react';
 import './button.scss';
 
 interface ButtonProps {
-  type?: string;
-  handleClick?(): void;
+  type?: 'button' | 'submit';
+  onClick?(): Function;
   disabled?: boolean;
-  text?: string;
 }
 
 const Button: React.SFC<ButtonProps> = ({

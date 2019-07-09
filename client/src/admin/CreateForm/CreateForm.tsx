@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { post } from 'axios';
+import axios from 'axios';
 
 import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
@@ -13,8 +13,11 @@ interface UserType {
   group_id: number;
 }
 
-class CreateForm extends React.Component {
-  constructor(props) {
+class CreateForm extends React.Component<
+  {},
+  { apiStatus: { error: boolean; message: null | string } }
+> {
+  constructor(props: {}) {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,20 +27,21 @@ class CreateForm extends React.Component {
     };
   }
 
-  async handleSubmit(event) {
+  async handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
 
-    const inputs = event.target.elements;
+    const target = event.target as HTMLFormElement;
+    const { login, username, password } = target;
 
     const formData: UserType = {
-      login: inputs.login.value,
-      name: inputs.name.value,
-      password: inputs.password.value,
+      login: login.value,
+      name: username.value,
+      password: password.value,
       group_id: 1
     };
 
     try {
-      const res = await post('/admin/create', formData);
+      const res = await axios.post('/admin/create', formData);
       if (res.data.status === 'ok') {
         this.setState({
           apiStatus: { error: false, message: 'Пользователь создан успешно' }
@@ -78,7 +82,7 @@ class CreateForm extends React.Component {
               label="Имя"
               props={{
                 type: 'text',
-                name: 'name',
+                name: 'username',
                 required: true
               }}
             />
