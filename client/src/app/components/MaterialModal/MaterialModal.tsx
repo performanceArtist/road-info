@@ -15,6 +15,7 @@ interface Material {
 
 interface MaterialModalProps {
   material: Material;
+  coordinates: { x: number; y: number };
 }
 
 const MaterialModal: React.SFC<MaterialModalProps> = ({

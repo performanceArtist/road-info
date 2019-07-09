@@ -56,7 +56,7 @@ const initialDomains = {
 };
 
 class DensityChart extends React.Component<DensityChartProps> {
-  constructor(props) {
+  constructor(props: DensityChartProps) {
     super(props);
 
     this.state = {
@@ -79,9 +79,9 @@ class DensityChart extends React.Component<DensityChartProps> {
     );
     let [bottom, top] = [refData[0][ref], refData[0][ref]];
 
-    refData.forEach(d => {
-      if (d[ref] > top) top = d[ref];
-      if (d[ref] < bottom) bottom = d[ref];
+    refData.forEach(data => {
+      if (data[ref] > top) top = data[ref];
+      if (data[ref] < bottom) bottom = data[ref];
     });
 
     return { bottom: (bottom | 0) - offset, top: (top | 0) + offset };

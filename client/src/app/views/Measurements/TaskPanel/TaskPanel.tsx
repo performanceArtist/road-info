@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { Toggle, ToggleType } from '@components/Toggle/Toggle';
 import { Icon, IconImage } from '@components/Icon/Icon';
+import Button from '@shared/Button/Button';
 import { openModal } from '@redux/modal/actions';
 import {
   removeTask,
@@ -67,7 +68,16 @@ const TaskPanel = ({
     );
   });
 
-  return <div className="task-panel">{elements}</div>;
+  return (
+    <div className="task-panel">
+      {elements}
+      <div className="task-panel__create">
+        <Button onClick={() => openModal('Task', { counter: 1 })}>
+          Новое задание
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 const mapStateToProps = ({ measurements }) => ({

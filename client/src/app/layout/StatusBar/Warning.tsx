@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { openModal } from '@redux/modal/actions';
 import { Icon } from '@components/Icon/Icon';
 
-const actions = { openModal };
-
 const Warning = ({ openModal }) => (
   <Icon
     title="Опасность"
@@ -25,5 +23,5 @@ const Warning = ({ openModal }) => (
 
 export default connect(
   null,
-  actions
+  { openModal }
 )(Warning);

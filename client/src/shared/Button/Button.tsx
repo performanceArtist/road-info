@@ -4,7 +4,7 @@ import './button.scss';
 
 interface ButtonProps {
   type?: 'button' | 'submit';
-  onClick?(): Function;
+  onClick?(): (event: React.SyntheticEvent) => any;
   disabled?: boolean;
 }
 

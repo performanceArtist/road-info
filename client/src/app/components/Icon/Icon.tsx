@@ -9,9 +9,10 @@ export enum IconImage {
 }
 
 interface IconProps {
+  title?: string;
   image?: IconImage;
   size?: string;
-  onClick: Function;
+  onClick?: (event: React.SyntheticEvent) => any;
 }
 
 export const Icon: React.SFC<IconProps> = ({

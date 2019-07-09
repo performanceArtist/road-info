@@ -2,7 +2,7 @@ import React from 'react';
 
 interface ClockState {
   date: Date;
-  timer: number;
+  timer: NodeJS.Timeout | null;
 }
 
 class Clock extends React.Component<{}, ClockState> {
@@ -11,7 +11,7 @@ class Clock extends React.Component<{}, ClockState> {
 
     this.state = {
       date: new Date(),
-      timer: 0
+      timer: null
     };
 
     this.getDate = this.getDate.bind(this);

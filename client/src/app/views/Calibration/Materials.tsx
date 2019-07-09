@@ -5,9 +5,11 @@ import uuid from 'short-uuid';
 import Button from '@shared/Button/Button';
 import { openModal } from '@redux/modal/actions';
 
-const actions = { openModal };
+interface MaterialsProps {
+  materials: Array<{ name: string }>;
+}
 
-const Materials = ({ openModal, materials }) => {
+const Materials: React.SFC<MaterialsProps> = ({ openModal, materials }) => {
   const buttons = materials.map(material => (
     <div className="materials__button" key={uuid.generate()}>
       <Button
@@ -29,5 +31,5 @@ const Materials = ({ openModal, materials }) => {
 
 export default connect(
   null,
-  actions
+  { openModal }
 )(Materials);

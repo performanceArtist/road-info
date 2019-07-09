@@ -6,7 +6,15 @@ import Button from '@shared/Button/Button';
 
 import { Toggle } from '@components/Toggle/Toggle';
 
-const ControlForm = ({ devices }) => {
+interface Device {
+  name: string;
+}
+
+interface ControlFormProps {
+  devices: Array<Device>;
+}
+
+const ControlForm: React.SFC<ControlFormProps> = ({ devices }) => {
   const deviceControls = devices.map(({ name }) => (
     <div className="control-form__device" key={uuid.generate()}>
       <div className="control-form__device-name">{name}</div>

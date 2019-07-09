@@ -5,7 +5,6 @@ import ControlForm from '@components/ControlForm/ControlForm';
 
 import DensityChart from './DensityChart/DensityChart';
 import MeasurementResults from './MeasurementResults/MeasurementResults';
-import CallTask from './CallTask';
 import TaskPanel from './TaskPanel/TaskPanel';
 import ChartSettings from './ChartSettings/ChartSettings';
 
@@ -59,9 +58,6 @@ const Measurements: React.SFC = ({ taskData, currentTaskId, chartInfo }) => {
       <div className="measurements__info">
         <div className="measurements__form">
           <TaskPanel tasks={taskData} />
-          <div className="measurements__input">
-            <CallTask />
-          </div>
           <ChartSettings />
         </div>
         <div className="measurements__chart">

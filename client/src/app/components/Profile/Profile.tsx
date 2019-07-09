@@ -10,20 +10,16 @@ interface User {
   role: Role;
 }
 
-interface ProfileProps {
-  user?: User | null;
-}
-
 function deleteCookie(name: string) {
   document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
 function getCookie(cname: string) {
-  var name = cname + '=';
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
+  const name = cname + '=';
+  const decodedCookie = decodeURIComponent(document.cookie);
+  const ca = decodedCookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
     while (c.charAt(0) == ' ') {
       c = c.substring(1);
     }
@@ -34,7 +30,7 @@ function getCookie(cname: string) {
   return '';
 }
 
-const Profile: React.SFC<ProfileProps> = ({ user = null }) => {
+const Profile = () => {
   return (
     <div className="profile">
       <div className="profile__username">{getCookie('login')}</div>

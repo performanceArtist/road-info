@@ -3,14 +3,8 @@ import { connect } from 'react-redux';
 
 import { ModalMap, ModalPayload } from '@redux/modal/reducer';
 
-const mapStateToProps = state => ({ currentModals: state.modals });
-
-const ModalManager = ({
-  currentModals
-}: {
-  currentModals: Array<ModalPayload>;
-}) => {
-  const renderedModals = currentModals.map(
+const ModalManager = ({ modals }: { modals: Array<ModalPayload> }) => {
+  const renderedModals = modals.map(
     (modalDescription: ModalPayload, index: number) => {
       const { modalType, modalProps = {} } = modalDescription;
       const ModalComponent = ModalMap[modalType];
@@ -21,5 +15,9 @@ const ModalManager = ({
 
   return <>{renderedModals}</>;
 };
+
+const mapStateToProps = (state: { modals: Array<ModalPayload> }) => ({
+  modals: state.modals
+});
 
 export default connect(mapStateToProps)(ModalManager);

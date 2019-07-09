@@ -50,7 +50,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
     }
   }
 
-  handleKeyDown(event: React.SyntheticEvent) {
+  handleKeyDown(event: KeyboardEvent) {
     const { onClose } = this.props;
 
     event.stopImmediatePropagation();
