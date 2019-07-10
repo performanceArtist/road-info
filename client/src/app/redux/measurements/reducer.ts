@@ -15,23 +15,21 @@ const fakeData = [
   { distance: 500, thickness: 1.5, density: 0.9, iri: 4.2, rutting: 420 }
 ];
 
-const defaultInfo = [
-  {
-    name: 'density',
+const defaultInfo = {
+  density: {
     mainColor: 'black',
     units: 'Плотность, г/см3',
     breakpoint: { start: 1, finish: 3 },
     show: true
   },
-  { name: 'iri', mainColor: 'blue', units: 'IRI, м/км', show: false },
-  { name: 'rutting', mainColor: 'teal', units: 'Колейность, мм', show: false },
-  {
-    name: 'thickness',
+  iri: { mainColor: 'blue', units: 'IRI, м/км', show: false },
+  rutting: { mainColor: 'teal', units: 'Колейность, мм', show: false },
+  thickness: {
     mainColor: 'green',
     units: 'Толщина слоя, мм',
     show: true
   }
-];
+};
 
 interface TaskType {
   id: string;
@@ -52,7 +50,7 @@ const testState: TaskType = {
 const initialState: {
   taskData: Array<TaskType>;
   currentTaskId: string | null;
-  chartInfo: Array<DensityChartInfo>;
+  chartInfo: {};
   channelStatus: string;
   serverStatus: string;
 } = {
@@ -105,10 +103,13 @@ export default function reducer(state = initialState, { type, payload }) {
         return state;
       }
     case MEASUREMENT.CHART.CHANGE_VISIBILITY:
-      const newInfo = [...state.chartInfo];
-      const target = newInfo.find(({ name }) => name === payload.name);
-      target.show = payload.show;
-      return { ...state, charInfo: newInfo };
+      const newInfo = JSON.parse(JSON.stringify(state.chartInfo));
+      newInfo[payload.name].show = payload.show;
+      return { ...state, chartInfo: newInfo };
+    case MEASUREMENT.CHART.SET_BREAKPOINT:
+      const nInfo = JSON.parse(JSON.stringify(state.chartInfo));
+      nInfo[payload.name].breakpoint = payload.breakpoint;
+      return { ...state, chartInfo: nInfo };
     case MEASUREMENT.SERVER.CHANNEL_ON:
       return { ...state, channelStatus: 'on' };
     case MEASUREMENT.SERVER.CHANNEL_OFF:

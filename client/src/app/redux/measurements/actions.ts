@@ -8,7 +8,7 @@ export const MEASUREMENT = {
   },
 
   CHART: {
-    CHANGE_SETTINGS: 'CHART.CHANGE_SETTINGS',
+    SET_BREAKPOINT: 'CHART.SET_BREAKPOINT',
     CHANGE_VISIBILITY: 'CHART.CHANGE_VISIBILITY'
   },
 
@@ -48,4 +48,11 @@ export const setCurrentTask = (id: string | null = null) => ({
 
 export const removeTask = (id: string | null = null) => {
   return { type: MEASUREMENT.TASK.REMOVE, payload: { taskId: id } };
+};
+
+export const setBreakpoint = (name, breakpoint) => {
+  return {
+    type: MEASUREMENT.CHART.SET_BREAKPOINT,
+    payload: { name, breakpoint }
+  };
 };

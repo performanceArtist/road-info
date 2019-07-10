@@ -9,6 +9,7 @@ import rootReducer from './redux/reducer';
 import rootSaga from './redux/saga';
 
 import App from './app';
+import Graph from './views/Graph/Graph';
 
 const sagaMiddleware = createSagaMiddleware();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -20,7 +21,7 @@ sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Graph />
   </Provider>,
   document.querySelector('.wrapper')
 );

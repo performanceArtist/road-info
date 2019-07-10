@@ -5,7 +5,8 @@ export enum IconImage {
   EDIT = 'url("images/edit.png")',
   DELETE = 'url("images/trashbin.png")',
   ANGLE = 'url("images/angle-down.png")',
-  ZOOM_OUT = 'url("images/zoom-out.png")'
+  ZOOM_OUT = 'url("images/zoom-out.png")',
+  SETTINGS = 'url("images/settings.png")'
 }
 
 interface IconProps {

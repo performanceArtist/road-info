@@ -5,6 +5,7 @@ import InfoModal from '@components/InfoModal/InfoModal';
 import MaterialModal from '@components/MaterialModal/MaterialModal';
 import NormModal from '@components/NormModal/NormModal';
 import TaskModal from '@views/Measurements/TaskModal/TaskModal';
+import ChartModal from '@views/Graph/ChartModal/ChartModal';
 
 import { ConnectedComponentClass } from 'react-redux';
 
@@ -16,7 +17,8 @@ export const ModalMap: Record<
   Info: InfoModal,
   Material: MaterialModal,
   Task: TaskModal,
-  Norm: NormModal
+  Norm: NormModal,
+  Chart: ChartModal
 };
 
 export interface ModalPayload {

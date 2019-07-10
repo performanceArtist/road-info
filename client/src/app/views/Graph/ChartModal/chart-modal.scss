@@ -1,0 +1,16 @@
+.chart-modal {
+  &__breakpoint {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__input {
+    margin-right: 1.8rem;
+  }
+
+  &__breakpoint-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+}
