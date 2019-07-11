@@ -19,7 +19,6 @@ const defaultInfo = {
   density: {
     mainColor: 'black',
     units: 'Плотность, г/см3',
-    breakpoint: { start: 1, finish: 3 },
     show: true
   },
   iri: { mainColor: 'blue', units: 'IRI, м/км', show: false },

@@ -21,11 +21,18 @@ function DbEventEmitter() {
 util.inherits(DbEventEmitter, EventEmitter);
 const dbEventEmitter = new DbEventEmitter();
 
+let lastSection: MeasurementType | null = null;
+
 dbEventEmitter.on('new_measurement', async (measurement: MeasurementType) => {
   const section = await knex('measurement_sections')
     .select('*')
     .where({ id: measurement.measurement_section_id })
     .first();
+
+  if (lastSection && section.distance - lastSection.distance < 0.01) {
+    return;
+  }
+  lastSection = section;
 
   const data = {
     distance: section.distance,

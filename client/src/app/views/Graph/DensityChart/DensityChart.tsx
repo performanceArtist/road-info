@@ -73,6 +73,7 @@ class DensityChart extends React.Component<DensityChartProps> {
     this.zoomOut = this.zoomOut.bind(this);
     this.getLineCharts = this.getLineCharts.bind(this);
     this.getGradients = this.getGradients.bind(this);
+    this.getStartIndex = this.getStartIndex.bind(this);
   }
 
   getAxisYDomain(from, to, ref, offset) {
@@ -213,6 +214,14 @@ class DensityChart extends React.Component<DensityChartProps> {
     });
   }
 
+  getStartIndex() {
+    const { data } = this.props;
+    const index = data.length - 20;
+    const defaultIndex = data[0] ? data[0].distance : 0;
+
+    return index > 0 ? index : defaultIndex;
+  }
+
   render() {
     const { data, openModal } = this.props;
     const { refAreaLeft, refAreaRight, domains } = this.state;
@@ -243,6 +252,12 @@ class DensityChart extends React.Component<DensityChartProps> {
               allowDataOverflow
             />
             {this.getLineCharts()}
+            <Brush
+              dataKey="distance"
+              startIndex={this.getStartIndex()}
+              height={15}
+              stroke="ccc"
+            />
             <Tooltip />
             <Legend
               wrapperStyle={{
