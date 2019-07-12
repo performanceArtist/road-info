@@ -15,7 +15,8 @@ const defaultInfo = {
   density: {
     mainColor: 'black',
     units: 'Плотность, г/см3',
-    show: true
+    show: true,
+    breakpoint: { start: 0, finish: 3 }
   },
   iri: { mainColor: 'blue', units: 'IRI, м/км', show: false },
   rutting: { mainColor: 'teal', units: 'Колейность, мм', show: false },
@@ -104,14 +105,10 @@ export default function reducer(
       chartInfo.lines[payload.name].show = payload.show;
       return { ...state, chartInfo };
     }
-    case CHART.SET_BREAKPOINT: {
+    case CHART.SAVE_SETTINGS: {
       const chartInfo = JSON.parse(JSON.stringify(state.chartInfo));
-      chartInfo.lines[payload.name].breakpoint = payload.breakpoint;
-      return { ...state, chartInfo: chartInfo };
-    }
-    case CHART.SET_MAX_TICKS: {
-      const chartInfo = JSON.parse(JSON.stringify(state.chartInfo));
-      chartInfo.maxTicks = payload;
+      chartInfo.lines = payload.lines;
+      chartInfo.maxTicks = payload.maxTicks;
       return { ...state, chartInfo };
     }
     case SERVER.CHANNEL_ON:

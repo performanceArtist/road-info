@@ -12,9 +12,8 @@ export const TASK = {
 };
 
 export const CHART = {
-  SET_BREAKPOINT: 'CHART.SET_BREAKPOINT',
   CHANGE_VISIBILITY: 'CHART.CHANGE_VISIBILITY',
-  SET_MAX_TICKS: 'CHART.SET_MAX_TICKS'
+  SAVE_SETTINGS: 'CHART.SAVE_SETTINGS'
 };
 
 export const SERVER = {
@@ -45,22 +44,12 @@ export const postTask = (formData: TaskFormType, id: string | null = null) => ({
   payload: { formData, taskId: id }
 });
 
-export const setBreakpoint = (
-  name: string,
-  breakpoint: { start: number; finish: number }
-) => {
-  return {
-    type: CHART.SET_BREAKPOINT,
-    payload: { name, breakpoint }
-  };
-};
-
 export const changeVisibility = (line: string, show: boolean) => ({
   type: CHART.CHANGE_VISIBILITY,
   payload: { line, show }
 });
 
-export const setMaxTicks = (max: number) => ({
-  type: CHART.SET_MAX_TICKS,
-  payload: max
+export const saveChartSettings = settings => ({
+  type: CHART.SAVE_SETTINGS,
+  payload: settings
 });

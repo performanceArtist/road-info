@@ -226,13 +226,13 @@ class DensityChart extends React.Component<DensityChartProps> {
   }
 
   render() {
-    const { data, openModal } = this.props;
+    const { data, info, openModal } = this.props;
     const { refAreaLeft, refAreaRight, domains } = this.state;
     const { distance } = domains;
 
     return (
       <>
-        <ResponsiveContainer>
+        <ResponsiveContainer key={uuid.generate()}>
           <LineChart
             data={data}
             onMouseDown={event =>
