@@ -38,7 +38,7 @@ interface TaskType {
   chartData: Array<DensityChartData>;
 }
 
-const testState: TaskType = {
+const initialTask: TaskType = {
   id: uuid.generate(),
   fetching: false,
   error: null,
@@ -53,18 +53,21 @@ const initialState: {
   channelStatus: string;
   serverStatus: string;
 } = {
-  taskData: [testState],
+  taskData: [initialTask],
   currentTaskId: null,
-  chartInfo: { lines: defaultInfo, max: 20 },
+  chartInfo: { lines: defaultInfo, max: 10 },
   channelStatus: 'off',
   serverStatus: 'unknown'
 };
 
-export default function reducer(state = initialState, { type, payload }) {
+export default function reducer(
+  state = initialState,
+  { type, payload }: { type: string; payload: any }
+) {
   switch (type) {
     case MEASUREMENT.TASK.SAVE:
-      const { formData, taskId } = payload;
       const taskData = [...state.taskData];
+      const { formData, taskId } = payload;
       const task = taskData.find(({ id }) => id === taskId);
 
       if (task) {

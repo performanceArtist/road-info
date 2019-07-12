@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { postData, setCurrentTask } from '@redux/measurements/actions';
-import { startChannel } from '@redux/measurements/listen';
+import socket from '@redux/measurements/socket';
 
 const TaskPanel = ({ tasks = [], postData, setCurrentTask, startChannel }) => {
   useEffect(() => {
@@ -24,6 +24,6 @@ export default connect(
   {
     postData,
     setCurrentTask,
-    startChannel
+    startChannel: socket.startChannel
   }
 )(TaskPanel);

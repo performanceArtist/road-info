@@ -8,7 +8,7 @@ function postData(url: string, data = {}) {
   return axios.post(url, data, config);
 }
 
-function* createWorker(action) {
+function* createWorker(action: { type: string; payload: any }) {
   try {
     const postResult = yield call(
       postData,

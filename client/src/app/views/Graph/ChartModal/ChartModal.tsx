@@ -93,7 +93,7 @@ const ChartModal: React.SFC<ChartModalProps> = ({
             props={{
               name: 'max',
               type: 'number',
-              step: 0.1,
+              step: 1,
               value: max,
               onChange: event => {
                 setMaxVal(event.target.value);
