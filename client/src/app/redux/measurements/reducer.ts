@@ -1,11 +1,7 @@
 import uuid from 'short-uuid';
 
-import { MEASUREMENT } from './actions';
-
-import {
-  DensityChartInfo,
-  DensityChartData
-} from '@views/Measurements/DensityChart/DensityChart';
+import { TASK, CHART, SERVER } from './actions';
+import { TaskType, InfoType } from './types';
 
 const fakeData = [
   { distance: 100, thickness: 1, density: 1.5, iri: 2.1, rutting: 210 },
@@ -30,14 +26,6 @@ const defaultInfo = {
   }
 };
 
-interface TaskType {
-  id: string;
-  fetching: boolean;
-  error: Error | null;
-  formData: Object;
-  chartData: Array<DensityChartData>;
-}
-
 const initialTask: TaskType = {
   id: uuid.generate(),
   fetching: false,
@@ -49,13 +37,18 @@ const initialTask: TaskType = {
 const initialState: {
   taskData: Array<TaskType>;
   currentTaskId: string | null;
-  chartInfo: {};
-  channelStatus: string;
-  serverStatus: string;
+  chartInfo: {
+    lines: {
+      [key: string]: InfoType;
+    };
+    maxTicks: number;
+  };
+  channelStatus: 'on' | 'off';
+  serverStatus: 'unknown' | 'on' | 'off';
 } = {
   taskData: [initialTask],
   currentTaskId: null,
-  chartInfo: { lines: defaultInfo, max: 10 },
+  chartInfo: { lines: defaultInfo, maxTicks: 10 },
   channelStatus: 'off',
   serverStatus: 'unknown'
 };
@@ -65,7 +58,7 @@ export default function reducer(
   { type, payload }: { type: string; payload: any }
 ) {
   switch (type) {
-    case MEASUREMENT.TASK.SAVE:
+    case TASK.SAVE: {
       const taskData = [...state.taskData];
       const { formData, taskId } = payload;
       const task = taskData.find(({ id }) => id === taskId);
@@ -88,41 +81,46 @@ export default function reducer(
           })
         };
       }
-    case MEASUREMENT.TASK.REMOVE:
+    }
+    case TASK.REMOVE:
       return {
         ...state,
         taskData: state.taskData.filter(({ id }) => id !== payload.taskId)
       };
-    case MEASUREMENT.TASK.SET_CURRENT:
+    case TASK.SET_CURRENT:
       return { ...state, currentTaskId: payload.taskId };
-    case MEASUREMENT.SERVER.ADD_MEASUREMENT:
-      const newData = [...state.taskData];
-      const current = newData.find(({ id }) => id === state.currentTaskId);
+    case SERVER.ADD_MEASUREMENT: {
+      const taskData = [...state.taskData];
+      const current = taskData.find(({ id }) => id === state.currentTaskId);
       if (current) {
         current.chartData = current.chartData.concat(payload);
-        return { ...state, taskData: newData };
+        return { ...state, taskData };
       } else {
         return state;
       }
-    case MEASUREMENT.CHART.CHANGE_VISIBILITY:
-      const newInfo = JSON.parse(JSON.stringify(state.chartInfo));
-      newInfo.lines[payload.name].show = payload.show;
-      return { ...state, chartInfo: newInfo };
-    case MEASUREMENT.CHART.SET_BREAKPOINT:
-      const nInfo = JSON.parse(JSON.stringify(state.chartInfo));
-      nInfo.lines[payload.name].breakpoint = payload.breakpoint;
-      return { ...state, chartInfo: nInfo };
-    case MEASUREMENT.CHART.SET_MAX:
-      const netInfo = JSON.parse(JSON.stringify(state.chartInfo));
-      netInfo.max = parseInt(payload);
-      return { ...state, chartInfo: netInfo };
-    case MEASUREMENT.SERVER.CHANNEL_ON:
+    }
+    case CHART.CHANGE_VISIBILITY: {
+      const chartInfo = JSON.parse(JSON.stringify(state.chartInfo));
+      chartInfo.lines[payload.name].show = payload.show;
+      return { ...state, chartInfo };
+    }
+    case CHART.SET_BREAKPOINT: {
+      const chartInfo = JSON.parse(JSON.stringify(state.chartInfo));
+      chartInfo.lines[payload.name].breakpoint = payload.breakpoint;
+      return { ...state, chartInfo: chartInfo };
+    }
+    case CHART.SET_MAX_TICKS: {
+      const chartInfo = JSON.parse(JSON.stringify(state.chartInfo));
+      chartInfo.maxTicks = payload;
+      return { ...state, chartInfo };
+    }
+    case SERVER.CHANNEL_ON:
       return { ...state, channelStatus: 'on' };
-    case MEASUREMENT.SERVER.CHANNEL_OFF:
+    case SERVER.CHANNEL_OFF:
       return { ...state, channelStatus: 'off', serverStatus: 'unknown' };
-    case MEASUREMENT.SERVER.SERVER_OFF:
+    case SERVER.SERVER_OFF:
       return { ...state, serverStatus: 'off' };
-    case MEASUREMENT.SERVER.SERVER_ON:
+    case SERVER.SERVER_ON:
       return { ...state, serverStatus: 'on' };
     default:
       return state;

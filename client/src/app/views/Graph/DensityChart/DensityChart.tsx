@@ -76,10 +76,6 @@ class DensityChart extends React.Component<DensityChartProps> {
     this.getStartIndex = this.getStartIndex.bind(this);
   }
 
-  componentWillReceiveProps() {
-    console.log(this.props.info.max);
-  }
-
   getAxisYDomain(from, to, ref, offset) {
     const { data } = this.props;
     const refData = data.filter(
@@ -224,7 +220,7 @@ class DensityChart extends React.Component<DensityChartProps> {
       case 0:
         return 0;
       default:
-        const index = data.length - info.max;
+        const index = data.length - info.maxTicks;
         return index > 0 ? index : 0;
     }
   }

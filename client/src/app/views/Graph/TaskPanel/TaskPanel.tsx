@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { postData, setCurrentTask } from '@redux/measurements/actions';
+import { postTask, setCurrentTask } from '@redux/measurements/actions';
 import socket from '@redux/measurements/socket';
 
-const TaskPanel = ({ tasks = [], postData, setCurrentTask, startChannel }) => {
+const TaskPanel = ({ tasks = [], postTask, setCurrentTask, startChannel }) => {
   useEffect(() => {
     const { id, formData } = tasks[0];
     startChannel();
     setCurrentTask(id);
-    postData(formData, id);
+    postTask(formData, id);
   }, []);
 
   return <div className="task-panel" />;
@@ -22,7 +22,7 @@ const mapStateToProps = ({ measurements }) => ({
 export default connect(
   mapStateToProps,
   {
-    postData,
+    postTask,
     setCurrentTask,
     startChannel: socket.startChannel
   }

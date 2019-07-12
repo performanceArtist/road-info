@@ -10,8 +10,7 @@ import {
   delay
 } from 'redux-saga/effects';
 
-import { MEASUREMENT } from './actions';
-const { SERVER } = MEASUREMENT;
+import { SERVER } from './actions';
 
 class Socket {
   url: string;

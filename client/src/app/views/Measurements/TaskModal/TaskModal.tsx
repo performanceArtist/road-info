@@ -9,7 +9,7 @@ import Input from '@shared/Input/Input';
 import Button from '@shared/Button/Button';
 
 import { closeModal } from '@redux/modal/actions';
-import { saveSettings } from '@redux/measurements/actions';
+import { saveTask } from '@redux/measurements/actions';
 
 interface TaskModalProps {
   counter: number;
@@ -42,9 +42,9 @@ class TaskModal extends React.Component<TaskModalProps, {}> {
 
   handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    const { saveSettings, closeModal, task } = this.props;
+    const { saveTask, closeModal, task } = this.props;
 
-    saveSettings(this.state, task ? task.id : null);
+    saveTask(this.state, task ? task.id : null);
     closeModal();
   }
 
@@ -113,5 +113,5 @@ class TaskModal extends React.Component<TaskModalProps, {}> {
 
 export default connect(
   null,
-  { saveSettings, closeModal }
+  { saveTask, closeModal }
 )(TaskModal);

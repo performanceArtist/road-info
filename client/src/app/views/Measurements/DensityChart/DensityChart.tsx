@@ -14,27 +14,6 @@ import {
 } from 'recharts';
 import { Icon, IconImage } from '@components/Icon/Icon';
 
-export interface DensityChartData {
-  distance: number;
-  thickness: number;
-  density: number;
-  iri: number;
-  rutting: number;
-}
-
-export interface DensityChartInfo {
-  name: string;
-  units?: string;
-  breakpoint?: { start: number; finish: number };
-  mainColor?: string;
-  warningColor?: string;
-}
-
-interface DensityChartProps {
-  data?: Array<DensityChartData>;
-  info?: Array<DensityChartInfo>;
-}
-
 const initialDomains = {
   distance: { left: 'dataMin', right: 'dataMax' },
   density: {
@@ -54,6 +33,11 @@ const initialDomains = {
     bottom: 'dataMin-0.5'
   }
 };
+
+interface DensityChartProps {
+  data?: Array<DensityChartData>;
+  info?: Array<DensityChartInfo>;
+}
 
 class DensityChart extends React.Component<DensityChartProps> {
   constructor(props: DensityChartProps) {

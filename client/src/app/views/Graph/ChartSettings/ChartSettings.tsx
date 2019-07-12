@@ -5,7 +5,7 @@ import Start from '@components/Start/Start';
 import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
 
-import { MEASUREMENT } from '@redux/measurements/actions';
+import { changeVisibility } from '@redux/measurements/actions';
 
 const ChartSettings: React.SFC = ({ changeVisibility, chartInfo }) => {
   const checkboxes = chartInfo.map(({ name, units, show }) => {
@@ -37,15 +37,7 @@ const mapStateToProps = ({ measurements }) => ({
   ...measurements
 });
 
-const mapDispatchToProps = dispatch => ({
-  changeVisibility: (name: string, show: boolean) =>
-    dispatch({
-      type: MEASUREMENT.CHART.CHANGE_VISIBILITY,
-      payload: { name, show }
-    })
-});
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { changeVisibility }
 )(ChartSettings);

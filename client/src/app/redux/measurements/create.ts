@@ -1,7 +1,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import axios from 'axios';
 
-import { MEASUREMENT } from './actions';
+import { TASK } from './actions';
 
 function postData(url: string, data = {}) {
   const config = {};
@@ -24,14 +24,14 @@ function* createWorker(action: { type: string; payload: any }) {
     }
 
     yield put({
-      type: MEASUREMENT.POST.SUCCESS
+      type: TASK.POST.SUCCESS
     });
   } catch (error) {
     console.log(error);
-    yield put({ type: MEASUREMENT.POST.FAILURE, error: error });
+    yield put({ type: TASK.POST.FAILURE, error: error });
   }
 }
 
 export default function* createWatcher() {
-  yield takeLatest(MEASUREMENT.POST.REQUEST, createWorker);
+  yield takeLatest(TASK.POST.REQUEST, createWorker);
 }

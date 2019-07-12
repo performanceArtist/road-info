@@ -7,7 +7,7 @@ import Button from '@shared/Button/Button';
 import { openModal } from '@redux/modal/actions';
 import {
   removeTask,
-  postData,
+  postTask,
   setCurrentTask
 } from '@redux/measurements/actions';
 import { startChannel } from '@redux/measurements/listen';
@@ -17,7 +17,7 @@ const TaskPanel = ({
   currentTaskId,
   openModal,
   removeTask,
-  postData,
+  postTask,
   setCurrentTask,
   startChannel
 }) => {
@@ -40,7 +40,7 @@ const TaskPanel = ({
             onChange={event => {
               if (event.target.checked) {
                 setCurrentTask(id);
-                postData(formData, id);
+                postTask(formData, id);
               }
             }}
           />
@@ -89,7 +89,7 @@ export default connect(
   {
     openModal,
     removeTask,
-    postData,
+    postTask,
     setCurrentTask,
     startChannel
   }

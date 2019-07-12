@@ -7,14 +7,14 @@ import Button from '@shared/Button/Button';
 import Modal from '@components/Modal/Modal';
 import Dropdown from '@components/Dropdown/Dropdown';
 import { closeModal } from '@redux/modal/actions';
-import { setBreakpoint, setMax } from '@redux/measurements/actions';
+import { setBreakpoint, setMaxTicks } from '@redux/measurements/actions';
 
 interface ChartModalProps {}
 
 const ChartModal: React.SFC<ChartModalProps> = ({
   chartInfo,
   setBreakpoint,
-  setMax,
+  setMaxTicks,
   closeModal
 }) => {
   const [setting, setSetting] = useState({
@@ -22,11 +22,11 @@ const ChartModal: React.SFC<ChartModalProps> = ({
     breakpoint: chartInfo.lines.density.breakpoint
   });
 
-  const [max, setMaxVal] = useState(chartInfo.max);
+  const [max, setMaxVal] = useState(chartInfo.maxTicks);
 
   const handleClick = () => {
     setBreakpoint(setting.value, setting.breakpoint);
-    setMax(max);
+    setMaxTicks(max);
     closeModal();
   };
 
@@ -95,8 +95,8 @@ const ChartModal: React.SFC<ChartModalProps> = ({
               type: 'number',
               step: 1,
               value: max,
-              onChange: event => {
-                setMaxVal(event.target.value);
+              onChange: (event: React.SyntheticEvent) => {
+                setMaxVal(parseInt(event.target.value));
               }
             }}
           />
@@ -115,5 +115,5 @@ const mapStateToProps = ({ measurements }) => ({
 
 export default connect(
   mapStateToProps,
-  { setBreakpoint, setMax, closeModal }
+  { setBreakpoint, setMaxTicks, closeModal }
 )(ChartModal);
