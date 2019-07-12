@@ -7,28 +7,32 @@ import Button from '@shared/Button/Button';
 import Modal from '@components/Modal/Modal';
 import Dropdown from '@components/Dropdown/Dropdown';
 import { closeModal } from '@redux/modal/actions';
-import { setBreakpoint } from '@redux/measurements/actions';
+import { setBreakpoint, setMax } from '@redux/measurements/actions';
 
 interface ChartModalProps {}
 
 const ChartModal: React.SFC<ChartModalProps> = ({
   chartInfo,
   setBreakpoint,
+  setMax,
   closeModal
 }) => {
   const [setting, setSetting] = useState({
     value: 'density',
-    breakpoint: chartInfo.density.breakpoint
+    breakpoint: chartInfo.lines.density.breakpoint
   });
+
+  const [max, setMaxVal] = useState(chartInfo.max);
 
   const handleClick = () => {
     setBreakpoint(setting.value, setting.breakpoint);
+    setMax(max);
     closeModal();
   };
 
   const handleDropdownChange = event => {
     const key = event.target.value;
-    setSetting({ value: key, breakpoint: chartInfo[key].breakpoint });
+    setSetting({ value: key, breakpoint: chartInfo.lines[key].breakpoint });
   };
 
   const handleInputChange = event => {
@@ -83,6 +87,19 @@ const ChartModal: React.SFC<ChartModalProps> = ({
               />
             </div>
           </div>
+          <div className="chart-modal__breakpoint-title">Показания</div>
+          <Input
+            label="Количество измерений"
+            props={{
+              name: 'max',
+              type: 'number',
+              step: 0.1,
+              value: max,
+              onChange: event => {
+                setMaxVal(event.target.value);
+              }
+            }}
+          />
         </Modal.Content>
         <Modal.Footer>
           <Button onClick={handleClick}>Сохранить</Button>
@@ -98,5 +115,5 @@ const mapStateToProps = ({ measurements }) => ({
 
 export default connect(
   mapStateToProps,
-  { setBreakpoint, closeModal }
+  { setBreakpoint, setMax, closeModal }
 )(ChartModal);

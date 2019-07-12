@@ -29,7 +29,8 @@ dbEventEmitter.on('new_measurement', async (measurement: MeasurementType) => {
     .where({ id: measurement.measurement_section_id })
     .first();
 
-  if (lastSection && section.distance - lastSection.distance < 0.01) {
+  if (lastSection && section.distance - lastSection.distance < 0.001) {
+    console.log('No distance', section.distance - lastSection.distance);
     return;
   }
   lastSection = section;

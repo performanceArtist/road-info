@@ -139,9 +139,9 @@ class DensityChart extends React.Component<DensityChartProps> {
     const { info } = this.props;
     const { domains } = this.state;
 
-    return Object.keys(info).map(key => {
+    return Object.keys(info.lines).map(key => {
       if (key !== 'density') return null;
-      const { units = 'm', breakpoint, mainColor, show } = info[key];
+      const { units = 'm', breakpoint, mainColor, show } = info.lines[key];
 
       return [
         <Line
@@ -170,12 +170,12 @@ class DensityChart extends React.Component<DensityChartProps> {
   getGradients() {
     const { data, info } = this.props;
 
-    return Object.keys(info).map(key => {
+    return Object.keys(info.lines).map(key => {
       const {
         breakpoint = null,
         mainColor = 'green',
         warningColor = 'red'
-      } = info[key];
+      } = info.lines[key];
 
       if (!breakpoint) return null;
 
@@ -215,8 +215,8 @@ class DensityChart extends React.Component<DensityChartProps> {
   }
 
   getStartIndex() {
-    const { data } = this.props;
-    const index = data.length - 20;
+    const { data, info } = this.props;
+    const index = data.length - info.max;
     const defaultIndex = data[0] ? data[0].distance : 0;
 
     return index > 0 ? index : defaultIndex;

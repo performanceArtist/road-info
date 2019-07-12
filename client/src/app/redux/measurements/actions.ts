@@ -9,7 +9,8 @@ export const MEASUREMENT = {
 
   CHART: {
     SET_BREAKPOINT: 'CHART.SET_BREAKPOINT',
-    CHANGE_VISIBILITY: 'CHART.CHANGE_VISIBILITY'
+    CHANGE_VISIBILITY: 'CHART.CHANGE_VISIBILITY',
+    SET_MAX: 'CHART.SET_MAX'
   },
 
   SERVER: {
@@ -56,3 +57,8 @@ export const setBreakpoint = (name, breakpoint) => {
     payload: { name, breakpoint }
   };
 };
+
+export const setMax = (max: number) => ({
+  type: MEASUREMENT.CHART.SET_MAX,
+  payload: max
+});

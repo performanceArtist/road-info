@@ -34,7 +34,7 @@ import { generateMeasurements } from '../models/Measurement';
 
 router.post('/api/task', (req, res) => {
   console.log(req.body);
-  generateMeasurements();
+  //generateMeasurements();
   res.json({ status: 'ok', message: 'yeah' });
 });
 

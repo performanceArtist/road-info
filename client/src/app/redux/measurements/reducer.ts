@@ -55,7 +55,7 @@ const initialState: {
 } = {
   taskData: [testState],
   currentTaskId: null,
-  chartInfo: defaultInfo,
+  chartInfo: { lines: defaultInfo, max: 20 },
   channelStatus: 'off',
   serverStatus: 'unknown'
 };
@@ -103,12 +103,16 @@ export default function reducer(state = initialState, { type, payload }) {
       }
     case MEASUREMENT.CHART.CHANGE_VISIBILITY:
       const newInfo = JSON.parse(JSON.stringify(state.chartInfo));
-      newInfo[payload.name].show = payload.show;
+      newInfo.lines[payload.name].show = payload.show;
       return { ...state, chartInfo: newInfo };
     case MEASUREMENT.CHART.SET_BREAKPOINT:
       const nInfo = JSON.parse(JSON.stringify(state.chartInfo));
-      nInfo[payload.name].breakpoint = payload.breakpoint;
+      nInfo.lines[payload.name].breakpoint = payload.breakpoint;
       return { ...state, chartInfo: nInfo };
+    case MEASUREMENT.CHART.SET_MAX:
+      const netInfo = JSON.parse(JSON.stringify(state.chartInfo));
+      netInfo.max = parseInt(payload);
+      return { ...state, chartInfo: netInfo };
     case MEASUREMENT.SERVER.CHANNEL_ON:
       return { ...state, channelStatus: 'on' };
     case MEASUREMENT.SERVER.CHANNEL_OFF:
