@@ -33,6 +33,6 @@ app.get('*', (req, res) => {
 const server = app.listen(5000, () => console.log('Listening on port 5000!'));
 export const io = socketIO(server);
 
-io.on('connection', socket => {
+io.on('connection', (socket: any) => {
   console.log('Connection opened');
 });

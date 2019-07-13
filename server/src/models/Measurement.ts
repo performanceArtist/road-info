@@ -1,6 +1,7 @@
 import knex from '../connection';
 
 export interface MeasurementType {
+  distance: number;
   density: number;
   depth: number;
   measurement_section_id: number;
