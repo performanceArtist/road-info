@@ -5,7 +5,7 @@ enum ToggleType {
   CHECKBOX = 'checkbox'
 }
 
-interface Props {
+type Props = {
   onChange?: (event?: React.SyntheticEvent) => void;
   type?: ToggleType;
   checked?: boolean;
@@ -13,7 +13,7 @@ interface Props {
   name?: string;
 }
 
-const Toggle: React.SFC<Props> = ({
+const Toggle: React.FC<Props> = ({
   onChange = () => {},
   type = ToggleType.CHECKBOX,
   checked = false,

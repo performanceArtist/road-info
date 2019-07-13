@@ -1,9 +1,11 @@
+import { action } from 'typesafe-actions';
+
 export const MODAL = {
   OPEN: 'MODAL.OPEN',
   CLOSE: 'MODAL.CLOSE'
 };
 
-type OpenModal = {
+export type OpenModal = {
   type: string;
   payload: { modalType: string; modalProps: any };
 };

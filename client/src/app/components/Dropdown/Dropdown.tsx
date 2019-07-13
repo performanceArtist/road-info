@@ -1,7 +1,7 @@
 import React from 'react';
 import uuid from 'short-uuid';
 
-interface Props {
+type Props = {
   name?: string;
   value?: string;
   label?: string;
@@ -9,7 +9,7 @@ interface Props {
   onChange?: (event?: React.SyntheticEvent) => void;
 }
 
-const Dropdown: React.SFC<Props> = ({
+const Dropdown: React.FC<Props> = ({
   name = 'select',
   value = '',
   label = '',

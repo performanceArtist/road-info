@@ -15,13 +15,16 @@ import {
 } from 'recharts';
 
 import { Icon, IconImage } from '@components/Icon/Icon';
-import { openModal } from '@redux/modal/actions';
+import { openModal, OpenModal } from '@redux/modal/actions';
 import { ChartData, ChartInfo } from '@redux/measurements/types';
 
-interface Props {
+type OwnProps = {
   data?: Array<ChartData>;
   info?: ChartInfo;
-}
+  openModal: OpenModal;
+};
+
+type Props = OwnProps & typeof mapDispatch;
 
 interface State {
   refAreaLeft: string;
@@ -303,7 +306,9 @@ class DensityChart extends React.Component<Props, State> {
   }
 }
 
+const mapDispatch = { openModal };
+
 export default connect(
   null,
-  { openModal }
+  mapDispatch
 )(DensityChart);

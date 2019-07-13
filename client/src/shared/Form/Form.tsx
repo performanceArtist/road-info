@@ -2,7 +2,7 @@ import React from 'react';
 
 import './form.scss';
 
-interface Props {
+type Props = {
   status?: string | null;
   error?: boolean;
   props?: Object;
@@ -13,15 +13,15 @@ class Form extends React.Component<Props, {}> {
     super(props);
   }
 
-  static Header: React.SFC = ({ children }) => (
+  static Header: React.FC = ({ children }) => (
     <div className="form__header">{children}</div>
   );
 
-  static Content: React.SFC = ({ children }) => (
+  static Content: React.FC = ({ children }) => (
     <div className="form__content">{children}</div>
   );
 
-  static Footer: React.SFC = ({ children }) => (
+  static Footer: React.FC = ({ children }) => (
     <div className="form__footer">{children}</div>
   );
 

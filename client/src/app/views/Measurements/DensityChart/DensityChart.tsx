@@ -34,7 +34,7 @@ const initialDomains = {
   }
 };
 
-interface Props {
+type Props = {
   data?: Array<DensityChartData>;
   info?: Array<DensityChartInfo>;
 }

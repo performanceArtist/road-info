@@ -35,7 +35,7 @@ const Profile = () => {
         onClick={() => {
           deleteCookie('login');
           deleteCookie('token');
-          window.location = '/';
+          window.location.href = '/';
         }}
       />
     </div>

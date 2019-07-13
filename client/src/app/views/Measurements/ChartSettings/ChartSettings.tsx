@@ -9,7 +9,7 @@ import Button from '@shared/Button/Button';
 
 import { MEASUREMENT } from '@redux/measurements/actions';
 
-const ChartSettings: React.SFC = ({ changeVisibility, chartInfo }) => {
+const ChartSettings: React.FC = ({ changeVisibility, chartInfo }) => {
   const checkboxes = chartInfo.map(({ name, units, show }) => (
     <Input
       label={units}
@@ -42,11 +42,11 @@ const ChartSettings: React.SFC = ({ changeVisibility, chartInfo }) => {
   );
 };
 
-const mapStateToProps = ({ measurements }) => ({
+const mapState = ({ measurements }) => ({
   ...measurements
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatch = dispatch => ({
   changeSettings: settings =>
     dispatch({ type: MEASUREMENT.CHART.CHANGE_SETTINGS, payload: settings }),
   changeVisibility: (name: string, show: boolean) =>
@@ -57,6 +57,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapState,
+  mapDispatch
 )(ChartSettings);

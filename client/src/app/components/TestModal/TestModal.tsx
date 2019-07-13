@@ -5,9 +5,10 @@ import Modal from '@components/Modal/Modal';
 import { openModal, closeModal } from '@redux/modal/actions';
 import Button from '@shared/Button/Button';
 
-interface Props {
+type OwnProps = {
   counter: number;
-}
+};
+type Props = OwnProps & typeof mapDispatch;
 
 class TestModal extends React.Component<Props, {}> {
   constructor(props: Props) {
@@ -36,7 +37,9 @@ class TestModal extends React.Component<Props, {}> {
   }
 }
 
+const mapDispatch = { openModal, closeModal };
+
 export default connect(
   null,
-  { openModal, closeModal }
+  mapDispatch
 )(TestModal);

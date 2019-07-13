@@ -2,13 +2,13 @@ import React from 'react';
 
 import './button.scss';
 
-interface Props {
+type Props = {
   type?: 'button' | 'submit';
-  onClick?: (event?: React.SyntheticEvent) => void;
+  onClick?: (event?: React.MouseEvent) => void;
   disabled?: boolean;
 }
 
-const Button: React.SFC<Props> = ({
+const Button: React.FC<Props> = ({
   onClick = () => {},
   disabled = false,
   type = 'button',

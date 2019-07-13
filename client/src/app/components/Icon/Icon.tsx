@@ -9,14 +9,14 @@ export enum IconImage {
   SETTINGS = 'url("images/settings.png")'
 }
 
-interface Props {
+type Props = {
   title?: string;
   image?: IconImage;
   size?: string;
   onClick?: (event: React.SyntheticEvent) => any;
 }
 
-export const Icon: React.SFC<Props> = ({
+export const Icon: React.FC<Props> = ({
   image = IconImage.WARNING,
   size = 'medium',
   title = '',

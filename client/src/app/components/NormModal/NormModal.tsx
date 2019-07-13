@@ -9,7 +9,9 @@ import Button from '@shared/Button/Button';
 
 import { closeModal } from '@redux/modal/actions';
 
-const NormModal: React.SFC<{}> = ({ closeModal }) => {
+type Props = typeof mapDispatch;
+
+const NormModal: React.FC<Props> = ({ closeModal }) => {
   return (
     <Modal open={true} onClose={closeModal}>
       <Modal.Header>Нормативные значения</Modal.Header>
@@ -25,7 +27,9 @@ const NormModal: React.SFC<{}> = ({ closeModal }) => {
   );
 };
 
+const mapDispatch = { closeModal };
+
 export default connect(
   null,
-  { closeModal }
+  mapDispatch
 )(NormModal);

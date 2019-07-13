@@ -17,11 +17,11 @@ interface Link {
   icon?: Icon;
 }
 
-interface Props {
+type Props = {
   links: Array<Link>;
 }
 
-const Navigation: React.SFC<Props> = ({ links }) => {
+const Navigation: React.FC<Props> = ({ links }) => {
   const elements = links.map(({ url, icon = Icon.NONE, title = '' }: Link) => (
     <NavLink
       exact

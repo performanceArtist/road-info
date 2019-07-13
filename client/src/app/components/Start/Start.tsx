@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import Button from '@shared/Button/Button';
 import socket from '@redux/measurements/socket';
 
-const Start = ({ startChannel, stopChannel }) => {
+type Props = typeof mapDispatch;
+
+const Start: React.FC<Props> = ({ startChannel, stopChannel }) => {
   return (
     <div className="start">
       <div className="start__button">
@@ -17,7 +19,11 @@ const Start = ({ startChannel, stopChannel }) => {
   );
 };
 
+const mapDispatch = {
+  startChannel: socket.startChannel,
+  stopChannel: socket.stopChannel
+};
 export default connect(
   null,
-  { startChannel: socket.startChannel, stopChannel: socket.stopChannel }
+  mapDispatch
 )(Start);

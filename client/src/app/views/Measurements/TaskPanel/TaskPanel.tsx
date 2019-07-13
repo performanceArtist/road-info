@@ -80,12 +80,12 @@ const TaskPanel = ({
   );
 };
 
-const mapStateToProps = ({ measurements }) => ({
+const mapState = ({ measurements }) => ({
   currentTaskId: measurements.currentTaskId
 });
 
 export default connect(
-  mapStateToProps,
+  mapState,
   {
     openModal,
     removeTask,

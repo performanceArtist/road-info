@@ -14,7 +14,7 @@ interface Props {
   devices: Array<Device>;
 }
 
-const ControlForm: React.SFC<Props> = ({ devices }) => {
+const ControlForm: React.FC<Props> = ({ devices }) => {
   const deviceControls = devices.map(({ name }) => (
     <div className="control-form__device" key={uuid.generate()}>
       <div className="control-form__device-name">{name}</div>

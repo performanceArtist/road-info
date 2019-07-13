@@ -22,7 +22,7 @@ const testData = [
   { distance: 1000, density: 4.06617, thickness: 1.24808, rutting: 0, iri: 0 }
 ];
 
-const Measurements: React.SFC = ({ taskData, currentTaskId, chartInfo }) => {
+const Measurements: React.FC = ({ taskData, currentTaskId, chartInfo }) => {
   const current = taskData.find(({ id }) => id === currentTaskId);
   const { chartData = [] } = current ? current : {};
 
@@ -98,8 +98,8 @@ const Measurements: React.SFC = ({ taskData, currentTaskId, chartInfo }) => {
   );
 };
 
-const mapStateToProps = ({ measurements }) => ({
+const mapState = ({ measurements }) => ({
   ...measurements
 });
 
-export default connect(mapStateToProps)(Measurements);
+export default connect(mapState)(Measurements);

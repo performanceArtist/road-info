@@ -16,8 +16,8 @@ const ModalManager = ({ modals }: { modals: Array<ModalPayload> }) => {
   return <>{renderedModals}</>;
 };
 
-const mapStateToProps = (state: { modals: Array<ModalPayload> }) => ({
+const mapState = (state: { modals: Array<ModalPayload> }) => ({
   modals: state.modals
 });
 
-export default connect(mapStateToProps)(ModalManager);
+export default connect(mapState)(ModalManager);

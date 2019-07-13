@@ -131,11 +131,11 @@ class ChartModal extends React.Component<{}, State> {
   }
 }
 
-const mapStateToProps = ({ measurements }) => ({
+const mapState = ({ measurements }) => ({
   chartInfo: measurements.chartInfo
 });
 
 export default connect(
-  mapStateToProps,
+  mapState,
   { saveChartSettings, closeModal }
 )(ChartModal);

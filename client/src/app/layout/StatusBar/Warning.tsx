@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { openModal } from '@redux/modal/actions';
 import { Icon } from '@components/Icon/Icon';
 
-const Warning = ({ openModal }) => (
+type Props = typeof mapDispatch;
+
+const Warning: React.FC<Props> = ({ openModal }) => (
   <Icon
     title="Опасность"
     onClick={() =>
@@ -21,7 +23,9 @@ const Warning = ({ openModal }) => (
   />
 );
 
+const mapDispatch = { openModal };
+
 export default connect(
   null,
-  { openModal }
+  mapDispatch
 )(Warning);

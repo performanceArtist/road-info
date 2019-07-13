@@ -66,6 +66,7 @@
     "short-uuid": "^3.1.1",
     "style-loader": "^0.23.1",
     "ts-node-dev": "^1.0.0-pre.40",
+    "typesafe-actions": "^4.4.2",
     "typescript": "^3.5.2",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",

@@ -6,8 +6,12 @@ import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
 
 import { changeVisibility } from '@redux/measurements/actions';
+import { RootState } from '@redux/reducer';
 
-const ChartSettings: React.SFC = ({ changeVisibility, chartInfo }) => {
+type State = typeof mapState;
+type Props = typeof mapState & typeof mapDispatch;
+
+const ChartSettings: React.FC<Props> = ({ changeVisibility, chartInfo }) => {
   const checkboxes = chartInfo.map(({ name, units, show }) => {
     if (name !== 'density') return null;
     return (
@@ -36,11 +40,13 @@ const ChartSettings: React.SFC = ({ changeVisibility, chartInfo }) => {
   );
 };
 
-const mapStateToProps = ({ measurements }) => ({
-  ...measurements
+const mapState = ({ measurements }: RootState) => ({
+  chartInfo: measurements.chartInfo
 });
 
+const mapDispatch = { changeVisibility };
+
 export default connect(
-  mapStateToProps,
-  { changeVisibility }
+  mapState,
+  mapDispatch
 )(ChartSettings);

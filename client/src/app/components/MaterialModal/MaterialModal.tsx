@@ -13,12 +13,13 @@ interface Material {
   density: number;
 }
 
-interface Props {
+type OwnProps = {
   material: Material;
   coordinates: { x: number; y: number };
-}
+};
+type Props = OwnProps & typeof mapDispatch;
 
-const MaterialModal: React.SFC<Props> = ({
+const MaterialModal: React.FC<Props> = ({
   material,
   coordinates,
   closeModal
@@ -71,7 +72,9 @@ const MaterialModal: React.SFC<Props> = ({
   );
 };
 
+const mapDispatch = { closeModal };
+
 export default connect(
   null,
-  { closeModal }
+  mapDispatch
 )(MaterialModal);

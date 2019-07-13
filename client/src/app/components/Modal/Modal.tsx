@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface Props {
+type Props = {
   open?: boolean;
   coordinates?: { x: number; y: number };
   onClose: () => void;
@@ -27,18 +27,18 @@ class Modal extends React.Component<Props, State> {
     document.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  static Header: React.SFC = ({ children }) => (
+  static Header: React.FC = ({ children }) => (
     <div className="modal__header">
       {children}
       <span className="modal__close-button">&times;</span>
     </div>
   );
 
-  static Content: React.SFC = ({ children }) => (
+  static Content: React.FC = ({ children }) => (
     <div className="modal__content">{children}</div>
   );
 
-  static Footer: React.SFC = ({ children }) => (
+  static Footer: React.FC = ({ children }) => (
     <div className="modal__footer">{children}</div>
   );
 

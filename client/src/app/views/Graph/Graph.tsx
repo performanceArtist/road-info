@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import DensityChart from './DensityChart/DensityChart';
 import TaskPanel from './TaskPanel/TaskPanel';
 import ChartSettings from './ChartSettings/ChartSettings';
+import TSTest from '@components/TSTest/TSTest';
 
 import ModalManager from '../../layout/ModalManager/ModalManager';
 
@@ -21,7 +22,7 @@ const testData = [
   { distance: 1000, density: 4.06617, thickness: 1.24808, rutting: 0, iri: 0 }
 ];
 
-const Graph: React.SFC = ({ taskData, currentTaskId, chartInfo }) => {
+const Graph: React.FC = ({ taskData, currentTaskId, chartInfo }) => {
   const current = taskData.find(({ id }) => id === currentTaskId);
   const { chartData = [] } = current ? current : {};
 
@@ -35,13 +36,14 @@ const Graph: React.SFC = ({ taskData, currentTaskId, chartInfo }) => {
         <div className="graph__chart">
           <DensityChart data={chartData} info={chartInfo} />
         </div>
+        <TSTest ownProp="Test" />
       </div>
     </div>
   );
 };
 
-const mapStateToProps = ({ measurements }) => ({
+const mapState = ({ measurements }) => ({
   ...measurements
 });
 
-export default connect(mapStateToProps)(Graph);
+export default connect(mapState)(Graph);

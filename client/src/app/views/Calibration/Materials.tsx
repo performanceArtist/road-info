@@ -5,11 +5,12 @@ import uuid from 'short-uuid';
 import Button from '@shared/Button/Button';
 import { openModal } from '@redux/modal/actions';
 
-interface Props {
+type OwnProps = {
   materials: Array<{ name: string; density: number }>;
-}
+};
+type Props = OwnProps & typeof mapDispatch;
 
-const Materials: React.SFC<Props> = ({ openModal, materials }) => {
+const Materials: React.FC<Props> = ({ openModal, materials }) => {
   const buttons = materials.map(material => (
     <div className="materials__button" key={uuid.generate()}>
       <Button
@@ -29,7 +30,8 @@ const Materials: React.SFC<Props> = ({ openModal, materials }) => {
   return <div className="materials">{buttons}</div>;
 };
 
+const mapDispatch = { openModal };
 export default connect(
   null,
-  { openModal }
+  mapDispatch
 )(Materials);

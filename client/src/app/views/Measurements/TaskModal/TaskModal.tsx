@@ -11,9 +11,11 @@ import Button from '@shared/Button/Button';
 import { closeModal } from '@redux/modal/actions';
 import { saveTask } from '@redux/measurements/actions';
 
-interface Props {
+type OwnProps = {
   counter: number;
-}
+};
+
+type Props = OwnProps & typeof mapDispatch;
 
 export interface TaskFormType {
   test: string;
@@ -111,7 +113,9 @@ class TaskModal extends React.Component<Props, {}> {
   }
 }
 
+const mapDispatch = { saveTask, closeModal };
+
 export default connect(
   null,
-  { saveTask, closeModal }
+  mapDispatch
 )(TaskModal);

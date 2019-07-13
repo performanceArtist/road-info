@@ -11,11 +11,12 @@ interface Notice {
   warning: boolean;
 }
 
-interface Props {
+type OwnProps = {
   notices: Array<Notice>;
-}
+};
+type Props = OwnProps & typeof mapDispatch;
 
-const InfoModal: React.SFC<Props> = ({ notices, closeModal }) => {
+const InfoModal: React.FC<Props> = ({ notices, closeModal }) => {
   const rows = notices.map(({ message, warning }) => (
     <div
       className={
@@ -36,7 +37,9 @@ const InfoModal: React.SFC<Props> = ({ notices, closeModal }) => {
   );
 };
 
+const mapDispatch = { closeModal };
+
 export default connect(
   null,
-  { closeModal }
+  mapDispatch
 )(InfoModal);

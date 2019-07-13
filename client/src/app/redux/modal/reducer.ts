@@ -21,22 +21,9 @@ export const ModalMap: Record<
   Chart: ChartModal
 };
 
-export interface ModalPayload {
+interface ModalPayload {
   modalType: string;
   modalProps: any;
-}
-
-const initialState: Array<ModalPayload> = [];
-
-function openModal(state: Array<ModalPayload>, payload: any) {
-  const { modalType, modalProps } = payload;
-  return state.concat({ modalType, modalProps });
-}
-
-function closeModal(state: Array<ModalPayload>) {
-  const newState = state.slice();
-  newState.pop();
-  return newState;
 }
 
 interface ModalAction {
@@ -44,15 +31,17 @@ interface ModalAction {
   payload: ModalPayload;
 }
 
+const initialState: Array<ModalPayload> = [];
+
 export default function modalReducer(
   state = initialState,
   { type, payload }: ModalAction
 ) {
   switch (type) {
     case MODAL.OPEN:
-      return openModal(state, payload);
+      return state.concat(payload);
     case MODAL.CLOSE:
-      return closeModal(state);
+      return state.slice(0, -1);
     default:
       return state;
   }
