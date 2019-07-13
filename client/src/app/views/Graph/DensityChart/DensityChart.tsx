@@ -27,7 +27,8 @@ interface State {
   refAreaLeft: string;
   refAreaRight: string;
   domains: { [key: string]: { top: string; bottom: string } };
-  startIndex: null | number;
+  startIndex: number;
+  endIndex: number;
 }
 
 const initialDomains = {
@@ -58,7 +59,8 @@ class DensityChart extends React.Component<Props, State> {
       refAreaLeft: '',
       refAreaRight: '',
       domains: { ...initialDomains },
-      startIndex: null
+      startIndex: null,
+      endIndex: props.data.length - 1
     };
 
     this.getAxisYDomain = this.getAxisYDomain.bind(this);
@@ -67,6 +69,10 @@ class DensityChart extends React.Component<Props, State> {
     this.getLineCharts = this.getLineCharts.bind(this);
     this.getGradients = this.getGradients.bind(this);
     this.getStartIndex = this.getStartIndex.bind(this);
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ startIndex: null });
   }
 
   getAxisYDomain(from, to, ref, offset) {
@@ -219,13 +225,19 @@ class DensityChart extends React.Component<Props, State> {
   }
 
   render() {
-    const { data, openModal } = this.props;
-    const { refAreaLeft, refAreaRight, domains, startIndex } = this.state;
+    const { data, info, openModal } = this.props;
+    const {
+      refAreaLeft,
+      refAreaRight,
+      domains,
+      startIndex,
+      endIndex
+    } = this.state;
     const { distance } = domains;
 
     return (
       <>
-        <ResponsiveContainer key={uuid.generate()}>
+        <ResponsiveContainer key={`chart-${info.maxTicks}`}>
           <LineChart
             data={data}
             onMouseDown={event =>
@@ -249,11 +261,11 @@ class DensityChart extends React.Component<Props, State> {
             {this.getLineCharts()}
             <Brush
               dataKey="distance"
-              onChange={index => {
-                const { startIndex } = index;
-                this.setState({ startIndex });
+              onChange={({ startIndex, endIndex }) => {
+                this.setState({ startIndex, endIndex });
               }}
               startIndex={startIndex || this.getStartIndex()}
+              endIndex={startIndex ? endIndex : data.length - 1}
               height={15}
               stroke="ccc"
             />

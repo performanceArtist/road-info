@@ -28,7 +28,6 @@ class User {
   }
 
   verifyPassword(candidate: string) {
-    console.log(this.user.password, candidate);
     return bcrypt.compare(candidate, this.user.password);
   }
 }
