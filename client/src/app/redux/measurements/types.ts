@@ -8,18 +8,19 @@ export interface ChartData {
 
 export type ColorBreakpoint = { start: number; finish: number };
 
-export interface ChartInfo {
-  name: string;
+export interface ChartLineInfo {
   units?: string;
   breakpoint?: ColorBreakpoint;
   mainColor?: string;
   warningColor?: string;
+  show: boolean;
 }
 
-export interface InfoType {
-  mainColor: string;
-  units: string;
-  show: boolean;
+export type ChartLines = { [key: string]: ChartLineInfo };
+
+export interface ChartInfo {
+  lines: ChartLines;
+  maxTicks: number;
 }
 
 export interface TaskType {

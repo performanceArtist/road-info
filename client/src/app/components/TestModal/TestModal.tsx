@@ -5,12 +5,12 @@ import Modal from '@components/Modal/Modal';
 import { openModal, closeModal } from '@redux/modal/actions';
 import Button from '@shared/Button/Button';
 
-interface TestModalProps {
+interface Props {
   counter: number;
 }
 
-class TestModal extends React.Component<TestModalProps, {}> {
-  constructor(props: TestModalProps) {
+class TestModal extends React.Component<Props, {}> {
+  constructor(props: Props) {
     super(props);
 
     this.onNextModalClick = this.onNextModalClick.bind(this);

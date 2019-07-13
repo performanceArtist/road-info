@@ -16,26 +16,18 @@ import {
 
 import { Icon, IconImage } from '@components/Icon/Icon';
 import { openModal } from '@redux/modal/actions';
+import { ChartData, ChartInfo } from '@redux/measurements/types';
 
-export interface DensityChartData {
-  distance: number;
-  thickness: number;
-  density: number;
-  iri: number;
-  rutting: number;
+interface Props {
+  data?: Array<ChartData>;
+  info?: ChartInfo;
 }
 
-export interface DensityChartInfo {
-  name: string;
-  units?: string;
-  breakpoint?: { start: number; finish: number };
-  mainColor?: string;
-  warningColor?: string;
-}
-
-interface DensityChartProps {
-  data?: Array<DensityChartData>;
-  info?: Array<DensityChartInfo>;
+interface State {
+  refAreaLeft: string;
+  refAreaRight: string;
+  domains: { [key: string]: { top: string; bottom: string } };
+  startIndex: null | number;
 }
 
 const initialDomains = {
@@ -58,14 +50,15 @@ const initialDomains = {
   }
 };
 
-class DensityChart extends React.Component<DensityChartProps> {
-  constructor(props) {
+class DensityChart extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       refAreaLeft: '',
       refAreaRight: '',
-      domains: { ...initialDomains }
+      domains: { ...initialDomains },
+      startIndex: null
     };
 
     this.getAxisYDomain = this.getAxisYDomain.bind(this);
@@ -226,8 +219,8 @@ class DensityChart extends React.Component<DensityChartProps> {
   }
 
   render() {
-    const { data, info, openModal } = this.props;
-    const { refAreaLeft, refAreaRight, domains } = this.state;
+    const { data, openModal } = this.props;
+    const { refAreaLeft, refAreaRight, domains, startIndex } = this.state;
     const { distance } = domains;
 
     return (
@@ -256,7 +249,11 @@ class DensityChart extends React.Component<DensityChartProps> {
             {this.getLineCharts()}
             <Brush
               dataKey="distance"
-              startIndex={this.getStartIndex()}
+              onChange={index => {
+                const { startIndex } = index;
+                this.setState({ startIndex });
+              }}
+              startIndex={startIndex || this.getStartIndex()}
               height={15}
               stroke="ccc"
             />

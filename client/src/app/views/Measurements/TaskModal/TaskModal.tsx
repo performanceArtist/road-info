@@ -11,7 +11,7 @@ import Button from '@shared/Button/Button';
 import { closeModal } from '@redux/modal/actions';
 import { saveTask } from '@redux/measurements/actions';
 
-interface TaskModalProps {
+interface Props {
   counter: number;
 }
 
@@ -24,8 +24,8 @@ const defaults = {
   city: 'Томск'
 };
 
-class TaskModal extends React.Component<TaskModalProps, {}> {
-  constructor(props: TaskModalProps) {
+class TaskModal extends React.Component<Props, {}> {
+  constructor(props: Props) {
     super(props);
 
     const { task } = props;

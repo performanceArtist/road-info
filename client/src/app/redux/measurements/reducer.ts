@@ -1,7 +1,7 @@
 import uuid from 'short-uuid';
 
 import { TASK, CHART, SERVER } from './actions';
-import { TaskType, InfoType } from './types';
+import { TaskType, ChartLineInfo } from './types';
 
 const fakeData = [
   { distance: 100, thickness: 1, density: 1.5, iri: 2.1, rutting: 210 },
@@ -40,7 +40,7 @@ const initialState: {
   currentTaskId: string | null;
   chartInfo: {
     lines: {
-      [key: string]: InfoType;
+      [key: string]: ChartLineInfo;
     };
     maxTicks: number;
   };

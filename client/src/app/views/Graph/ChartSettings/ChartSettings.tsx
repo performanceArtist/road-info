@@ -16,7 +16,10 @@ const ChartSettings: React.SFC = ({ changeVisibility, chartInfo }) => {
         props={{
           type: 'checkbox',
           checked: show,
-          onChange: event => changeVisibility(name, event.target.checked)
+          onChange: (event: React.SyntheticEvent) => {
+            const target = event.target as HTMLInputElement;
+            changeVisibility(name, target.checked);
+          }
         }}
       />
     );

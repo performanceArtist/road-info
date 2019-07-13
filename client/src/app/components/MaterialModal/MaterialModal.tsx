@@ -13,12 +13,12 @@ interface Material {
   density: number;
 }
 
-interface MaterialModalProps {
+interface Props {
   material: Material;
   coordinates: { x: number; y: number };
 }
 
-const MaterialModal: React.SFC<MaterialModalProps> = ({
+const MaterialModal: React.SFC<Props> = ({
   material,
   coordinates,
   closeModal

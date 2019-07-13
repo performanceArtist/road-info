@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Button from '@shared/Button/Button';
-import { startChannel, stopChannel } from '@redux/measurements/listen';
+import socket from '@redux/measurements/socket';
 
 const Start = ({ startChannel, stopChannel }) => {
   return (
@@ -19,5 +19,5 @@ const Start = ({ startChannel, stopChannel }) => {
 
 export default connect(
   null,
-  { startChannel, stopChannel }
+  { startChannel: socket.startChannel, stopChannel: socket.stopChannel }
 )(Start);

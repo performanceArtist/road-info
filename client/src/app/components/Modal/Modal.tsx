@@ -1,18 +1,18 @@
 import React from 'react';
 
-interface ModalState {
-  open: boolean;
-}
-
-interface ModalProps {
+interface Props {
   open?: boolean;
   coordinates?: { x: number; y: number };
-  onClose(): void;
+  onClose: () => void;
   children: JSX.Element[] | JSX.Element | string;
 }
 
-class Modal extends React.Component<ModalProps, ModalState> {
-  constructor(props: ModalProps) {
+interface State {
+  open: boolean;
+}
+
+class Modal extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
@@ -42,7 +42,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
     <div className="modal__footer">{children}</div>
   );
 
-  handleClick(event: React.SyntheticEvent) {
+  handleClick(event: React.MouseEvent) {
     const target = event.target as HTMLElement;
     const { onClose } = this.props;
     if (target.className === 'modal__close-button') {

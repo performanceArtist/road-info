@@ -1,4 +1,4 @@
-export default interface Options {
+export default interface OptionsType {
   value?: number;
   firstValue?: number;
   secondValue?: number;

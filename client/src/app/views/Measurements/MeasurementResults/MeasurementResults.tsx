@@ -8,11 +8,11 @@ interface Measurement {
   max: number;
 }
 
-interface MeasurementResultsProps {
+interface Props {
   measurements?: Array<Measurement>;
 }
 
-const MeasurementResults: React.SFC<MeasurementResultsProps> = ({
+const MeasurementResults: React.SFC<Props> = ({
   measurements = []
 }) => {
   const round = (value: number) => Math.round(value * 1000) / 1000;

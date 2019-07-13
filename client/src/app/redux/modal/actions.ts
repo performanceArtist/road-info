@@ -3,7 +3,12 @@ export const MODAL = {
   CLOSE: 'MODAL.CLOSE'
 };
 
-export function openModal(modalType: string, modalProps: any) {
+type OpenModal = {
+  type: string;
+  payload: { modalType: string; modalProps: any };
+};
+
+export function openModal(modalType: string, modalProps: any): OpenModal {
   return {
     type: MODAL.OPEN,
     payload: { modalType, modalProps }

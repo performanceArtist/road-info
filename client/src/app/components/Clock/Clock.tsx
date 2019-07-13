@@ -1,11 +1,11 @@
 import React from 'react';
 
-interface ClockState {
+interface State {
   date: Date;
   timer: NodeJS.Timeout | null;
 }
 
-class Clock extends React.Component<{}, ClockState> {
+class Clock extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
 

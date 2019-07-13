@@ -1,14 +1,15 @@
 import React from 'react';
 import uuid from 'short-uuid';
 
-interface DropdownProps {
+interface Props {
   name?: string;
   value?: string;
   label?: string;
   options?: Array<{ name: string; value: string }>;
+  onChange?: (event?: React.SyntheticEvent) => void;
 }
 
-const Dropdown: React.SFC<DropdownProps> = ({
+const Dropdown: React.SFC<Props> = ({
   name = 'select',
   value = '',
   label = '',

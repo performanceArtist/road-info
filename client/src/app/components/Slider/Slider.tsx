@@ -4,6 +4,8 @@ import Model from './js/model/model';
 import View from './js/view/view';
 import Controller from './js/controller/controller';
 
+import OptionsType from './js/Options';
+
 function init(root: HTMLElement, options = {}) {
   const model = new Model(options);
   const view = new View(model, root);
@@ -15,7 +17,7 @@ function init(root: HTMLElement, options = {}) {
   };
 }
 
-class Slider extends React.Component {
+class Slider extends React.Component<{ options: OptionsType }> {
   constructor(props) {
     super(props);
 

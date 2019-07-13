@@ -5,13 +5,13 @@ import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
 import Button from '@shared/Button/Button';
 
-interface LoginState {
+interface State {
   networkError: string | null;
   loginError: string | null;
   passwordError: string | null;
 }
 
-class Login extends React.Component<{}, LoginState> {
+class Login extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
 

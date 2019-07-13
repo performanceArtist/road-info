@@ -34,13 +34,13 @@ const initialDomains = {
   }
 };
 
-interface DensityChartProps {
+interface Props {
   data?: Array<DensityChartData>;
   info?: Array<DensityChartInfo>;
 }
 
-class DensityChart extends React.Component<DensityChartProps> {
-  constructor(props: DensityChartProps) {
+class DensityChart extends React.Component<Props> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {

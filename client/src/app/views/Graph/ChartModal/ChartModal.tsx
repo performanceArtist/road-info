@@ -8,11 +8,16 @@ import Modal from '@components/Modal/Modal';
 import Dropdown from '@components/Dropdown/Dropdown';
 import { closeModal } from '@redux/modal/actions';
 import { saveChartSettings } from '@redux/measurements/actions';
+import { ChartLines } from '@redux/measurements/types';
 
-interface ChartModalProps {}
+interface State {
+  key: string;
+  maxTicks: number;
+  lines: ChartLines;
+}
 
-class ChartModal extends React.Component<ChartModalProps> {
-  constructor(props) {
+class ChartModal extends React.Component<{}, State> {
+  constructor(props: {}) {
     super(props);
 
     const { lines, maxTicks } = props.chartInfo;
@@ -35,11 +40,12 @@ class ChartModal extends React.Component<ChartModalProps> {
     closeModal();
   }
 
-  handleInputChange(event) {
+  handleInputChange(event: React.SyntheticEvent) {
     const { key, lines } = this.state;
     const newLines = JSON.parse(JSON.stringify(lines));
+    const target = event.target as HTMLInputElement;
 
-    newLines[key].breakpoint[event.target.name] = event.target.value;
+    newLines[key].breakpoint[target.name] = target.value;
     this.setState({ lines: newLines });
   }
 
@@ -65,7 +71,10 @@ class ChartModal extends React.Component<ChartModalProps> {
                     { name: 'Толщина покрытия', value: 'thickness' },
                     { name: 'Колейность', value: 'rutting' }
                   ]}
-                  onChange={event => this.setState({ key: event.target.value })}
+                  onChange={(event: React.SyntheticEvent) => {
+                    const target = event.target as HTMLInputElement;
+                    this.setState({ key: target.value });
+                  }}
                 />
               </div>
               <div className="chart-modal__input">
@@ -106,8 +115,10 @@ class ChartModal extends React.Component<ChartModalProps> {
                 step: 1,
                 min: 1,
                 value: maxTicks,
-                onChange: (event: React.SyntheticEvent) =>
-                  this.setState({ maxTicks: parseInt(event.target.value) })
+                onChange: (event: React.SyntheticEvent) => {
+                  const target = event.target as HTMLInputElement;
+                  this.setState({ maxTicks: parseInt(target.value) });
+                }
               }}
             />
           </Modal.Content>

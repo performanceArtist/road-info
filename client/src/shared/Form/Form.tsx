@@ -2,14 +2,14 @@ import React from 'react';
 
 import './form.scss';
 
-interface FormProps {
+interface Props {
   status?: string | null;
   error?: boolean;
   props?: Object;
 }
 
-class Form extends React.Component<FormProps, {}> {
-  constructor(props: FormProps) {
+class Form extends React.Component<Props, {}> {
+  constructor(props: Props) {
     super(props);
   }
 

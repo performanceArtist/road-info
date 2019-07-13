@@ -2,14 +2,14 @@ import React from 'react';
 
 import './input.scss';
 
-interface InputProps {
+interface Props {
   status?: string | null;
   label?: string | null;
   error?: boolean;
   props?: Object;
 }
 
-const Input: React.SFC<InputProps> = ({
+const Input: React.SFC<Props> = ({
   status = null,
   label = null,
   error = false,

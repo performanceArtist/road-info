@@ -11,11 +11,11 @@ interface Notice {
   warning: boolean;
 }
 
-interface InfoModalProps {
+interface Props {
   notices: Array<Notice>;
 }
 
-const InfoModal: React.SFC<InfoModalProps> = ({ notices, closeModal }) => {
+const InfoModal: React.SFC<Props> = ({ notices, closeModal }) => {
   const rows = notices.map(({ message, warning }) => (
     <div
       className={

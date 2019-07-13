@@ -1,4 +1,5 @@
 import { TaskFormType } from '@views/Measurements/TaskModal/TaskModal';
+import { ChartLineInfo } from './types';
 
 export const TASK = {
   SAVE: 'TASK.SAVE',
@@ -49,7 +50,12 @@ export const changeVisibility = (line: string, show: boolean) => ({
   payload: { line, show }
 });
 
-export const saveChartSettings = settings => ({
+export const saveChartSettings = (settings: {
+  lines: Array<ChartLineInfo>;
+  maxTicks: number;
+}) => ({
   type: CHART.SAVE_SETTINGS,
   payload: settings
 });
+
+//export const setMaxTicks = (maxTicks:number) => ({});

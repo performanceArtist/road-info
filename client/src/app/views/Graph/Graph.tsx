@@ -33,7 +33,7 @@ const Graph: React.SFC = ({ taskData, currentTaskId, chartInfo }) => {
           <TaskPanel tasks={taskData} />
         </div>
         <div className="graph__chart">
-          <DensityChart data={chartData} info={chartInfo} />
+          <DensityChart data={testData} info={chartInfo} />
         </div>
       </div>
     </div>

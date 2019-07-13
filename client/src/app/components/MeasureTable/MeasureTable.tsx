@@ -8,11 +8,11 @@ interface Measure {
   unit: string;
 }
 
-interface MeasureTableProps {
+interface Props {
   measures: Array<Measure>;
 }
 
-const MeasureTable: React.SFC<MeasureTableProps> = ({ measures }) => {
+const MeasureTable: React.SFC<Props> = ({ measures }) => {
   const rows = measures.map(({ name, value, unit }) => (
     <div className="measure-table__measure" key={uuid.generate()}>
       <div className="measure-table__name">{name}</div>

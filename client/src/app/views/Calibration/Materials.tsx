@@ -5,15 +5,15 @@ import uuid from 'short-uuid';
 import Button from '@shared/Button/Button';
 import { openModal } from '@redux/modal/actions';
 
-interface MaterialsProps {
-  materials: Array<{ name: string }>;
+interface Props {
+  materials: Array<{ name: string; density: number }>;
 }
 
-const Materials: React.SFC<MaterialsProps> = ({ openModal, materials }) => {
+const Materials: React.SFC<Props> = ({ openModal, materials }) => {
   const buttons = materials.map(material => (
     <div className="materials__button" key={uuid.generate()}>
       <Button
-        onClick={event => {
+        onClick={(event: React.MouseEvent) => {
           openModal('Material', {
             counter: 1,
             coordinates: { x: event.clientX, y: event.clientY },
