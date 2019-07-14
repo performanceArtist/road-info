@@ -38,11 +38,12 @@ class TaskModal extends React.Component<Props, {}> {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+  handleChange(event: React.FormEvent) {
+    const target = event.target as HTMLInputElement;
+    this.setState({ [target.name]: target.value });
   }
 
-  handleSubmit(event: React.SyntheticEvent) {
+  handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     const { saveTask, closeModal, task } = this.props;
 
@@ -76,17 +77,25 @@ class TaskModal extends React.Component<Props, {}> {
                 <Dropdown
                   name="region"
                   label="Регион"
-                  options={['Томская область']}
+                  options={[{ name: 'Томская область', value: 'tobl' }]}
                 />
                 <Dropdown
                   name="city"
                   label="Населённый пункт"
-                  options={['Томск']}
+                  options={[{ name: 'Томск', value: 'tomsk' }]}
                 />
               </div>
               <div className="task__dropdowns">
-                <Dropdown name="road" label="Дорога" options={['пр. Ленина']} />
-                <Dropdown name="category" label="Категория" options={['IA']} />
+                <Dropdown
+                  name="road"
+                  label="Дорога"
+                  options={[{ name: 'пр. Ленина', value: 'lenin' }]}
+                />
+                <Dropdown
+                  name="category"
+                  label="Категория"
+                  options={[{ name: 'IA', value: 'ia' }]}
+                />
               </div>
 
               <div className="task__slider">

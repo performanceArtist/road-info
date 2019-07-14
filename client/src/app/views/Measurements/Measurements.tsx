@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import ControlForm from '@components/ControlForm/ControlForm';
+import DensityChart from '@components/DensityChart/DensityChart';
+import ChartSettings from '@components/ChartSettings/ChartSettings';
 
-import DensityChart from './DensityChart/DensityChart';
 import MeasurementResults from './MeasurementResults/MeasurementResults';
 import TaskPanel from './TaskPanel/TaskPanel';
-import ChartSettings from './ChartSettings/ChartSettings';
 
 const testData = [
   { distance: 0, density: 3.97835, thickness: 1.94446, rutting: 0, iri: 0 },
@@ -57,8 +57,7 @@ const Measurements: React.FC = ({ taskData, currentTaskId, chartInfo }) => {
     <div className="measurements">
       <div className="measurements__info">
         <div className="measurements__form">
-          <TaskPanel tasks={taskData} />
-          <ChartSettings />
+          <TaskPanel tasks={taskData} currentTaskId={currentTaskId} />
         </div>
         <div className="measurements__chart">
           <DensityChart data={chartData} info={chartInfo} />

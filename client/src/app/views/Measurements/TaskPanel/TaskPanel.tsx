@@ -10,9 +10,18 @@ import {
   postTask,
   setCurrentTask
 } from '@redux/measurements/actions';
-import { startChannel } from '@redux/measurements/listen';
+import socket from '@redux/measurements/socket';
 
-const TaskPanel = ({
+import { TaskData } from '@redux/measurements/types';
+
+type OwnProps = {
+  tasks: TaskData;
+  currentTaskId: string;
+};
+
+type Props = OwnProps & typeof mapDispatch;
+
+const TaskPanel: React.FC<Props> = ({
   tasks = [],
   currentTaskId,
   openModal,
@@ -80,17 +89,15 @@ const TaskPanel = ({
   );
 };
 
-const mapState = ({ measurements }) => ({
-  currentTaskId: measurements.currentTaskId
-});
+const mapDispatch = {
+  openModal,
+  removeTask,
+  postTask,
+  setCurrentTask,
+  startChannel: socket.startChannel
+};
 
 export default connect(
-  mapState,
-  {
-    openModal,
-    removeTask,
-    postTask,
-    setCurrentTask,
-    startChannel
-  }
+  null,
+  mapDispatch
 )(TaskPanel);

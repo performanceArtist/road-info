@@ -19,7 +19,7 @@ import { openModal, OpenModal } from '@redux/modal/actions';
 import { ChartData, ChartInfo } from '@redux/measurements/types';
 
 type OwnProps = {
-  data?: Array<ChartData>;
+  data?: ChartData;
   info?: ChartInfo;
   openModal: OpenModal;
 };
@@ -29,13 +29,17 @@ type Props = OwnProps & typeof mapDispatch;
 interface State {
   refAreaLeft: string;
   refAreaRight: string;
-  domains: { [key: string]: { top: string; bottom: string } };
-  startIndex: number;
+  yDomains: {
+    [key: string]: { top: string | number; bottom: string | number };
+  };
+  xDomains: {
+    [key: string]: { left: string | number; right: string | number };
+  };
+  startIndex: number | null;
   endIndex: number;
 }
 
-const initialDomains = {
-  distance: { left: 'dataMin', right: 'dataMax' },
+const yDomains = {
   density: {
     top: 'dataMax+0.5',
     bottom: 'dataMin-0.5'
@@ -54,6 +58,10 @@ const initialDomains = {
   }
 };
 
+const xDomains = {
+  distance: { left: 'dataMin', right: 'dataMax' }
+};
+
 class DensityChart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -61,7 +69,8 @@ class DensityChart extends React.Component<Props, State> {
     this.state = {
       refAreaLeft: '',
       refAreaRight: '',
-      domains: { ...initialDomains },
+      yDomains: { ...yDomains },
+      xDomains: { ...xDomains },
       startIndex: null,
       endIndex: props.data.length - 1
     };
@@ -78,16 +87,21 @@ class DensityChart extends React.Component<Props, State> {
     this.setState({ startIndex: null });
   }
 
-  getAxisYDomain(from, to, ref, offset) {
+  getAxisYDomain(
+    from: string,
+    to: string,
+    ref: string,
+    offset: number
+  ): { bottom: number; top: number } {
     const { data } = this.props;
     const refData = data.filter(
       ({ distance }) => distance >= from && distance <= to
     );
-    let [bottom, top] = [refData[0][ref], refData[0][ref]];
 
-    refData.forEach(d => {
-      if (d[ref] > top) top = d[ref];
-      if (d[ref] < bottom) bottom = d[ref];
+    let [bottom, top] = [refData[0][ref], refData[0][ref]];
+    refData.forEach(axis => {
+      if (axis[ref] > top) top = axis[ref];
+      if (axis[ref] < bottom) bottom = axis[ref];
     });
 
     return { bottom: (bottom | 0) - offset, top: (top | 0) + offset };
@@ -111,11 +125,13 @@ class DensityChart extends React.Component<Props, State> {
     this.setState({
       refAreaLeft: '',
       refAreaRight: '',
-      domains: {
+      xDomains: {
         distance: {
           left: refAreaLeft,
           right: refAreaRight
-        },
+        }
+      },
+      yDomains: {
         density: this.getAxisYDomain(refAreaLeft, refAreaRight, 'density', 1),
         thickness: this.getAxisYDomain(
           refAreaLeft,
@@ -133,13 +149,14 @@ class DensityChart extends React.Component<Props, State> {
     this.setState({
       refAreaLeft: '',
       refAreaRight: '',
-      domains: { ...initialDomains }
+      xDomains: { ...xDomains },
+      yDomains: { ...yDomains }
     });
   }
 
   getLineCharts() {
     const { info } = this.props;
-    const { domains } = this.state;
+    const { yDomains } = this.state;
 
     return Object.keys(info.lines).map(key => {
       if (key !== 'density') return null;
@@ -161,7 +178,7 @@ class DensityChart extends React.Component<Props, State> {
         <YAxis
           type="number"
           yAxisId={key}
-          domain={[domains[key].bottom, domains[key].top]}
+          domain={[yDomains[key].bottom, yDomains[key].top]}
           allowDataOverflow
           hide
         />
@@ -232,11 +249,11 @@ class DensityChart extends React.Component<Props, State> {
     const {
       refAreaLeft,
       refAreaRight,
-      domains,
+      xDomains,
       startIndex,
       endIndex
     } = this.state;
-    const { distance } = domains;
+    const { distance } = xDomains;
 
     return (
       <>

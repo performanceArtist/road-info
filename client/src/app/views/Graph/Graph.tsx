@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import DensityChart from './DensityChart/DensityChart';
-import TaskPanel from './TaskPanel/TaskPanel';
-import ChartSettings from './ChartSettings/ChartSettings';
+import DensityChart from '@components/DensityChart/DensityChart';
+import TaskStart from './TaskStart/TaskStart';
+import ChartSettings from '@components/ChartSettings/ChartSettings';
 import TSTest from '@components/TSTest/TSTest';
 
 import ModalManager from '../../layout/ModalManager/ModalManager';
+import { RootState } from '@redux/reducer';
+import { ChartInfo, TaskData } from '@redux/measurements/types';
 
 const testData = [
   { distance: 0, density: 3.97835, thickness: 1.94446, rutting: 0, iri: 0 },
@@ -22,7 +24,15 @@ const testData = [
   { distance: 1000, density: 4.06617, thickness: 1.24808, rutting: 0, iri: 0 }
 ];
 
-const Graph: React.FC = ({ taskData, currentTaskId, chartInfo }) => {
+type MapState = {
+  taskData: TaskData;
+  currentTaskId: null | string;
+  chartInfo: ChartInfo;
+};
+
+type Props = MapState;
+
+const Graph: React.FC<Props> = ({ taskData, currentTaskId, chartInfo }) => {
   const current = taskData.find(({ id }) => id === currentTaskId);
   const { chartData = [] } = current ? current : {};
 
@@ -31,10 +41,10 @@ const Graph: React.FC = ({ taskData, currentTaskId, chartInfo }) => {
       <ModalManager />
       <div className="graph__info">
         <div className="graph__form">
-          <TaskPanel tasks={taskData} />
+          <TaskStart tasks={taskData} />
         </div>
         <div className="graph__chart">
-          <DensityChart data={chartData} info={chartInfo} />
+          <DensityChart data={testData} info={chartInfo} />
         </div>
         <TSTest ownProp="Test" />
       </div>
@@ -42,8 +52,12 @@ const Graph: React.FC = ({ taskData, currentTaskId, chartInfo }) => {
   );
 };
 
-const mapState = ({ measurements }) => ({
-  ...measurements
+const mapState = ({
+  measurements: { taskData, currentTaskId, chartInfo }
+}: RootState) => ({
+  taskData,
+  currentTaskId,
+  chartInfo
 });
 
 export default connect(mapState)(Graph);

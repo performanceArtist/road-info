@@ -1,11 +1,3 @@
-export interface ChartData {
-  distance: number;
-  thickness: number;
-  density: number;
-  iri: number;
-  rutting: number;
-}
-
 export type ColorBreakpoint = { start: number; finish: number };
 
 export interface ChartLineInfo {
@@ -23,10 +15,22 @@ export interface ChartInfo {
   maxTicks: number;
 }
 
-export interface TaskType {
+export interface ChartDataItem {
+  distance: number;
+  thickness: number;
+  density: number;
+  iri: number;
+  rutting: number;
+}
+
+export type ChartData = Array<ChartDataItem>;
+
+export interface TaskDataItem {
   id: string;
   fetching: boolean;
   error: Error | null;
   formData: Object;
-  chartData: Array<ChartData>;
+  chartData: ChartData;
 }
+
+export type TaskData = Array<TaskDataItem>;

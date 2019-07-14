@@ -8,7 +8,6 @@ import Input from '@shared/Input/Input';
 import { changeVisibility } from '@redux/measurements/actions';
 import { RootState } from '@redux/reducer';
 
-type State = typeof mapState;
 type Props = typeof mapState & typeof mapDispatch;
 
 const ChartSettings: React.FC<Props> = ({ changeVisibility, chartInfo }) => {

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { postTask, setCurrentTask } from '@redux/measurements/actions';
 import socket from '@redux/measurements/socket';
 
-const TaskPanel = ({ tasks = [], postTask, setCurrentTask, startChannel }) => {
+const TaskStart = ({ tasks = [], postTask, setCurrentTask, startChannel }) => {
   useEffect(() => {
     const { id, formData } = tasks[0];
     startChannel();
@@ -26,4 +26,4 @@ export default connect(
     setCurrentTask,
     startChannel: socket.startChannel
   }
-)(TaskPanel);
+)(TaskStart);
