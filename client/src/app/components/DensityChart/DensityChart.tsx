@@ -212,8 +212,54 @@ class DensityChart extends React.Component<Props, State> {
         { min: 0, max: 0 }
       );
       const { start, finish } = breakpoint;
-      const startPercentage = `${(1 - (start - min) / (max - min)) * 100}%`;
-      const finishPercentage = `${(1 - (finish - min) / (max - min)) * 100}%`;
+      const startPercentage = (1 - (start - min) / (max - min)) * 100;
+      const finishPercentage = (1 - (finish - min) / (max - min)) * 100;
+      const out = (number: number) => number >= 100 || number <= 0;
+      let stops;
+
+      console.log(startPercentage, finishPercentage, min, max);
+
+      if (out(startPercentage) && out(finishPercentage)) {
+        console.log('None');
+        stops = (
+          <>
+            <stop offset="0%" stopColor={mainColor} />
+            <stop offset="100%" stopColor={mainColor} />
+          </>
+        );
+      } else if (!out(startPercentage) && !out(finishPercentage)) {
+        console.log('Both');
+        stops = (
+          <>
+            <stop offset="0%" stopColor={warningColor} />
+            <stop offset={`${finishPercentage}%`} stopColor={warningColor} />
+            <stop offset={`${finishPercentage}%`} stopColor={mainColor} />
+            <stop offset={`${startPercentage}%`} stopColor={mainColor} />
+            <stop offset={`${startPercentage}%`} stopColor={warningColor} />
+            <stop offset="100%" stopColor={warningColor} />
+          </>
+        );
+      } else if (out(startPercentage)) {
+        console.log('Finish');
+        stops = (
+          <>
+            <stop offset="0%" stopColor={warningColor} />
+            <stop offset={`${finishPercentage}%`} stopColor={warningColor} />
+            <stop offset={`${finishPercentage}%`} stopColor={mainColor} />
+            <stop offset="100%" stopColor={mainColor} />
+          </>
+        );
+      } else if (out(finishPercentage)) {
+        console.log('Start');
+        stops = (
+          <>
+            <stop offset="0%" stopColor={warningColor} />
+            <stop offset={`${startPercentage}%`} stopColor={warningColor} />
+            <stop offset={`${startPercentage}%`} stopColor={mainColor} />
+            <stop offset="100%" stopColor={mainColor} />
+          </>
+        );
+      }
 
       return (
         <linearGradient
@@ -224,10 +270,7 @@ class DensityChart extends React.Component<Props, State> {
           y2="100%"
           key={uuid.generate()}
         >
-          <stop offset="0%" stopColor={warningColor} />
-          <stop offset={startPercentage} stopColor={mainColor} />
-          <stop offset={finishPercentage} stopColor={mainColor} />
-          <stop offset="100%" stopColor={warningColor} />
+          {stops}
         </linearGradient>
       );
     });
