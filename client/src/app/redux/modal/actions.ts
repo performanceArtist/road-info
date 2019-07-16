@@ -1,5 +1,3 @@
-import { action } from 'typesafe-actions';
-
 export const MODAL = {
   OPEN: 'MODAL.OPEN',
   CLOSE: 'MODAL.CLOSE'

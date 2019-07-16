@@ -35,7 +35,7 @@ const TaskPanel: React.FC<Props> = ({
   }, []);
 
   const elements = tasks.map(task => {
-    const { id, formData } = task;
+    const { id, chartData, formData } = task;
     const { name } = formData;
 
     return (
@@ -49,7 +49,7 @@ const TaskPanel: React.FC<Props> = ({
             onChange={event => {
               if (event.target.checked) {
                 setCurrentTask(id);
-                postTask(formData, id);
+                if (chartData.length === 0) postTask(formData, id);
               }
             }}
           />
@@ -81,9 +81,16 @@ const TaskPanel: React.FC<Props> = ({
     <div className="task-panel">
       {elements}
       <div className="task-panel__create">
-        <Button onClick={() => openModal('Task', { counter: 1 })}>
-          Новое задание
-        </Button>
+        <div className="task-panel__button">
+          <Button onClick={() => openModal('Task', { counter: 1 })}>
+            Новое задание
+          </Button>
+        </div>
+        <div className="task-panel__button">
+          <Button onClick={() => openModal('Chart', { counter: 1 })}>
+            Настройки
+          </Button>
+        </div>
       </div>
     </div>
   );

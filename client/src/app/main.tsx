@@ -21,7 +21,7 @@ sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Graph />
+    <App />
   </Provider>,
   document.querySelector('.wrapper')
 );

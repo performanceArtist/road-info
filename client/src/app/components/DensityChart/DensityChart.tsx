@@ -72,7 +72,7 @@ class DensityChart extends React.Component<Props, State> {
       yDomains: { ...yDomains },
       xDomains: { ...xDomains },
       startIndex: null,
-      endIndex: props.data.length - 1
+      endIndex: null
     };
 
     this.getAxisYDomain = this.getAxisYDomain.bind(this);
@@ -82,6 +82,10 @@ class DensityChart extends React.Component<Props, State> {
     this.getGradients = this.getGradients.bind(this);
     this.getStartIndex = this.getStartIndex.bind(this);
     this.getXTicks = this.getXTicks.bind(this);
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ startIndex: null, endIndex: this.props.data.length - 1 });
   }
 
   getAxisYDomain(
@@ -282,16 +286,16 @@ class DensityChart extends React.Component<Props, State> {
     const { data } = this.props;
     const { startIndex, endIndex } = this.state;
     const start = startIndex === null ? this.getStartIndex() : startIndex;
-    const end = endIndex || data.length;
-    const partData = data.slice(start, end);
-    const autoStep = Math.floor(partData.length / 10);
-    const step = autoStep ? autoStep + 1 : 1;
+    const partData = data.slice(start, endIndex + 1);
+    const autoStep = Math.floor(partData.length / 8);
+    const step = autoStep > 0 ? autoStep + 1 : 1;
 
-    console.log(startIndex, endIndex, start, end, step);
-
-    return partData
+    console.log(partData);
+    const ticks = partData
       .map(({ distance }) => distance)
       .filter((distance, index) => index % step === 0);
+
+    return ticks;
   }
 
   render() {
@@ -330,16 +334,20 @@ class DensityChart extends React.Component<Props, State> {
               allowDataOverflow
             />
             {this.getLineCharts()}
-            <Brush
-              dataKey="distance"
-              onChange={({ startIndex, endIndex }) => {
-                this.setState({ startIndex, endIndex });
-              }}
-              startIndex={startIndex || this.getStartIndex()}
-              endIndex={startIndex ? endIndex : data.length - 1}
-              height={15}
-              stroke="ccc"
-            />
+            {data.length > 0 && (
+              <Brush
+                dataKey="distance"
+                onChange={({ startIndex, endIndex }) => {
+                  this.setState({ startIndex, endIndex });
+                }}
+                startIndex={
+                  startIndex === null ? this.getStartIndex() : startIndex
+                }
+                endIndex={startIndex ? endIndex : data.length - 1}
+                height={15}
+                stroke="ccc"
+              />
+            )}
             <Tooltip />
             <Legend
               wrapperStyle={{
@@ -362,11 +370,6 @@ class DensityChart extends React.Component<Props, State> {
             size="small"
             image={IconImage.ZOOM_OUT}
             onClick={this.zoomOut}
-          />
-          <Icon
-            size="small"
-            image={IconImage.SETTINGS}
-            onClick={() => openModal('Chart', { counter: 1 })}
           />
         </div>
       </>
