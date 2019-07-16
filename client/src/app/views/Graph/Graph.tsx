@@ -44,9 +44,8 @@ const Graph: React.FC<Props> = ({ taskData, currentTaskId, chartInfo }) => {
           <TaskStart tasks={taskData} />
         </div>
         <div className="graph__chart">
-          <DensityChart data={testData} info={chartInfo} />
+          <DensityChart data={chartData} info={chartInfo} />
         </div>
-        <TSTest ownProp="Test" />
       </div>
     </div>
   );

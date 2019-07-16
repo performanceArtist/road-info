@@ -81,10 +81,7 @@ class DensityChart extends React.Component<Props, State> {
     this.getLineCharts = this.getLineCharts.bind(this);
     this.getGradients = this.getGradients.bind(this);
     this.getStartIndex = this.getStartIndex.bind(this);
-  }
-
-  componentWillReceiveProps() {
-    this.setState({ startIndex: null });
+    this.getXTicks = this.getXTicks.bind(this);
   }
 
   getAxisYDomain(
@@ -169,7 +166,7 @@ class DensityChart extends React.Component<Props, State> {
           name={units}
           dataKey={key}
           stroke={breakpoint ? `url(#${key})` : mainColor}
-          strokeWidth={2}
+          strokeWidth={2.5}
           dot={false}
           activeDot={false}
           isAnimationActive={false}
@@ -178,9 +175,9 @@ class DensityChart extends React.Component<Props, State> {
         <YAxis
           type="number"
           yAxisId={key}
+          ticks={[1, 2, 3, 4]}
           domain={[yDomains[key].bottom, yDomains[key].top]}
           allowDataOverflow
-          hide
         />
       ];
     });
@@ -217,10 +214,7 @@ class DensityChart extends React.Component<Props, State> {
       const out = (number: number) => number >= 100 || number <= 0;
       let stops;
 
-      console.log(startPercentage, finishPercentage, min, max);
-
       if (out(startPercentage) && out(finishPercentage)) {
-        console.log('None');
         stops = (
           <>
             <stop offset="0%" stopColor={mainColor} />
@@ -228,7 +222,6 @@ class DensityChart extends React.Component<Props, State> {
           </>
         );
       } else if (!out(startPercentage) && !out(finishPercentage)) {
-        console.log('Both');
         stops = (
           <>
             <stop offset="0%" stopColor={warningColor} />
@@ -240,7 +233,6 @@ class DensityChart extends React.Component<Props, State> {
           </>
         );
       } else if (out(startPercentage)) {
-        console.log('Finish');
         stops = (
           <>
             <stop offset="0%" stopColor={warningColor} />
@@ -250,7 +242,6 @@ class DensityChart extends React.Component<Props, State> {
           </>
         );
       } else if (out(finishPercentage)) {
-        console.log('Start');
         stops = (
           <>
             <stop offset="0%" stopColor={warningColor} />
@@ -287,6 +278,22 @@ class DensityChart extends React.Component<Props, State> {
     }
   }
 
+  getXTicks() {
+    const { data } = this.props;
+    const { startIndex, endIndex } = this.state;
+    const start = startIndex === null ? this.getStartIndex() : startIndex;
+    const end = endIndex || data.length;
+    const partData = data.slice(start, end);
+    const autoStep = Math.floor(partData.length / 10);
+    const step = autoStep ? autoStep + 1 : 1;
+
+    console.log(startIndex, endIndex, start, end, step);
+
+    return partData
+      .map(({ distance }) => distance)
+      .filter((distance, index) => index % step === 0);
+  }
+
   render() {
     const { data, info, openModal } = this.props;
     const {
@@ -317,8 +324,9 @@ class DensityChart extends React.Component<Props, State> {
               type="number"
               dataKey="distance"
               domain={[distance.left, distance.right]}
-              interval="preserveStartEnd"
+              interval={0}
               tick={{ fontSize: '0.8rem' }}
+              ticks={this.getXTicks()}
               allowDataOverflow
             />
             {this.getLineCharts()}
