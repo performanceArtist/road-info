@@ -7,6 +7,7 @@ import ChartSettings from '@components/ChartSettings/ChartSettings';
 
 import MeasurementResults from './MeasurementResults/MeasurementResults';
 import TaskPanel from './TaskPanel/TaskPanel';
+import socket from '@redux/measurements/socket';
 
 const testData = [
   { distance: 0, density: 3.97835, thickness: 1.94446, rutting: 0, iri: 0 },
@@ -25,7 +26,6 @@ const testData = [
 const Measurements: React.FC = ({ taskData, currentTaskId, chartInfo }) => {
   const current = taskData.find(({ id }) => id === currentTaskId);
   const { chartData = [] } = current ? current : {};
-
   const objectReduce = (
     data = [],
     callback = (a, b) => {

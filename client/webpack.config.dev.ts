@@ -7,7 +7,8 @@ const config = {
   entry: {
     app: ['@babel/polyfill', path.join(__dirname, 'src/app/main.tsx')],
     login: ['@babel/polyfill', path.join(__dirname, 'src/login/main.tsx')],
-    admin: ['@babel/polyfill', path.join(__dirname, 'src/admin/main.tsx')]
+    admin: ['@babel/polyfill', path.join(__dirname, 'src/admin/main.tsx')],
+    graph: ['@babel/polyfill', path.join(__dirname, 'src/graph/main.tsx')]
   },
   node: {
     fs: 'empty'
@@ -104,6 +105,11 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'client/src/admin/admin.html',
       filename: `admin.html`,
+      chunks: []
+    }),
+    new HtmlWebpackPlugin({
+      template: 'client/src/graph/graph.html',
+      filename: `graph.html`,
       chunks: []
     })
   ]

@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 
 import DensityChart from '@components/DensityChart/DensityChart';
 import TaskStart from './TaskStart/TaskStart';
-import ChartSettings from '@components/ChartSettings/ChartSettings';
-import TSTest from '@components/TSTest/TSTest';
 
-import ModalManager from '../../layout/ModalManager/ModalManager';
+import ModalManager from '../../app/layout/ModalManager/ModalManager';
 import { RootState } from '@redux/reducer';
 import { ChartInfo, TaskData } from '@redux/measurements/types';
 

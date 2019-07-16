@@ -5,13 +5,17 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const config = {
   entry: {
+    'public/login': [
+      '@babel/polyfill',
+      path.join(__dirname, 'src/login/main.tsx')
+    ],
     'private/app': [
       '@babel/polyfill',
       path.join(__dirname, 'src/app/main.tsx')
     ],
-    'public/login': [
+    'private/graph': [
       '@babel/polyfill',
-      path.join(__dirname, 'src/login/main.tsx')
+      path.join(__dirname, 'src/graph/main.tsx')
     ],
     'admin/admin': [
       '@babel/polyfill',
@@ -89,13 +93,18 @@ const config = {
       filename: '[name].css'
     }),
     new HtmlWebpackPlugin({
+      template: 'client/src/login/login.html',
+      filename: `public/login.html`,
+      chunks: []
+    }),
+    new HtmlWebpackPlugin({
       template: 'client/src/app/index.html',
       filename: `private/index.html`,
       chunks: []
     }),
     new HtmlWebpackPlugin({
-      template: 'client/src/login/login.html',
-      filename: `public/login.html`,
+      template: 'client/src/graph/graph.html',
+      filename: `private/graph.html`,
       chunks: []
     }),
     new HtmlWebpackPlugin({

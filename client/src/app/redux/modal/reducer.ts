@@ -4,8 +4,8 @@ import TestModal from '@components/TestModal/TestModal';
 import InfoModal from '@components/InfoModal/InfoModal';
 import MaterialModal from '@components/MaterialModal/MaterialModal';
 import NormModal from '@components/NormModal/NormModal';
+import ChartModal from '@components/ChartModal/ChartModal';
 import TaskModal from '@views/Measurements/TaskModal/TaskModal';
-import ChartModal from '@views/Graph/ChartModal/ChartModal';
 
 import { ConnectedComponentClass } from 'react-redux';
 
