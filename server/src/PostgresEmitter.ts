@@ -28,6 +28,8 @@ const postgresEmitter = (function() {
 
     const data = {
       distance: section.distance,
+      latitude: section.latitude,
+      longitude: section.longitude,
       density: measurement.density,
       thickness: measurement.depth,
       rutting: 0,

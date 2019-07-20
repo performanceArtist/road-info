@@ -62,7 +62,7 @@ const Measurements: React.FC = ({ taskData, currentTaskId, chartInfo }) => {
         <div className="measurements__chart">
           <DensityChart data={chartData} info={chartInfo} />
         </div>
-        <div className="measurements__results">
+        {/*<div className="measurements__results">
           <MeasurementResults
             measurements={[
               {
@@ -91,7 +91,7 @@ const Measurements: React.FC = ({ taskData, currentTaskId, chartInfo }) => {
               }
             ]}
           />
-        </div>
+          </div>*/}
       </div>
     </div>
   );

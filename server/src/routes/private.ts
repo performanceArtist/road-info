@@ -41,4 +41,9 @@ router.post('/api/task', (req, res) => {
   res.json({ status: 'ok', message: 'yeah' });
 });
 
+router.get('/api/track/:id', (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  res.send(id);
+});
 export default router;

@@ -1,0 +1,11 @@
+.index {
+  &__map {
+    width: 90vw;
+    height: 500px;
+
+    .leaflet-container {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}

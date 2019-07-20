@@ -1,8 +1,12 @@
 import React from 'react';
 
+import Map from '@components/Map/Map';
+
 const Index = () => (
-  <div>
-    <h1>Заголовок</h1>
+  <div className="index">
+    <div className="index__map">
+      <Map />
+    </div>
   </div>
 );
 

@@ -28,6 +28,11 @@ const App = () => {
               links={[
                 {
                   url: '/',
+                  title: 'Домой',
+                  icon: Icon.HOME
+                },
+                {
+                  url: '/measurements',
                   title: 'Измерения',
                   icon: Icon.GRAPH
                 },
@@ -48,7 +53,8 @@ const App = () => {
           </div>
           <div className="app__content">
             <Switch>
-              <Route exact path="/" component={Measurements} />
+              <Route exact path="/" component={Index} />
+              <Route path="/measurements" component={Measurements} />
               <Route path="/calibration" component={Calibration} />
               <Route path="/diagnostics" component={Diagnostics} />
               <Route path="/history" component={History} />

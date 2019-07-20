@@ -17,6 +17,8 @@ export interface ChartInfo {
 
 export interface ChartDataItem {
   distance: number;
+  longitude: number;
+  latitude: number;
   thickness: number;
   density: number;
   iri: number;

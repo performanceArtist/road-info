@@ -290,7 +290,6 @@ class DensityChart extends React.Component<Props, State> {
     const autoStep = Math.floor(partData.length / 8);
     const step = autoStep > 0 ? autoStep + 1 : 1;
 
-    console.log(partData);
     const ticks = partData
       .map(({ distance }) => distance)
       .filter((distance, index) => index % step === 0);
