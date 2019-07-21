@@ -10,6 +10,7 @@ type Props = {
   status?: string | null;
   label?: string | null;
   error?: boolean;
+  required?: boolean;
 };
 
 const Input: React.FC<Props> = ({
@@ -18,7 +19,8 @@ const Input: React.FC<Props> = ({
   type = 'text',
   status = null,
   label = null,
-  error = false
+  error = false,
+  required = false
 }) => (
   <label className="input">
     {label ? <div className="input__label">{label}</div> : null}
@@ -27,6 +29,7 @@ const Input: React.FC<Props> = ({
       type={type}
       component={component}
       className={error ? 'input__input input__input_invalid' : 'input__input'}
+      required={required}
     />
     <div className="input__input-status">{status}</div>
   </label>

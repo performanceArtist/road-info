@@ -36,12 +36,12 @@ const TaskPanel: React.FC<Props> = ({
 
   const elements = tasks.map(task => {
     const { id, chartData, formData } = task;
-    const { name } = formData;
+    const { order } = formData;
 
     return (
       <div className="task" key={`task-${id}`}>
         <header className="task-panel__header">
-          <div className="task-panel__name">{name}</div>
+          <div className="task-panel__name">{order}</div>
           <Toggle
             type={ToggleType.RADIO}
             name="start"
@@ -76,7 +76,7 @@ const TaskPanel: React.FC<Props> = ({
       </div>
     );
   });
- 
+
   return (
     <div className="task-panel">
       {elements}

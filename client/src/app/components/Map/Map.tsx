@@ -4,7 +4,6 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { connect } from 'react-redux';
 
-import icon from './icon/icon.png';
 //import iconShadow from './icon/icon-shadow.png';
 import { TaskData, ChartData, ChartInfo } from '@redux/measurements/types';
 import { RootState } from '@redux/reducer';
@@ -62,7 +61,7 @@ class MapComponent extends Component<Props, State> {
           <Marker
             key={Math.random()}
             icon={L.icon({
-              iconUrl: icon
+              iconUrl: 'images/icon.png'
               /*shadowUrl: iconShadow*/
             })}
             position={[last.latitude, last.longitude]}

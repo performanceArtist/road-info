@@ -29,13 +29,12 @@ class TaskModal extends React.Component<Props, {}> {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  async handleSubmit(values: any) {
-    console.log(values);
-    //event.preventDefault();
-    //const { saveTask, closeModal, task } = this.props;
-
-    //saveTask(this.state, task ? task.id : null);
-    //closeModal();
+  async handleSubmit(formData: any) {
+    console.log(formData);
+    event.preventDefault();
+    const { saveTask, closeModal, task } = this.props;
+    saveTask(formData, task ? task.id : null);
+    closeModal();
   }
 
   render() {
@@ -44,7 +43,7 @@ class TaskModal extends React.Component<Props, {}> {
     return (
       <Modal open={true} onClose={closeModal}>
         <Modal.Header>
-          {task ? `Редактировать "${task.formData.name}"` : 'Новое задание'}
+          {task ? `Редактировать "${task.formData.order}"` : 'Новое задание'}
         </Modal.Header>
         <Form
           onSubmit={this.handleSubmit}
@@ -54,7 +53,11 @@ class TaskModal extends React.Component<Props, {}> {
                 <div className="task-modal">
                   <div className="task-modal__row">
                     <div className="task-modal__meta">
-                      <FinalInput name="order" label="Номер заказа:" />
+                      <FinalInput
+                        name="order"
+                        label="Номер заказа:"
+                        required={true}
+                      />
                       <FinalInput name="client" label="Заказчик:" />
                       <FinalInput name="executor" label="Исполнитель:" />
                       <FinalInput name="region" label="Регион:" />

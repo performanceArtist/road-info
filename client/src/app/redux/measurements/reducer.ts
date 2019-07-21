@@ -31,7 +31,7 @@ const initialTask: TaskDataItem = {
   id: uuid.generate(),
   fetching: false,
   error: null,
-  formData: { name: 'Test' },
+  formData: { order: 1 },
   chartData: []
 };
 
