@@ -9,3 +9,21 @@
     }
   }
 }
+
+@media screen and (max-width: 1600px) {
+  .map-view {
+    &__map {
+      width: 86vw;
+      height: 500px;
+    }
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .map-view {
+    &__map {
+      width: 82vw;
+      height: 500px;
+    }
+  }
+}
