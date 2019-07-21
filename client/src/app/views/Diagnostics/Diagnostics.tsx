@@ -1,8 +1,7 @@
 import React from 'react';
 
 import MeasureTable from '@components/MeasureTable/MeasureTable';
-
-import VoltageChart from './VoltageChart/VoltageChart';
+import VoltageChart from '@components/VoltageChart/VoltageChart';
 
 const Diagnostics = () => (
   <div className="diagnostics">

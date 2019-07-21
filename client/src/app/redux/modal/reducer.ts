@@ -5,7 +5,7 @@ import InfoModal from '@components/InfoModal/InfoModal';
 import MaterialModal from '@components/MaterialModal/MaterialModal';
 import NormModal from '@components/NormModal/NormModal';
 import ChartModal from '@components/ChartModal/ChartModal';
-import TaskModal from '@views/Measurements/TaskModal/TaskModal';
+import TaskModal from '@components/TaskModal/TaskModal';
 
 import { ConnectedComponentClass } from 'react-redux';
 

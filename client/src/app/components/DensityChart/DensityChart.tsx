@@ -172,11 +172,10 @@ class DensityChart extends React.Component<Props, State> {
           dataKey={key}
           stroke={breakpoint ? `url(#${key})` : mainColor}
           strokeWidth={2.5}
-          dot={false}
+          dot={<CustomDot max={max[key]} min={min[key]} />}
           activeDot={false}
           isAnimationActive={false}
           hide={!show}
-          dot={<CustomDot max={max[key]} min={min[key]} />}
         />,
         <YAxis
           type="number"
@@ -293,7 +292,7 @@ class DensityChart extends React.Component<Props, State> {
     const step = autoStep > 0 ? autoStep + 1 : 1;
 
     const ticks = partData
-      .map(({ distance }) => distance)
+      .map(({ distance }) => Math.round(distance * 100) / 100)
       .filter((distance, index) => index % step === 0);
 
     return ticks;
@@ -309,6 +308,8 @@ class DensityChart extends React.Component<Props, State> {
       endIndex
     } = this.state;
     const { distance } = xDomains;
+
+    if (data.length === 0) return null;
 
     return (
       <>

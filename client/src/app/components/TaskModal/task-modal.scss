@@ -1,0 +1,14 @@
+.task-modal {
+  &__row {
+    display: flex;
+  }
+
+  &__meta {
+    width: 40%;
+    margin-right: 8%;
+  }
+
+  &__distance {
+    width: 58%;
+  }
+}

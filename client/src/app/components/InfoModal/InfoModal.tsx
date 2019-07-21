@@ -31,7 +31,10 @@ const InfoModal: React.FC<Props> = ({ notices, closeModal }) => {
     <div className="info-modal">
       <Modal open={true} onClose={closeModal}>
         <Modal.Header>Информация</Modal.Header>
-        <Modal.Content>{rows}</Modal.Content>
+        <Modal.Content>
+          {rows}
+          <Modal.Footer />
+        </Modal.Content>
       </Modal>
     </div>
   );

@@ -31,8 +31,8 @@ const MaterialModal: React.FC<Props> = ({
     <Modal open={true} coordinates={coordinates} onClose={closeModal}>
       <div className="material-modal">
         <Modal.Header>Параметры эталона</Modal.Header>
-        <Modal.Content>
-          <Form>
+        <Form props={{ onSubmit: closeModal }}>
+          <Modal.Content>
             <Input
               label="Название материала"
               props={{ type: 'text', defaultValue: name }}
@@ -45,7 +45,8 @@ const MaterialModal: React.FC<Props> = ({
                   min: 0,
                   step: 0.01,
                   disabled: checked,
-                  defaultValue: density
+                  defaultValue: density,
+                  autoFocus: true
                 }}
               />
               <input
@@ -62,11 +63,11 @@ const MaterialModal: React.FC<Props> = ({
                 }}
               />
             </div>
-            <Button type="submit" onClick={closeModal}>
-              Сохранить
-            </Button>
-          </Form>
-        </Modal.Content>
+            <Modal.Footer>
+              <Button type="submit">Сохранить</Button>
+            </Modal.Footer>
+          </Modal.Content>
+        </Form>
       </div>
     </Modal>
   );

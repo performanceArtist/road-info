@@ -28,10 +28,12 @@ class TestModal extends React.Component<Props, {}> {
     return (
       <Modal open={true} onClose={closeModal}>
         <Modal.Header>Test #{counter}</Modal.Header>
-        <Modal.Content>Ok</Modal.Content>
-        <Modal.Footer>
-          <Button onClick={this.onNextModalClick}>New modal</Button>
-        </Modal.Footer>
+        <Modal.Content>
+          Ok
+          <Modal.Footer>
+            <Button onClick={this.onNextModalClick}>New modal</Button>
+          </Modal.Footer>
+        </Modal.Content>
       </Modal>
     );
   }

@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import ControlForm from '@components/ControlForm/ControlForm';
 import DensityChart from '@components/DensityChart/DensityChart';
 import ChartSettings from '@components/ChartSettings/ChartSettings';
+import MeasurementResults from '@components/MeasurementResults/MeasurementResults';
+import TaskPanel from '@components/TaskPanel/TaskPanel';
 
-import MeasurementResults from './MeasurementResults/MeasurementResults';
-import TaskPanel from './TaskPanel/TaskPanel';
 import socket from '@redux/measurements/socket';
 import { RootState } from '@redux/reducer';
 

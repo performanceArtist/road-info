@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 
+import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
 import Button from '@shared/Button/Button';
 import Modal from '@components/Modal/Modal';
@@ -28,11 +29,11 @@ class ChartModal extends React.Component<{}, State> {
       lines
     };
 
-    this.handleClick = this.handleClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  handleClick() {
+  handleSubmit() {
     const { saveChartSettings, closeModal } = this.props;
     const { maxTicks, lines } = this.state;
 
@@ -56,76 +57,81 @@ class ChartModal extends React.Component<{}, State> {
 
     return (
       <Modal open={true} onClose={closeModal}>
-        <div className="chart-modal">
-          <Modal.Header>Настройки графика</Modal.Header>
+        <Modal.Header>Настройки графика</Modal.Header>
+        <Form props={{ onSubmit: this.handleSubmit }}>
           <Modal.Content>
-            <div className="chart-modal__breakpoint-title">Полоса</div>
-            <div className="chart-modal__breakpoint">
-              <div className="chart-modal__input">
-                <Dropdown
-                  name="line"
-                  value={key}
-                  options={[
-                    { name: 'Плотность', value: 'density' },
-                    { name: 'IRI', value: 'iri' },
-                    { name: 'Толщина покрытия', value: 'thickness' },
-                    { name: 'Колейность', value: 'rutting' }
-                  ]}
-                  onChange={(event: React.SyntheticEvent) => {
-                    const target = event.target as HTMLInputElement;
-                    this.setState({ key: target.value });
-                  }}
-                />
-              </div>
-              <div className="chart-modal__input">
+            <div className="chart-modal">
+              <div className="chart-modal__wrapper">
+                <div className="chart-modal__breakpoint-title">Полоса</div>
+                <div className="chart-modal__breakpoint">
+                  <div className="chart-modal__input">
+                    <Dropdown
+                      name="line"
+                      value={key}
+                      options={[
+                        { name: 'Плотность', value: 'density' },
+                        { name: 'IRI', value: 'iri' },
+                        { name: 'Толщина покрытия', value: 'thickness' },
+                        { name: 'Колейность', value: 'rutting' }
+                      ]}
+                      onChange={(event: React.SyntheticEvent) => {
+                        const target = event.target as HTMLInputElement;
+                        this.setState({ key: target.value });
+                      }}
+                    />
+                  </div>
+                  <div className="chart-modal__input">
+                    <Input
+                      label="От"
+                      props={{
+                        name: 'start',
+                        type: 'number',
+                        step: 0.1,
+                        value: currentLine.breakpoint
+                          ? currentLine.breakpoint.start
+                          : 0,
+                        onChange: this.handleInputChange,
+                        autoFocus: true
+                      }}
+                    />
+                  </div>
+                  <div className="chart-modal__input">
+                    <Input
+                      label="До"
+                      props={{
+                        name: 'finish',
+                        type: 'number',
+                        step: 0.1,
+                        value: currentLine.breakpoint
+                          ? currentLine.breakpoint.finish
+                          : 0,
+                        onChange: this.handleInputChange
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="chart-modal__breakpoint-title">Показания</div>
                 <Input
-                  label="От"
+                  label="Количество измерений"
                   props={{
-                    name: 'start',
+                    name: 'max',
                     type: 'number',
-                    step: 0.1,
-                    value: currentLine.breakpoint
-                      ? currentLine.breakpoint.start
-                      : 0,
-                    onChange: this.handleInputChange
+                    step: 1,
+                    min: 1,
+                    value: maxTicks,
+                    onChange: (event: React.SyntheticEvent) => {
+                      const target = event.target as HTMLInputElement;
+                      this.setState({ maxTicks: parseInt(target.value) });
+                    }
                   }}
                 />
               </div>
-              <div className="chart-modal__input">
-                <Input
-                  label="До"
-                  props={{
-                    name: 'finish',
-                    type: 'number',
-                    step: 0.1,
-                    value: currentLine.breakpoint
-                      ? currentLine.breakpoint.finish
-                      : 0,
-                    onChange: this.handleInputChange
-                  }}
-                />
-              </div>
+              <Modal.Footer>
+                <Button type="submit">Сохранить</Button>
+              </Modal.Footer>
             </div>
-            <div className="chart-modal__breakpoint-title">Показания</div>
-            <Input
-              label="Количество измерений"
-              props={{
-                name: 'max',
-                type: 'number',
-                step: 1,
-                min: 1,
-                value: maxTicks,
-                onChange: (event: React.SyntheticEvent) => {
-                  const target = event.target as HTMLInputElement;
-                  this.setState({ maxTicks: parseInt(target.value) });
-                }
-              }}
-            />
           </Modal.Content>
-          <Modal.Footer>
-            <Button onClick={this.handleClick}>Сохранить</Button>
-          </Modal.Footer>
-        </div>
+        </Form>
       </Modal>
     );
   }

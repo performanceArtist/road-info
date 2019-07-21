@@ -4,9 +4,10 @@ import Button from '@shared/Button/Button';
 import { Toggle } from '@components/Toggle/Toggle';
 import Dropdown from '@components/Dropdown/Dropdown';
 import Slider from '@components/Slider/Slider';
+import Start from '@components/Start/Start';
+import FormTest from '@components/FormTest/FormTest';
 
 import CallTest from './CallTest';
-import Start from '@components/Start/Start';
 
 const UI = () => (
   <div className="ui">
@@ -46,6 +47,9 @@ const UI = () => (
       </div>
       <div className="ui__row">
         <Start />
+      </div>
+      <div>
+        <FormTest />
       </div>
     </div>
   </div>

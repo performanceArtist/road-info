@@ -8,7 +8,8 @@ enum Icon {
   GRAPH = 'images/graph.png',
   HISTORY = 'images/history.png',
   OPTIONS = 'images/options.png',
-  DIAGNOSTICS = 'images/diagnostics.png'
+  DIAGNOSTICS = 'images/diagnostics.png',
+  TRUCK = 'images/truck.png'
 }
 
 interface Link {
@@ -19,7 +20,7 @@ interface Link {
 
 type Props = {
   links: Array<Link>;
-}
+};
 
 const Navigation: React.FC<Props> = ({ links }) => {
   const elements = links.map(({ url, icon = Icon.NONE, title = '' }: Link) => (

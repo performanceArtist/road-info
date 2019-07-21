@@ -5,7 +5,7 @@ type Props = {
   coordinates?: { x: number; y: number };
   onClose: () => void;
   children: JSX.Element[] | JSX.Element | string;
-}
+};
 
 interface State {
   open: boolean;

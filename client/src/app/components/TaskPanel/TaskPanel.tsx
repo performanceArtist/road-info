@@ -76,7 +76,7 @@ const TaskPanel: React.FC<Props> = ({
       </div>
     );
   });
-
+ 
   return (
     <div className="task-panel">
       {elements}

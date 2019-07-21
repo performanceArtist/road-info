@@ -1,8 +1,8 @@
 import React from 'react';
 
 const History = () => (
-  <div className="history">
-    <h2>History</h2>
+  <div className="report">
+    <h2>Создание отчёта</h2>
   </div>
 );
 

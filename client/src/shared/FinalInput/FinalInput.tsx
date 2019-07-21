@@ -1,24 +1,31 @@
 import React from 'react';
+import { Field } from 'react-final-form';
 
-import './input.scss';
+import './final-input.scss';
 
 type Props = {
+  name: string;
+  component?: 'input' | 'select' | 'textarea';
+  type?: 'text' | 'number';
   status?: string | null;
   label?: string | null;
   error?: boolean;
-  props?: Object;
 };
 
 const Input: React.FC<Props> = ({
+  name,
+  component = 'input',
+  type = 'text',
   status = null,
   label = null,
-  error = false,
-  props = {}
+  error = false
 }) => (
   <label className="input">
     {label ? <div className="input__label">{label}</div> : null}
-    <input
-      {...props}
+    <Field
+      name={name}
+      type={type}
+      component={component}
       className={error ? 'input__input input__input_invalid' : 'input__input'}
     />
     <div className="input__input-status">{status}</div>

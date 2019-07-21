@@ -90,7 +90,7 @@ class MapComponent extends Component<Props, State> {
         key={Math.random()}
         data={getData(chartData)}
         options={{
-          palette: { 0: '#ff0000', 0.5: 'green', 1.0: '#ff0000' },
+          palette: { 0: '#f62a00', 0.5: '#258039', 1.0: '#f62a00' },
           outlineColor: 'black',
           weight: 7,
           outlineWidth: 1,
