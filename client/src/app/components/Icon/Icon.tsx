@@ -6,7 +6,9 @@ export enum IconImage {
   DELETE = 'url("images/trashbin.png")',
   ANGLE = 'url("images/angle-down.png")',
   ZOOM_OUT = 'url("images/zoom-out.png")',
-  SETTINGS = 'url("images/settings.png")'
+  SETTINGS = 'url("images/settings.png")',
+  MAX = 'url("images/max.png")',
+  MIN = 'url("images/min.png")'
 }
 
 type Props = {
@@ -14,7 +16,7 @@ type Props = {
   image?: IconImage;
   size?: string;
   onClick?: (event: React.SyntheticEvent) => any;
-}
+};
 
 export const Icon: React.FC<Props> = ({
   image = IconImage.WARNING,

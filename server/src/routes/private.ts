@@ -33,11 +33,17 @@ router.get('/graph', (req, res) => {
 });
 router.get('/api/', (req, res) => res.json({ username: 'username' }));
 
-import { generateMeasurements } from '../models/Measurement';
+import { generateMeasurements, makeRoute } from '../models/Measurement';
 
 router.post('/api/task', (req, res) => {
   console.log(req.body);
   generateMeasurements();
+  res.json({ status: 'ok', message: 'yeah' });
+});
+
+router.post('/api/test-route', (req, res) => {
+  console.log(req.body);
+  makeRoute();
   res.json({ status: 'ok', message: 'yeah' });
 });
 

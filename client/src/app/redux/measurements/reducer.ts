@@ -1,7 +1,7 @@
 import uuid from 'short-uuid';
 
 import { TASK, CHART, SERVER } from './actions';
-import { TaskType, ChartLineInfo } from './types';
+import { TaskDataItem, TaskData, ChartLineInfo } from './types';
 
 const fakeData = [
   { distance: 100, thickness: 1, density: 1.5, iri: 2.1, rutting: 210 },
@@ -27,7 +27,7 @@ const defaultInfo = {
   }
 };
 
-const initialTask: TaskType = {
+const initialTask: TaskDataItem = {
   id: uuid.generate(),
   fetching: false,
   error: null,
@@ -36,7 +36,7 @@ const initialTask: TaskType = {
 };
 
 const initialState: {
-  taskData: Array<TaskType>;
+  taskData: TaskData;
   currentTaskId: string | null;
   chartInfo: {
     lines: {

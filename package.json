@@ -68,6 +68,7 @@
     "recharts": "^1.6.2",
     "redux": "^4.0.1",
     "redux-saga": "^1.0.3",
+    "reselect": "^4.0.0",
     "sass-loader": "^7.1.0",
     "short-uuid": "^3.1.1",
     "style-loader": "^0.23.1",

@@ -50,3 +50,46 @@ export async function generateMeasurements() {
     console.log(error);
   }
 }
+
+export async function makeRoute() {
+  const angles = [
+    { coordinates: [56.479196, 84.949937], distance: 100 },
+    { coordinates: [56.476205, 84.949937], distance: 200 },
+    { coordinates: [56.4786975, 84.949937], distance: 300 },
+    { coordinates: [56.4786199, 84.949937], distance: 400 },
+    { coordinates: [56.4777005, 84.949937], distance: 500 },
+    { coordinates: [56.477202, 84.949937], distance: 600 },
+    { coordinates: [56.4767035, 84.949937], distance: 700 },
+    { coordinates: [56.476264, 84.953049], distance: 800 },
+    { coordinates: [56.477947, 84.953049], distance: 900 },
+    { coordinates: [56.477882, 84.955463], distance: 1000 }
+  ];
+
+  angles.forEach((angle, index) => {
+    setTimeout(async () => {
+      const date = new Date();
+
+      const measurement = {
+        distance: angle.distance,
+        latitude: angle.coordinates[0],
+        longitude: angle.coordinates[1],
+        time: date.toUTCString(),
+        measurement_id: 1
+      };
+
+      const lastId = await knex('measurement_sections')
+        .insert(measurement)
+        .returning('id');
+
+      const roadLayer = {
+        density: Math.random() * 5,
+        depth: Math.random() * 2,
+        measurement_section_id: lastId[0],
+        layer_type_id: 1,
+        impulse_count: 2
+      };
+
+      await knex('road_layers').insert(roadLayer);
+    }, angles.indexOf(angle) * 100);
+  });
+}

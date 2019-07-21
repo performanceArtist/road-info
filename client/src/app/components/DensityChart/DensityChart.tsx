@@ -14,6 +14,7 @@ import {
   ReferenceArea
 } from 'recharts';
 
+import CustomDot from './CustomDot';
 import { Icon, IconImage } from '@components/Icon/Icon';
 import { openModal, OpenModal } from '@redux/modal/actions';
 import { ChartData, ChartInfo } from '@redux/measurements/types';
@@ -156,7 +157,7 @@ class DensityChart extends React.Component<Props, State> {
   }
 
   getLineCharts() {
-    const { info } = this.props;
+    const { info, min, max } = this.props;
     const { yDomains } = this.state;
 
     return Object.keys(info.lines).map(key => {
@@ -175,6 +176,7 @@ class DensityChart extends React.Component<Props, State> {
           activeDot={false}
           isAnimationActive={false}
           hide={!show}
+          dot={<CustomDot max={max[key]} min={min[key]} />}
         />,
         <YAxis
           type="number"
@@ -248,10 +250,10 @@ class DensityChart extends React.Component<Props, State> {
       } else if (out(finishPercentage)) {
         stops = (
           <>
-            <stop offset="0%" stopColor={warningColor} />
-            <stop offset={`${startPercentage}%`} stopColor={warningColor} />
+            <stop offset="0%" stopColor={mainColor} />
             <stop offset={`${startPercentage}%`} stopColor={mainColor} />
-            <stop offset="100%" stopColor={mainColor} />
+            <stop offset={`${startPercentage}%`} stopColor={warningColor} />
+            <stop offset="100%" stopColor={warningColor} />
           </>
         );
       }

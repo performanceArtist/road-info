@@ -8,6 +8,7 @@ import ChartSettings from '@components/ChartSettings/ChartSettings';
 import MeasurementResults from './MeasurementResults/MeasurementResults';
 import TaskPanel from './TaskPanel/TaskPanel';
 import socket from '@redux/measurements/socket';
+import { RootState } from '@redux/reducer';
 
 const testData = [
   { distance: 0, density: 3.97835, thickness: 1.94446, rutting: 0, iri: 0 },
@@ -23,7 +24,19 @@ const testData = [
   { distance: 1000, density: 4.06617, thickness: 1.24808, rutting: 0, iri: 0 }
 ];
 
-const Measurements: React.FC = ({ taskData, currentTaskId, chartInfo }) => {
+type StateProps = {
+  taskData;
+  currentTaskId;
+  chartInfo;
+};
+
+type Props = StateProps;
+
+const Measurements: React.FC<Props> = ({
+  taskData,
+  currentTaskId,
+  chartInfo
+}) => {
   const current = taskData.find(({ id }) => id === currentTaskId);
   const { chartData = [] } = current ? current : {};
   const objectReduce = (
@@ -60,44 +73,14 @@ const Measurements: React.FC = ({ taskData, currentTaskId, chartInfo }) => {
           <TaskPanel tasks={taskData} currentTaskId={currentTaskId} />
         </div>
         <div className="measurements__chart">
-          <DensityChart data={chartData} info={chartInfo} />
+          <DensityChart data={chartData} info={chartInfo} min={min} max={max} />
         </div>
-        {/*<div className="measurements__results">
-          <MeasurementResults
-            measurements={[
-              {
-                title: 'Плотность, г/см3',
-                min: min.density,
-                average: average.density,
-                max: max.density
-              },
-              {
-                title: 'IRI, м/км',
-                min: min.iri,
-                average: average.iri,
-                max: max.iri
-              },
-              {
-                title: 'Колейность, мм',
-                min: min.rutting,
-                average: average.rutting,
-                max: max.rutting
-              },
-              {
-                title: 'Толщина слоя, мм',
-                min: min.thickness,
-                average: average.thickness,
-                max: max.thickness
-              }
-            ]}
-          />
-          </div>*/}
       </div>
     </div>
   );
 };
 
-const mapState = ({ measurements }) => ({
+const mapState = ({ measurements }: RootState) => ({
   ...measurements
 });
 
