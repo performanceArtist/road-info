@@ -18,8 +18,8 @@ const defaultInfo = {
     show: true,
     breakpoint: { start: 0, finish: 3 }
   },
-  iri: { mainColor: 'blue', units: 'IRI, м/км', show: false },
-  rutting: { mainColor: 'teal', units: 'Колейность, мм', show: false },
+  iri: { mainColor: 'blue', units: 'IRI, м/км', show: true },
+  rutting: { mainColor: 'teal', units: 'Колейность, мм', show: true },
   thickness: {
     mainColor: 'green',
     units: 'Толщина слоя, мм',

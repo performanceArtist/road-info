@@ -14,7 +14,7 @@ import {
   ReferenceArea
 } from 'recharts';
 
-import CustomDot from './CustomDot';
+import CustomDot from '@components/CustomDot/CustomDot';
 import { Icon, IconImage } from '@components/Icon/Icon';
 import { openModal, OpenModal } from '@redux/modal/actions';
 import { ChartData, ChartInfo } from '@redux/measurements/types';
@@ -40,24 +40,11 @@ interface State {
   endIndex: number;
 }
 
-const yDomains = {
-  density: {
-    top: 'dataMax+0.5',
-    bottom: 'dataMin-0.5'
-  },
-  thickness: {
-    top: 'dataMax+0.5',
-    bottom: 'dataMin-0.5'
-  },
-  rutting: {
-    top: 'dataMax+0.5',
-    bottom: 'dataMin-0.5'
-  },
-  iri: {
-    top: 'dataMax+0.5',
-    bottom: 'dataMin-0.5'
-  }
-};
+const getYDomains = (keys: Array<string>) =>
+  keys.reduce(
+    (acc, el) => (acc[el] = { top: 'dataMax+0.5', bottom: 'dataMin-0.5' }),
+    {}
+  );
 
 const xDomains = {
   distance: { left: 'dataMin', right: 'dataMax' }
@@ -67,10 +54,12 @@ class DensityChart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    const lines = Object.keys(props.info.lines);
+
     this.state = {
       refAreaLeft: '',
       refAreaRight: '',
-      yDomains: { ...yDomains },
+      yDomains: getYDomains(lines),
       xDomains: { ...xDomains },
       startIndex: null,
       endIndex: null
@@ -110,7 +99,7 @@ class DensityChart extends React.Component<Props, State> {
   }
 
   zoom() {
-    let { refAreaLeft, refAreaRight } = this.state;
+    let { refAreaLeft, refAreaRight, yDomains } = this.state;
 
     if (refAreaLeft === refAreaRight || refAreaRight === '') {
       this.setState({
@@ -133,26 +122,22 @@ class DensityChart extends React.Component<Props, State> {
           right: refAreaRight
         }
       },
-      yDomains: {
-        density: this.getAxisYDomain(refAreaLeft, refAreaRight, 'density', 1),
-        thickness: this.getAxisYDomain(
-          refAreaLeft,
-          refAreaRight,
-          'thickness',
-          1
-        ),
-        rutting: this.getAxisYDomain(refAreaLeft, refAreaRight, 'rutting', 1),
-        iri: this.getAxisYDomain(refAreaLeft, refAreaRight, 'iri', 1)
-      }
+      yDomains: Object.keys(yDomains).reduce(
+        (acc, el) =>
+          (acc[el] = this.getAxisYDomain(refAreaLeft, refAreaRight, el, 1)),
+        {}
+      )
     });
   }
 
   zoomOut() {
+    const lines = Object.keys(this.props.info.lines);
+
     this.setState({
       refAreaLeft: '',
       refAreaRight: '',
       xDomains: { ...xDomains },
-      yDomains: { ...yDomains }
+      yDomains: getYDomains(lines)
     });
   }
 
@@ -161,7 +146,6 @@ class DensityChart extends React.Component<Props, State> {
     const { yDomains } = this.state;
 
     return Object.keys(info.lines).map(key => {
-      if (key !== 'density') return null;
       const { units = 'm', breakpoint, mainColor, show } = info.lines[key];
 
       return [
@@ -299,7 +283,7 @@ class DensityChart extends React.Component<Props, State> {
   }
 
   render() {
-    const { data, info, openModal } = this.props;
+    const { data, info } = this.props;
     const {
       refAreaLeft,
       refAreaRight,

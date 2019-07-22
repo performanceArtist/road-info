@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import DensityChart from '@components/DensityChart/DensityChart';
+import MultilineChart from '@components/MultilineChart/MultilineChart';
 import TaskStart from './TaskStart/TaskStart';
 
 import ModalManager from '../../app/layout/ModalManager/ModalManager';
@@ -42,7 +42,7 @@ const Graph: React.FC<Props> = ({ taskData, currentTaskId, chartInfo }) => {
           <TaskStart tasks={taskData} />
         </div>
         <div className="graph__chart">
-          <DensityChart data={chartData} info={chartInfo} />
+          <MultilineChart data={chartData} info={chartInfo} />
         </div>
       </div>
     </div>

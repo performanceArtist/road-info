@@ -1,0 +1,44 @@
+.composite-chart {
+  display: flex;
+
+  &__form {
+    display: inline-block;
+    width: 23rem;
+  }
+
+  &__input {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  &__info {
+    display: flex;
+  }
+
+  &__results {
+    margin-left: 2.5rem;
+  }
+
+  &__chart {
+    @extend %unselectable;
+    min-width: 600px;
+    min-height: 400px;
+    width: 600px;
+    height: 300px;
+    padding: 1.2rem;
+    padding-bottom: 3rem;
+    background: $light-grey;
+    resize: both;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .measurements {
+    display: block;
+
+    &__form {
+      margin-bottom: 3rem;
+    }
+  }
+}
