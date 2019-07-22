@@ -29,9 +29,12 @@ type OwnProps = {
   breakpoint?: { start: number; finish: number };
   mainColor?: string;
   warningColor?: string;
+  showY: boolean;
+  showBrush: boolean;
   showMin?: boolean;
   showMax?: boolean;
   show?: boolean;
+  enableZoom?: boolean;
 };
 
 type Props = OwnProps;
@@ -135,7 +138,7 @@ class Chart extends React.Component<Props, State> {
       mainColor = 'black',
       showMax = true,
       showMin = true,
-      show = true
+      showY = true
     } = this.props;
     const { yDomain } = this.state;
 
@@ -156,10 +159,10 @@ class Chart extends React.Component<Props, State> {
         }
         activeDot={false}
         isAnimationActive={false}
-        hide={!show}
       />,
       <YAxis
         type="number"
+        hide={!showY}
         yAxisId={keyY}
         domain={[yDomain.bottom, yDomain.top]}
         allowDataOverflow
@@ -276,7 +279,14 @@ class Chart extends React.Component<Props, State> {
   }
 
   render() {
-    const { data, maxTicks = 10, keyX, keyY } = this.props;
+    const {
+      showBrush = true,
+      enableZoom = true,
+      data,
+      maxTicks = 10,
+      keyX,
+      keyY
+    } = this.props;
     const {
       refAreaLeft,
       refAreaRight,
@@ -312,7 +322,7 @@ class Chart extends React.Component<Props, State> {
               allowDataOverflow
             />
             {this.getLineChart()}
-            {data.length > 0 && (
+            {data.length > 0 && showBrush && (
               <Brush
                 dataKey="distance"
                 onChange={({ startIndex, endIndex }) => {
@@ -333,7 +343,7 @@ class Chart extends React.Component<Props, State> {
               }}
             />
 
-            {refAreaLeft && refAreaRight ? (
+            {enableZoom && refAreaLeft && refAreaRight ? (
               <ReferenceArea
                 yAxisId={keyY}
                 x1={refAreaLeft}

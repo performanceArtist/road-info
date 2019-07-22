@@ -14,6 +14,11 @@ const postgresEmitter = (function() {
       .where({ id: measurement.measurement_section_id })
       .first();
 
+    const base = await knex('measurements')
+      .select('*')
+      .where({ id: section.measurement_id })
+      .first();
+
     if (section.distance == 0) {
       lastSection = null;
       console.log('Start');
@@ -36,8 +41,8 @@ const postgresEmitter = (function() {
       iri: 0
     };
 
-    console.log(data);
-    io.emit('newMeasurement', data);
+    console.log(base.kondor_id, data);
+    io.emit('newMeasurement', { id: base.kondor_id, measurement: data });
   });
 
   return emitter;

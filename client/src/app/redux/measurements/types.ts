@@ -27,12 +27,9 @@ export interface ChartDataItem {
 
 export type ChartData = Array<ChartDataItem>;
 
-export interface TaskDataItem {
+export interface KondorDataItem {
   id: string;
-  fetching: boolean;
-  error: Error | null;
-  formData: Object;
-  chartData: ChartData;
+  measurements: ChartData;
 }
 
-export type TaskData = Array<TaskDataItem>;
+export type KondorData = Array<KondorDataItem>;

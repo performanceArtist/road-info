@@ -1,9 +1,9 @@
 import React from 'react';
 
 type Props = {
-  value: number;
-  cx: number;
-  cy: number;
+  value?: number;
+  cx?: number;
+  cy?: number;
   max?: number;
   min?: number;
 };

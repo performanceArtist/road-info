@@ -4,52 +4,68 @@ import { connect } from 'react-redux';
 import ControlForm from '@components/ControlForm/ControlForm';
 import Chart from '@components/Chart/Chart';
 import ChartSettings from '@components/ChartSettings/ChartSettings';
-import MeasurementResults from '@components/MeasurementResults/MeasurementResults';
-import TaskPanel from '@components/TaskPanel/TaskPanel';
 
 import socket from '@redux/measurements/socket';
 import { RootState } from '@redux/reducer';
+import { KondorData, ChartInfo, ChartData } from '@redux/measurements/types';
+
+import GeneratePanel from '@components/GeneratePanel/GeneratePanel';
+import Start from '@components/Start/Start';
 
 import testData from '../../views/Measurements/testData';
 
-type StateProps = {
-  taskData;
-  currentTaskId;
-  chartInfo;
+type MapState = {
+  kondors: KondorData;
+  chartInfo: ChartInfo;
 };
 
-type Props = StateProps;
+type Props = MapState;
 
-const CompositeChart: React.FC<Props> = ({
-  taskData,
-  currentTaskId,
-  chartInfo
-}) => {
-  const current = taskData.find(({ id }) => id === currentTaskId);
-  const { chartData = [] } = current ? current : {};
+const CompositeChart: React.FC<Props> = ({ kondors, chartInfo }) => {
+  const preview = (keyY: string, data: ChartData) => (
+    <div className="composite-chart__chart composite-chart__chart_preview">
+      <Chart
+        keyX="distance"
+        keyY={keyY}
+        data={data}
+        showMax={false}
+        showMin={false}
+        showY={false}
+        showBrush={false}
+        enableZoom={false}
+        {...chartInfo.lines[keyY]}
+        key={Math.random()}
+      />
+    </div>
+  );
+
+  const getPreviews = (data: ChartData) => (
+    <div className="composite-chart__preview">
+      {preview('density', data)}
+      {preview('rutting', data)}
+      {preview('iri', data)}
+      {preview('thickness', data)}
+    </div>
+  );
 
   return (
-    <div className="measurements">
-      <div className="measurements__info">
-        <div className="measurements__form">
-          <TaskPanel tasks={taskData} currentTaskId={currentTaskId} />
-        </div>
-        <div className="measurements__chart">
-          <Chart keyX="distance" keyY="density" data={testData} />
-        </div>
-        <div className="measurements__chart">
-          <Chart keyX="distance" keyY="iri" data={testData} />
-        </div>
+    <div className="composite-chart">
+      <div>
+        <Start />
+      </div>
+      <div>
+        <GeneratePanel />
+      </div>
+      <div className="composite-chart__previews">
+        {kondors.map(({ measurements }) => getPreviews(measurements))}
       </div>
     </div>
   );
 };
 
-//            maxTicks={chartInfo.maxTicks}
-//{...chartInfo.lines.density}
-
 const mapState = ({ measurements }: RootState) => ({
-  ...measurements
+  kondors: measurements.kondors,
+  chartInfo: measurements.chartInfo
 });
 
 export default connect(mapState)(CompositeChart);

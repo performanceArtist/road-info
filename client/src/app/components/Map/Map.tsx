@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import { connect } from 'react-redux';
 
 //import iconShadow from './icon/icon-shadow.png';
-import { TaskData, ChartData, ChartInfo } from '@redux/measurements/types';
+import { KondorData, ChartData, ChartInfo } from '@redux/measurements/types';
 import { RootState } from '@redux/reducer';
 import Multicolor from './Multicolor';
 import { testData, haversine } from './helpers';
@@ -25,7 +25,7 @@ interface State {
 }
 
 type MapState = {
-  taskData: TaskData;
+  kondors: KondorData;
   chartInfo: ChartInfo;
 };
 
@@ -52,11 +52,11 @@ class MapComponent extends Component<Props, State> {
   }
 
   renderMarkers() {
-    const { taskData } = this.props;
+    const { kondors } = this.props;
 
-    return taskData.map(({ chartData }) => {
-      if (chartData.length !== 0) {
-        const last = chartData[chartData.length - 1];
+    return kondors.map(({ measurements }) => {
+      if (measurements.length !== 0) {
+        const last = measurements[measurements.length - 1];
         return (
           <Marker
             key={Math.random()}
@@ -74,7 +74,7 @@ class MapComponent extends Component<Props, State> {
   }
 
   renderLines() {
-    const { taskData, chartInfo } = this.props;
+    const { kondors, chartInfo } = this.props;
     const { breakpoint } = chartInfo.lines.density;
     const getData = (chartData: ChartData) =>
       chartData.map(({ latitude, longitude, density }) => {
@@ -83,11 +83,11 @@ class MapComponent extends Component<Props, State> {
         return L.latLng(latitude, longitude, z);
       });
 
-    return taskData.map(({ chartData }, index) => (
+    return kondors.map(({ measurements }, index) => (
       <Multicolor
         map={this.ref}
         key={Math.random()}
-        data={getData(chartData)}
+        data={getData(measurements)}
         options={{
           palette: { 0: '#f62a00', 0.5: '#258039', 1.0: '#f62a00' },
           outlineColor: 'black',
@@ -103,10 +103,10 @@ class MapComponent extends Component<Props, State> {
   }
 
   addPopup(event, index: number) {
-    const { taskData, chartInfo } = this.props;
+    const { kondors, chartInfo } = this.props;
     const { popupCount } = this.state;
 
-    const data = taskData[index].chartData;
+    const data = kondors[index].measurements;
     const closestIndex = haversine(data, {
       latitude: event.latlng.lat,
       longitude: event.latlng.lng
@@ -171,7 +171,7 @@ class MapComponent extends Component<Props, State> {
 }
 
 const mapState = ({ measurements }: RootState) => ({
-  taskData: measurements.taskData,
+  kondors: measurements.kondors,
   chartInfo: measurements.chartInfo
 });
 

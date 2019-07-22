@@ -1,17 +1,9 @@
-import uuid from 'short-uuid';
+import { CHART, SERVER, GET } from './actions';
+import { KondorDataItem, KondorData, ChartLineInfo } from './types';
 
-import { TASK, CHART, SERVER } from './actions';
-import { TaskDataItem, TaskData, ChartLineInfo } from './types';
+import testData from '../../views/Measurements/testData';
 
-const fakeData = [
-  { distance: 100, thickness: 1, density: 1.5, iri: 2.1, rutting: 210 },
-  { distance: 200, thickness: 2, density: 1.3, iri: 1.7, rutting: 170 },
-  { distance: 300, thickness: 0.8, density: 0.8, iri: 3.2, rutting: 300 },
-  { distance: 400, thickness: 1.2, density: 1, iri: 3, rutting: 320 },
-  { distance: 500, thickness: 1.5, density: 0.9, iri: 4.2, rutting: 420 }
-];
-
-const defaultInfo = {
+const chartSettings = {
   density: {
     mainColor: 'black',
     units: 'Плотность, г/см3',
@@ -27,17 +19,13 @@ const defaultInfo = {
   }
 };
 
-const initialTask: TaskDataItem = {
-  id: uuid.generate(),
-  fetching: false,
-  error: null,
-  formData: { order: 1 },
-  chartData: []
+const initialKondor: KondorDataItem = {
+  id: '1',
+  measurements: testData
 };
 
 const initialState: {
-  taskData: TaskData;
-  currentTaskId: string | null;
+  kondors: KondorData;
   chartInfo: {
     lines: {
       [key: string]: ChartLineInfo;
@@ -47,9 +35,8 @@ const initialState: {
   channelStatus: 'on' | 'off';
   serverStatus: 'unknown' | 'on' | 'off';
 } = {
-  taskData: [initialTask],
-  currentTaskId: null,
-  chartInfo: { lines: defaultInfo, maxTicks: 10 },
+  kondors: [initialKondor],
+  chartInfo: { lines: chartSettings, maxTicks: 10 },
   channelStatus: 'off',
   serverStatus: 'unknown'
 };
@@ -59,47 +46,6 @@ export default function reducer(
   { type, payload }: { type: string; payload: any }
 ) {
   switch (type) {
-    case TASK.SAVE: {
-      const taskData = [...state.taskData];
-      const { formData, taskId } = payload;
-      const task = taskData.find(({ id }) => id === taskId);
-
-      if (task) {
-        task.formData = formData;
-        return {
-          ...state,
-          taskData
-        };
-      } else {
-        return {
-          ...state,
-          taskData: taskData.concat({
-            id: uuid.generate(),
-            fetching: false,
-            error: null,
-            formData,
-            chartData: []
-          })
-        };
-      }
-    }
-    case TASK.REMOVE:
-      return {
-        ...state,
-        taskData: state.taskData.filter(({ id }) => id !== payload.taskId)
-      };
-    case TASK.SET_CURRENT:
-      return { ...state, currentTaskId: payload.taskId };
-    case SERVER.ADD_MEASUREMENT: {
-      const taskData = [...state.taskData];
-      const current = taskData.find(({ id }) => id === state.currentTaskId);
-      if (current) {
-        current.chartData = current.chartData.concat(payload);
-        return { ...state, taskData };
-      } else {
-        return state;
-      }
-    }
     case CHART.CHANGE_VISIBILITY: {
       const chartInfo = JSON.parse(JSON.stringify(state.chartInfo));
       chartInfo.lines[payload.name].show = payload.show;
@@ -111,6 +57,22 @@ export default function reducer(
       chartInfo.maxTicks = payload.maxTicks;
       return { ...state, chartInfo };
     }
+    case SERVER.ADD_MEASUREMENT: {
+      const kondors = [...state.kondors];
+      const current = kondors.find(({ id }) => id === payload.id);
+      if (current) {
+        current.measurements = current.measurements.concat(payload.measurement);
+        return { ...state, kondors };
+      } else {
+        return {
+          ...state,
+          kondors: kondors.concat({
+            id: payload.id,
+            measurements: [payload.measurement]
+          })
+        };
+      }
+    }
     case SERVER.CHANNEL_ON:
       return { ...state, channelStatus: 'on' };
     case SERVER.CHANNEL_OFF:
@@ -119,6 +81,12 @@ export default function reducer(
       return { ...state, serverStatus: 'off' };
     case SERVER.SERVER_ON:
       return { ...state, serverStatus: 'on' };
+    case GET.KONDOR.SUCCESS:
+      console.log('yeah');
+      return state;
+    case GET.KONDOR.FAILURE:
+      console.log('fail');
+      return state;
     default:
       return state;
   }

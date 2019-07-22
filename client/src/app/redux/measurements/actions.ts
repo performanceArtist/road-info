@@ -1,16 +1,4 @@
-import { TaskFormType } from '@views/Measurements/TaskModal/TaskModal';
 import { ChartLineInfo } from './types';
-
-export const TASK = {
-  SAVE: 'TASK.SAVE',
-  REMOVE: 'TASK.REMOVE',
-  SET_CURRENT: 'TASK.SET_CURRENT',
-  POST: {
-    REQUEST: 'TASK.POST.REQUEST',
-    SUCCESS: 'TASK.POST.SUCCESS',
-    FAILURE: 'TASK.POST.FAILURE'
-  }
-};
 
 export const CHART = {
   CHANGE_VISIBILITY: 'CHART.CHANGE_VISIBILITY',
@@ -27,22 +15,17 @@ export const SERVER = {
   SERVER_OFF: 'SERVER.SERVER_OFF'
 };
 
-export const saveTask = (formData: TaskFormType, id: string | null = null) => {
-  return { type: TASK.SAVE, payload: { formData, taskId: id } };
+export const GET = {
+  KONDOR: {
+    REQUEST: 'GET.KONDOR.REQUEST',
+    SUCCESS: 'GET.KONDOR.SUCCESS',
+    FAILURE: 'GET.KONDOR.FAILURE'
+  }
 };
 
-export const setCurrentTask = (id: string | null = null) => ({
-  type: TASK.SET_CURRENT,
-  payload: { taskId: id }
-});
-
-export const removeTask = (id: string | null = null) => {
-  return { type: TASK.REMOVE, payload: { taskId: id } };
-};
-
-export const postTask = (formData: TaskFormType, id: string | null = null) => ({
-  type: TASK.POST.REQUEST,
-  payload: { formData, taskId: id }
+export const createCondor = (id: number) => ({
+  type: GET.KONDOR.REQUEST,
+  payload: id
 });
 
 export const changeVisibility = (line: string, show: boolean) => ({
@@ -57,5 +40,3 @@ export const saveChartSettings = (settings: {
   type: CHART.SAVE_SETTINGS,
   payload: settings
 });
-
-//export const setMaxTicks = (maxTicks:number) => ({});

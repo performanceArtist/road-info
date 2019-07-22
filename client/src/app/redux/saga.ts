@@ -1,8 +1,9 @@
 import { all } from 'redux-saga/effects';
 
-import createWatcher from './measurements/create';
+import task from './task/saga';
 import socket from './measurements/socket';
+import generate from './measurements/generate';
 
 export default function* rootSaga() {
-  yield all([socket.startStopChannel(), createWatcher()]);
+  yield all([socket.startStopChannel(), task(), generate()]);
 }

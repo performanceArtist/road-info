@@ -9,7 +9,9 @@ export interface MeasurementType {
   measurement_section_id: number;
 }
 
-export async function generateMeasurements() {
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+export async function generateMeasurements(kondorId = 1) {
   const distance = 100 * (Math.round(Math.random() * 30) + 10);
   let counter = 0;
 
@@ -18,33 +20,50 @@ export async function generateMeasurements() {
       const changeDirection = counter % 6 === 0;
       const lng = changeDirection ? counter * 0.0005 : Math.random() / 1000;
 
-      setTimeout(async () => {
-        const date = new Date();
+      /*
+      await knex('kondors').insert({
+        serial_number: 3
+      });*/
 
-        const measurement = {
-          distance: distance - i,
-          latitude: 56.48 - counter * 0.0005,
-          longitude: 84.95 + Math.random() / 1000,
-          time: date.toUTCString(),
-          measurement_id: 1
-        };
+      const baseId = await knex('measurements')
+        .insert({
+          kondor_id: kondorId,
+          lane_number: 1,
+          road_part_id: 1,
+          order_id: 1,
+          builder_id: 1,
+          is_direction_forward: true,
+          start_distance: 0,
+          finish_distance: 2000
+        })
+        .returning('id');
 
-        counter++;
+      await delay(400);
+      const date = new Date();
 
-        const lastId = await knex('measurement_sections')
-          .insert(measurement)
-          .returning('id');
+      const measurement = {
+        distance: distance - i,
+        latitude: 56.48 - counter * 0.0005,
+        longitude: 84.95 + Math.random() / 1000,
+        time: date.toUTCString(),
+        measurement_id: baseId[0]
+      };
 
-        const roadLayer = {
-          density: Math.random() * 5,
-          depth: Math.random() * 2,
-          measurement_section_id: lastId[0],
-          layer_type_id: 1,
-          impulse_count: 2
-        };
+      counter++;
 
-        await knex('road_layers').insert(roadLayer);
-      }, (distance - i) * 2);
+      const lastId = await knex('measurement_sections')
+        .insert(measurement)
+        .returning('id');
+
+      const roadLayer = {
+        density: Math.random() * 5,
+        depth: Math.random() * 2,
+        measurement_section_id: lastId[0],
+        layer_type_id: 1,
+        impulse_count: 2
+      };
+
+      await knex('road_layers').insert(roadLayer);
     }
   } catch (error) {
     console.log(error);

@@ -37,7 +37,18 @@ import { generateMeasurements, makeRoute } from '../models/Measurement';
 
 router.post('/api/task', (req, res) => {
   console.log(req.body);
-  generateMeasurements();
+  res.json({ status: 'ok', message: 'yeah' });
+});
+
+router.get('/api/generate/:id', (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  try {
+    generateMeasurements(id);
+  } catch (err) {
+    console.log(err);
+    res.json({ status: 'error' });
+  }
   res.json({ status: 'ok', message: 'yeah' });
 });
 
