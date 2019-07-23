@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const config = {
   entry: {
+    rhl: 'react-hot-loader/patch',
     app: ['@babel/polyfill', path.join(__dirname, 'src/app/main.tsx')],
     login: ['@babel/polyfill', path.join(__dirname, 'src/login/main.tsx')],
     admin: ['@babel/polyfill', path.join(__dirname, 'src/admin/main.tsx')],

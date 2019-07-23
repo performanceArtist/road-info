@@ -1,29 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
 
-import { createStore, applyMiddleware, compose } from 'redux';
-import createSagaMiddleware from 'redux-saga';
-import { Provider } from 'react-redux';
+import RootContainer from './RootContainer';
 
-import rootReducer from './redux/reducer';
-import rootSaga from './redux/saga';
+const render = (Component: any) => {
+  ReactDOM.render(
+    <AppContainer>
+      <Component />
+    </AppContainer>,
+    document.querySelector('.wrapper')
+  );
+};
 
-import App from './app';
+render(RootContainer);
 
-const sagaMiddleware = createSagaMiddleware();
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(sagaMiddleware))
-);
-sagaMiddleware.run(rootSaga);
-
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.querySelector('.wrapper')
-);
+if (module.hot) {
+  module.hot.accept('./RootContainer', () => {
+    render(RootContainer);
+  });
+}
 
 function importAll(resolve: any) {
   resolve.keys().forEach(resolve);

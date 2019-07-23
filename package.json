@@ -5,7 +5,7 @@
   "main": "server/server.ts",
   "scripts": {
     "test": "jest",
-    "client:dev": "webpack-dev-server --mode=development --config ./client/webpack.config.dev.ts",
+    "client:dev": "webpack-dev-server --hot --mode=development --config ./client/webpack.config.dev.ts",
     "client:build": "webpack --mode=production --config ./client/webpack.config.prod.ts",
     "client:dev-build": "webpack --mode=development --config ./client/webpack.config.dev.ts",
     "server:dev": "ts-node-dev --respawn --transpileOnly ./server/src/server.ts",
@@ -64,6 +64,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-final-form": "^6.3.0",
+    "react-hot-loader": "^4.12.9",
     "react-leaflet": "^2.4.0",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
