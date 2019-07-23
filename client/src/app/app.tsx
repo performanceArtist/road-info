@@ -6,6 +6,7 @@ import ModalManager from './layout/ModalManager/ModalManager';
 import StatusBar from './layout/StatusBar/StatusBar';
 import { Navigation, Icon } from './layout/Navigation/Navigation';
 import Footer from './layout/Footer/Footer';
+import StartChannel from './layout/StartChannel/StartChannel';
 
 import MapView from './views/MapView/MapView';
 import Calibration from './views/Calibration/Calibration';
@@ -22,6 +23,7 @@ const App = () => {
       <div className="container">
         <Header title="Кондор 2.0" />
         <ModalManager />
+        <StartChannel />
         <StatusBar />
         <main className="app">
           <div className="app__navigation">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import Button from '@shared/Button/Button';
@@ -8,7 +8,6 @@ import Chart from '@components/Chart/Chart';
 import ChartSettings from '@components/ChartSettings/ChartSettings';
 import ChartControls from '@components/ChartControls/ChartControls';
 
-import socket from '@redux/measurements/socket';
 import { openModal } from '@redux/modal/actions';
 import { RootState } from '@redux/reducer';
 import { KondorData, ChartInfo, ChartData } from '@redux/measurements/types';
@@ -22,17 +21,9 @@ type MapState = {
 
 type Props = MapState & typeof mapDispatch;
 
-const CompositeChart: React.FC<Props> = ({
-  kondors,
-  chartInfo,
-  startChannel,
-  openModal
-}) => {
+const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
   const [currentKondor, setCurrentKondor] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
-  useEffect(() => {
-    startChannel();
-  });
 
   const fullChart = (keyY: string, data: ChartData, isOneOnScreen = false) => (
     <div
@@ -124,7 +115,7 @@ const mapState = ({ measurements }: RootState) => ({
   chartInfo: measurements.chartInfo
 });
 
-const mapDispatch = { startChannel: socket.startChannel, openModal };
+const mapDispatch = { openModal };
 
 export default connect(
   mapState,
