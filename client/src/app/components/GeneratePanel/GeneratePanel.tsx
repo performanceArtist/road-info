@@ -8,10 +8,16 @@ import { createCondor } from '@redux/measurements/actions';
 type Props = typeof mapDispatch;
 
 const GeneratePanel: React.FC<Props> = ({ createCondor }) => (
-  <div>
-    <Button onClick={() => createCondor(3)}>Create 1</Button>
-    <Button onClick={() => createCondor(6)}>Create 2</Button>
-    <Button onClick={() => createCondor(7)}>Create 3</Button>
+  <div className="generate-panel">
+    <div className="generate-panel__button">
+      <Button onClick={() => createCondor(3)}>Create 3</Button>
+    </div>
+    <div className="generate-panel__button">
+      <Button onClick={() => createCondor(6)}>Create 6</Button>
+    </div>
+    <div className="generate-panel__button">
+      <Button onClick={() => createCondor(7)}>Create 7</Button>
+    </div>
   </div>
 );
 

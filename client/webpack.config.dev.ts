@@ -62,7 +62,7 @@ const config = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader
+            loader: 'style-loader'
           },
           'css-loader?url=false',
           {

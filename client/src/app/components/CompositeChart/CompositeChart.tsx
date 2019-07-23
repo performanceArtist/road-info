@@ -6,6 +6,7 @@ import { Icon, IconImage } from '@components/Icon/Icon';
 import ControlForm from '@components/ControlForm/ControlForm';
 import Chart from '@components/Chart/Chart';
 import ChartSettings from '@components/ChartSettings/ChartSettings';
+import ChartControls from '@components/ChartControls/ChartControls';
 
 import socket from '@redux/measurements/socket';
 import { openModal } from '@redux/modal/actions';
@@ -104,15 +105,8 @@ const CompositeChart: React.FC<Props> = ({
   return (
     <div className="composite-chart">
       <div className="composite-chart__controls">
-        <Icon
-          image={IconImage.SETTINGS}
-          size="small"
-          onClick={() => openModal('Chart', {})}
-        />
-        <Icon
-          image={IconImage.BACK_ARROW}
-          size="small"
-          onClick={() => {
+        <ChartControls
+          onArrowClick={() => {
             if (currentChart) setCurrentChart(null);
             if (!currentChart && currentKondor) setCurrentKondor(null);
           }}

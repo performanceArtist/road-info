@@ -1,0 +1,18 @@
+.chart-controls {
+  &__title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-right: 0.5rem;
+  }
+
+  &__form {
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    max-width: 12rem;
+    margin-left: 1.2rem;
+  }
+}

@@ -11,10 +11,12 @@ type Props = {
   label?: string | null;
   error?: boolean;
   required?: boolean;
+  defaultValue?: string | number;
 };
 
 const Input: React.FC<Props> = ({
   name,
+  defaultValue,
   component = 'input',
   type = 'text',
   status = null,
@@ -26,6 +28,7 @@ const Input: React.FC<Props> = ({
     {label ? <div className="input__label">{label}</div> : null}
     <Field
       name={name}
+      defaultValue={defaultValue}
       type={type}
       component={component}
       className={error ? 'input__input input__input_invalid' : 'input__input'}

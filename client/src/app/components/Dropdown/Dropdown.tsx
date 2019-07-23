@@ -1,13 +1,14 @@
 import React from 'react';
+import { Field } from 'react-final-form';
 import uuid from 'short-uuid';
 
 type Props = {
-  name?: string;
+  name: string;
   value?: string;
   label?: string;
   options?: Array<{ name: string; value: string }>;
   onChange?: (event?: React.SyntheticEvent) => void;
-}
+};
 
 const Dropdown: React.FC<Props> = ({
   name = 'select',
@@ -28,9 +29,9 @@ const Dropdown: React.FC<Props> = ({
       <div className="dropdown__dropdown">
         <select
           className="dropdown__select"
-          value={value}
           name={name}
           onChange={onChange}
+          value={value}
         >
           {elements}
         </select>

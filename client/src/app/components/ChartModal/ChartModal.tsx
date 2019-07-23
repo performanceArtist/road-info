@@ -46,7 +46,8 @@ class ChartModal extends React.Component<{}, State> {
     const newLines = JSON.parse(JSON.stringify(lines));
     const target = event.target as HTMLInputElement;
 
-    newLines[key].breakpoint[target.name] = target.value;
+    if (!newLines[key].breakpoint) newLines[key].breakpoint = {};
+    newLines[key].breakpoint[target.name] = parseFloat(target.value);
     this.setState({ lines: newLines });
   }
 

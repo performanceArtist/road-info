@@ -9,11 +9,6 @@
     padding: 1.5rem;
   }
 
-  &__controls {
-    display: flex;
-    align-items: center;
-  }
-
   &__chart {
     @extend %unselectable;
     min-width: 600px;
