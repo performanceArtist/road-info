@@ -9,7 +9,9 @@ enum Icon {
   HISTORY = 'images/history.png',
   OPTIONS = 'images/options.png',
   DIAGNOSTICS = 'images/diagnostics.png',
-  TRUCK = 'images/truck.png'
+  TRUCK = 'images/truck.png',
+  REPORT = 'images/report.png',
+  TASK = 'images/task.png'
 }
 
 interface Link {

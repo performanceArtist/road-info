@@ -1,20 +1,17 @@
 .composite-chart {
-  &__form {
-    display: inline-block;
-    width: 23rem;
-  }
-
-  &__input {
-    padding: 1rem;
-    text-align: center;
-  }
-
   &__previews {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  &__results {
-    margin-left: 2.5rem;
+  &__container {
+    padding: 1.5rem;
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
   }
 
   &__chart {
@@ -37,15 +34,15 @@
       height: 125px;
       padding: 0;
     }
+
+    &_big {
+      min-width: 80vw;
+      min-height: 600px;
+      width: 80vw;
+      height: 600px;
+    }
   }
 }
 
 @media screen and (max-width: 1200px) {
-  .measurements {
-    display: block;
-
-    &__form {
-      margin-bottom: 3rem;
-    }
-  }
 }

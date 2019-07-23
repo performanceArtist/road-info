@@ -8,13 +8,14 @@ export enum IconImage {
   ZOOM_OUT = 'url("images/zoom-out.png")',
   SETTINGS = 'url("images/settings.png")',
   MAX = 'url("images/max.png")',
-  MIN = 'url("images/min.png")'
+  MIN = 'url("images/min.png")',
+  BACK_ARROW = 'url("images/back-arrow.png")'
 }
 
 type Props = {
   title?: string;
   image?: IconImage;
-  size?: string;
+  size?: 'medium' | 'small';
   onClick?: (event: React.SyntheticEvent) => any;
 };
 

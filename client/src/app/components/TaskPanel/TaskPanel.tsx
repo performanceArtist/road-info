@@ -5,17 +5,10 @@ import { Toggle, ToggleType } from '@components/Toggle/Toggle';
 import { Icon, IconImage } from '@components/Icon/Icon';
 import Button from '@shared/Button/Button';
 import { openModal } from '@redux/modal/actions';
-import {
-  removeTask,
-  postTask,
-  setCurrentTask
-} from '@redux/measurements/actions';
-import socket from '@redux/measurements/socket';
-
-import { TaskData } from '@redux/measurements/types';
+import { removeTask, postTask, setCurrentTask } from '@redux/task/actions';
 
 type OwnProps = {
-  tasks: TaskData;
+  tasks: any;
   currentTaskId: string;
 };
 
@@ -27,13 +20,8 @@ const TaskPanel: React.FC<Props> = ({
   openModal,
   removeTask,
   postTask,
-  setCurrentTask,
-  startChannel
+  setCurrentTask
 }) => {
-  useEffect(() => {
-    startChannel();
-  }, []);
-
   const elements = tasks.map(task => {
     const { id, chartData, formData } = task;
     const { order } = formData;
@@ -86,11 +74,6 @@ const TaskPanel: React.FC<Props> = ({
             Новое задание
           </Button>
         </div>
-        <div className="task-panel__button">
-          <Button onClick={() => openModal('Chart', { counter: 1 })}>
-            Настройки
-          </Button>
-        </div>
       </div>
     </div>
   );
@@ -100,8 +83,7 @@ const mapDispatch = {
   openModal,
   removeTask,
   postTask,
-  setCurrentTask,
-  startChannel: socket.startChannel
+  setCurrentTask
 };
 
 export default connect(

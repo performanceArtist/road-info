@@ -4,6 +4,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { connect } from 'react-redux';
 
+import { openModal } from '@redux/modal/actions';
+
 //import iconShadow from './icon/icon-shadow.png';
 import { KondorData, ChartData, ChartInfo } from '@redux/measurements/types';
 import { RootState } from '@redux/reducer';
@@ -29,7 +31,7 @@ type MapState = {
   chartInfo: ChartInfo;
 };
 
-type Props = typeof mapState & MapState;
+type Props = typeof mapDispatch & MapState;
 
 class MapComponent extends Component<Props, State> {
   private ref = React.createRef<HTMLDivElement>();
@@ -45,16 +47,29 @@ class MapComponent extends Component<Props, State> {
       popupCount: 0
     };
 
+    this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.renderMarkers = this.renderMarkers.bind(this);
     this.renderLines = this.renderLines.bind(this);
     this.addPopup = this.addPopup.bind(this);
     this.renderPopup = this.renderPopup.bind(this);
   }
 
+  handleMarkerClick(event, currentId: string) {
+    const { kondors, openModal } = this.props;
+    const kondor = kondors.find(({ id }) => id === currentId);
+
+    if (kondor)
+      openModal('Kondor', {
+        id: currentId,
+        counter: 1,
+        coordinates: { x: event.clientX, y: event.clientY }
+      });
+  }
+
   renderMarkers() {
     const { kondors } = this.props;
 
-    return kondors.map(({ measurements }) => {
+    return kondors.map(({ id, measurements }) => {
       if (measurements.length !== 0) {
         const last = measurements[measurements.length - 1];
         return (
@@ -65,6 +80,7 @@ class MapComponent extends Component<Props, State> {
               /*shadowUrl: iconShadow*/
             })}
             position={[last.latitude, last.longitude]}
+            onClick={event => this.handleMarkerClick(event, id)}
           />
         );
       } else {
@@ -175,4 +191,9 @@ const mapState = ({ measurements }: RootState) => ({
   chartInfo: measurements.chartInfo
 });
 
-export default connect(mapState)(MapComponent);
+const mapDispatch = { openModal };
+
+export default connect(
+  mapState,
+  mapDispatch
+)(MapComponent);

@@ -10,6 +10,7 @@ import Footer from './layout/Footer/Footer';
 import MapView from './views/MapView/MapView';
 import Calibration from './views/Calibration/Calibration';
 import Diagnostics from './views/Diagnostics/Diagnostics';
+import Task from './views/Task/Task';
 import Measurements from './views/Measurements/Measurements';
 import Report from './views/Report/Report';
 import UI from './views/UI/UI';
@@ -37,17 +38,16 @@ const App = () => {
                   icon: Icon.TRUCK
                 },
                 {
+                  url: '/task',
+                  title: 'Задания',
+                  icon: Icon.TASK
+                },
+                {
                   url: '/calibration',
                   title: 'Калибровка',
                   icon: Icon.OPTIONS
                 },
-                {
-                  url: '/diagnostics',
-                  title: 'Диагностика',
-                  icon: Icon.DIAGNOSTICS
-                },
-                { url: '/report', title: 'Отчёт', icon: Icon.HISTORY },
-                { url: '/ui', title: 'UI' }
+                { url: '/report', title: 'Отчёт', icon: Icon.REPORT }
               ]}
             />
           </div>
@@ -55,8 +55,8 @@ const App = () => {
             <Switch>
               <Route exact path="/" component={Measurements} />
               <Route path="/map" component={MapView} />
+              <Route path="/task" component={Task} />
               <Route path="/calibration" component={Calibration} />
-              <Route path="/diagnostics" component={Diagnostics} />
               <Route path="/report" component={Report} />
               <Route path="/ui" component={UI} />
               <Route path="*" component={NotFound} />
