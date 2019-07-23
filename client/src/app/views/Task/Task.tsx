@@ -4,7 +4,6 @@ import TaskPanel from '@components/TaskPanel/TaskPanel';
 
 const Task = () => (
   <div>
-    Test
     <TaskPanel />
   </div>
 );

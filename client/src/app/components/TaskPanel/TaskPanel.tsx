@@ -6,6 +6,7 @@ import { Icon, IconImage } from '@components/Icon/Icon';
 import Button from '@shared/Button/Button';
 import { openModal } from '@redux/modal/actions';
 import { removeTask, postTask, setCurrentTask } from '@redux/task/actions';
+import { RootState } from '@redux/reducer';
 
 type OwnProps = {
   tasks: any;
@@ -19,28 +20,16 @@ const TaskPanel: React.FC<Props> = ({
   currentTaskId,
   openModal,
   removeTask,
-  postTask,
-  setCurrentTask
+  postTask
 }) => {
   const elements = tasks.map(task => {
-    const { id, chartData, formData } = task;
+    const { id, formData } = task;
     const { order } = formData;
 
     return (
       <div className="task" key={`task-${id}`}>
         <header className="task-panel__header">
           <div className="task-panel__name">{order}</div>
-          <Toggle
-            type={ToggleType.RADIO}
-            name="start"
-            checked={currentTaskId === id}
-            onChange={event => {
-              if (event.target.checked) {
-                setCurrentTask(id);
-                if (chartData.length === 0) postTask(formData, id);
-              }
-            }}
-          />
           <div className="task-panel__icon-container">
             <div className="task-panel__icon">
               <Icon
@@ -79,14 +68,17 @@ const TaskPanel: React.FC<Props> = ({
   );
 };
 
+const mapState = ({ tasks }: RootState) => ({
+  tasks: tasks.tasks
+});
+
 const mapDispatch = {
   openModal,
   removeTask,
-  postTask,
-  setCurrentTask
+  postTask
 };
 
 export default connect(
-  null,
+  mapState,
   mapDispatch
 )(TaskPanel);

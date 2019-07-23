@@ -10,7 +10,7 @@ import Button from '@shared/Button/Button';
 import DistanceInput from '@components/DistanceInput/DistanceInput';
 
 import { closeModal } from '@redux/modal/actions';
-import { saveTask } from '@redux/measurements/actions';
+import { saveTask } from '@redux/task/actions';
 
 type OwnProps = {
   counter: number;

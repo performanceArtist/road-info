@@ -42,10 +42,8 @@ export default function reducer(
     case TASK.REMOVE:
       return {
         ...state,
-        taskData: state.tasks.filter(({ id }) => id !== payload.taskId)
+        tasks: state.tasks.filter(({ id }) => id !== payload.taskId)
       };
-    case TASK.SET_CURRENT:
-      return { ...state, currentTaskId: payload.taskId };
     default:
       return state;
   }
