@@ -1,11 +1,7 @@
 import uuid from 'short-uuid';
 
 import { TASK } from './actions';
-
-type Task = {
-  id: string;
-  formData: { [key: string]: any };
-};
+import { Task } from './types';
 
 const initialState: {
   tasks: Array<Task>;

@@ -11,7 +11,8 @@ export enum IconImage {
   MIN = 'url("images/min.png")',
   BACK_ARROW = 'url("images/back-arrow.png")',
   TABLE = 'url("images/table.png")',
-  GRAPH = 'url("images/graph.png")'
+  GRAPH = 'url("images/graph.png")',
+  EXPAND = 'url("images/expand.png")'
 }
 
 type Props = {

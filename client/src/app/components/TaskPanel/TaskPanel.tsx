@@ -1,23 +1,23 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
+import Button from '@shared/Button/Button';
 import { Toggle, ToggleType } from '@components/Toggle/Toggle';
 import { Icon, IconImage } from '@components/Icon/Icon';
-import Button from '@shared/Button/Button';
+
 import { openModal } from '@redux/modal/actions';
-import { removeTask, postTask, setCurrentTask } from '@redux/task/actions';
+import { removeTask, postTask } from '@redux/task/actions';
+import { Task } from '@redux/task/types';
 import { RootState } from '@redux/reducer';
 
 type OwnProps = {
-  tasks: any;
-  currentTaskId: string;
+  tasks: Array<Task>;
 };
 
 type Props = OwnProps & typeof mapDispatch;
 
 const TaskPanel: React.FC<Props> = ({
   tasks = [],
-  currentTaskId,
   openModal,
   removeTask,
   postTask

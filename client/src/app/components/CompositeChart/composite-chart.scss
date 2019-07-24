@@ -11,6 +11,10 @@
     margin-top: 0.5rem;
   }
 
+  &__icon {
+    margin-left: 0.5rem;
+  }
+
   &__title {
     font-size: 1.5rem;
     font-weight: bold;
@@ -36,8 +40,8 @@
 
     &_preview {
       resize: none;
-      min-width: 425px;
-      min-height: 125px;
+      min-width: 531px;
+      min-height: 143px;
       width: 425px;
       height: 125px;
       padding: 0;

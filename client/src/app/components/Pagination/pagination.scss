@@ -5,12 +5,23 @@
     width: 2rem;
     height: 2rem;
     text-align: center;
+    font-weight: bold;
+    line-height: 2.2rem;
     cursor: pointer;
-    background: $light-grey;
+    background: white;
+    @include collapse-border($color: black, $thickness: 0.1rem);
+
+    &:hover {
+      background: $light-grey;
+    }
 
     &_selected {
       background: black;
-      color: white;
+      color: $light-grey;
+
+      &:hover {
+        background: black;
+      }
     }
   }
 }

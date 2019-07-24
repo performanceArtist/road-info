@@ -8,6 +8,7 @@
     "client:dev": "webpack-dev-server --hot --mode=development --config ./client/webpack.config.dev.ts",
     "client:build": "webpack --mode=production --config ./client/webpack.config.prod.ts",
     "client:dev-build": "webpack --mode=development --config ./client/webpack.config.dev.ts",
+    "client:tsc": "tsc --project ./client",
     "server:dev": "ts-node-dev --respawn --transpileOnly ./server/src/server.ts",
     "server:build": "tsc --project ./server"
   },

@@ -5,7 +5,8 @@ export interface ChartLineInfo {
   breakpoint?: ColorBreakpoint;
   mainColor?: string;
   warningColor?: string;
-  show: boolean;
+  show?: boolean;
+  [key: string]: string | boolean | ColorBreakpoint;
 }
 
 export type ChartLines = { [key: string]: ChartLineInfo };

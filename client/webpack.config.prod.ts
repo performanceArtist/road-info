@@ -13,10 +13,6 @@ const config = {
       '@babel/polyfill',
       path.join(__dirname, 'src/app/main.tsx')
     ],
-    'private/graph': [
-      '@babel/polyfill',
-      path.join(__dirname, 'src/graph/main.tsx')
-    ],
     'admin/admin': [
       '@babel/polyfill',
       path.join(__dirname, 'src/admin/main.tsx')
@@ -100,11 +96,6 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'client/src/app/index.html',
       filename: `private/index.html`,
-      chunks: []
-    }),
-    new HtmlWebpackPlugin({
-      template: 'client/src/graph/graph.html',
-      filename: `private/graph.html`,
       chunks: []
     }),
     new HtmlWebpackPlugin({

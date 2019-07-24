@@ -72,18 +72,36 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
     </div>
   );
 
+  const getIcons = (type: 'table' | 'preview', id: string) => {
+    return (
+      <div className="composite-chart__icons">
+        <div className="composite-chart__icon">
+          {type === 'table' ? (
+            <Icon
+              image={IconImage.GRAPH}
+              onClick={() => setTables(tables.filter(el => el !== id))}
+            />
+          ) : (
+            <Icon
+              image={IconImage.TABLE}
+              onClick={() => setTables(tables.concat(id))}
+            />
+          )}
+        </div>
+        <div className="composite-chart__icon">
+          <Icon image={IconImage.EXPAND} onClick={() => setCurrentKondor(id)} />
+        </div>
+      </div>
+    );
+  };
+
   const getPreview = ({ id, measurements }: KondorDataItem) => (
     <>
       {preview('density', measurements)}
       {preview('rutting', measurements)}
       {preview('iri', measurements)}
       {preview('thickness', measurements)}
-      <div className="composite-chart__icons">
-        <Icon
-          image={IconImage.TABLE}
-          onClick={() => setTables(tables.concat(id))}
-        />
-      </div>
+      {getIcons('preview', id)}
     </>
   );
 
@@ -100,14 +118,9 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
           })
         )}
         chartInfo={chartInfo}
-        maxRows={14}
+        maxRows={15}
       />
-      <div className="composite-chart__icons">
-        <Icon
-          image={IconImage.GRAPH}
-          onClick={() => setTables(tables.filter(el => el !== id))}
-        />
-      </div>
+      {getIcons('table', id)}
     </>
   );
 
@@ -124,10 +137,8 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
       </div>
     ));
 
-  const getKondor = () => kondors.find(({ id }) => id === currentKondor);
-
   const getKondorChart = () => {
-    const { measurements } = getKondor();
+    const { measurements } = kondors.find(({ id }) => id === currentKondor);
 
     if (currentChart) return fullChart(currentChart, measurements, true);
 

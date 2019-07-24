@@ -14,7 +14,7 @@ const chartSettings = {
   rutting: { mainColor: 'teal', units: 'Колейность, мм', show: true },
   thickness: {
     mainColor: 'green',
-    units: 'Толщина слоя, мм',
+    units: 'Толщина, мм',
     show: true
   }
 };
@@ -83,10 +83,10 @@ export default function reducer(
     case SERVER.SERVER_ON:
       return { ...state, serverStatus: 'on' };
     case GET.KONDOR.SUCCESS:
-      console.log('yeah');
+      console.log('Generation was successful');
       return state;
     case GET.KONDOR.FAILURE:
-      console.log('fail');
+      console.log('Generation has failed');
       return state;
     default:
       return state;

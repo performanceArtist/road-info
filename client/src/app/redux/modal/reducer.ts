@@ -3,7 +3,6 @@ import { MODAL } from './actions';
 import TestModal from '@components/TestModal/TestModal';
 import InfoModal from '@components/InfoModal/InfoModal';
 import MaterialModal from '@components/MaterialModal/MaterialModal';
-import NormModal from '@components/NormModal/NormModal';
 import ChartModal from '@components/ChartModal/ChartModal';
 import TaskModal from '@components/TaskModal/TaskModal';
 import KondorModal from '@components/KondorModal/KondorModal';
@@ -18,7 +17,6 @@ export const ModalMap: Record<
   Info: InfoModal,
   Material: MaterialModal,
   Task: TaskModal,
-  Norm: NormModal,
   Chart: ChartModal,
   Kondor: KondorModal
 };

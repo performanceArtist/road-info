@@ -5,20 +5,29 @@ import { connect } from 'react-redux';
 import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
 import Button from '@shared/Button/Button';
+
 import Modal from '@components/Modal/Modal';
 import Dropdown from '@components/Dropdown/Dropdown';
+
 import { closeModal } from '@redux/modal/actions';
 import { saveChartSettings } from '@redux/measurements/actions';
-import { ChartLines } from '@redux/measurements/types';
+import { ChartLineInfo, ChartInfo } from '@redux/measurements/types';
+import { RootState } from '@redux/reducer';
 
 interface State {
   key: string;
   maxTicks: number;
-  lines: ChartLines;
+  lines: Array<ChartLineInfo>;
 }
 
-class ChartModal extends React.Component<{}, State> {
-  constructor(props: {}) {
+type MapState = {
+  chartInfo: ChartInfo;
+};
+
+type Props = typeof mapDispatch & MapState;
+
+class ChartModal extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     const { lines, maxTicks } = props.chartInfo;
@@ -138,11 +147,13 @@ class ChartModal extends React.Component<{}, State> {
   }
 }
 
-const mapState = ({ measurements }) => ({
+const mapState = ({ measurements }: RootState) => ({
   chartInfo: measurements.chartInfo
 });
 
+const mapDispatch = { saveChartSettings, closeModal };
+
 export default connect(
   mapState,
-  { saveChartSettings, closeModal }
+  mapDispatch
 )(ChartModal);

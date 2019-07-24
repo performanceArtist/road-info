@@ -4,7 +4,7 @@ import Pagination from '@components/Pagination/Pagination';
 import { ChartInfo } from '@redux/measurements/types';
 
 type Props = {
-  data: Array<{ [key: string]: string | number }>;
+  data: Array<{ [key: string]: number }>;
   chartInfo: ChartInfo;
   maxRows?: number;
 };
@@ -14,12 +14,12 @@ const Table: React.FC<Props> = ({ data = [], maxRows = 10, chartInfo }) => {
 
   if (data.length === 0) return null;
 
-  const handleClick = (index: number) => {
+  const handlePaginationClick = (index: number) => {
     setBounds({ start: index * maxRows, finish: (index + 1) * maxRows });
   };
 
   const isValid = (
-    breakpoint: { start: number; finish: number } | null = null,
+    breakpoint: { start: number; finish: number } | null,
     value: number
   ) =>
     breakpoint ? value > breakpoint.start && value < breakpoint.finish : true;
@@ -64,7 +64,7 @@ const Table: React.FC<Props> = ({ data = [], maxRows = 10, chartInfo }) => {
       {data.length / maxRows > 1 && (
         <Pagination
           max={Math.ceil(data.length / maxRows)}
-          onClick={handleClick}
+          onClick={handlePaginationClick}
         />
       )}
     </>

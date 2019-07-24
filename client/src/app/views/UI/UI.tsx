@@ -3,7 +3,6 @@ import React from 'react';
 import Button from '@shared/Button/Button';
 import { Toggle } from '@components/Toggle/Toggle';
 import Dropdown from '@components/Dropdown/Dropdown';
-import Slider from '@components/Slider/Slider';
 import Start from '@components/Start/Start';
 import FormTest from '@components/FormTest/FormTest';
 
@@ -22,28 +21,7 @@ const UI = () => (
         <Button />
       </div>
       <div className="ui__row">
-        <Dropdown label="Test" options={[{ name: 'one', value: 'one' }]} />
-      </div>
-      <div className="ui__row">
-        <Slider
-          options={{
-            min: 0,
-            max: 2100,
-            step: 100,
-            firstValue: 0,
-            secondValue: 2100,
-            interval: true
-          }}
-        />
-      </div>
-      <div className="ui__row">
-        <Slider
-          options={{
-            min: 0,
-            max: 2100,
-            step: 100
-          }}
-        />
+        <Dropdown name="test" label="Test" options={[{ name: 'one', value: 'one' }]} />
       </div>
       <div className="ui__row">
         <Start />

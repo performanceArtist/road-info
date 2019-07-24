@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
+import L, { LeafletEvent } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { connect } from 'react-redux';
 
@@ -54,7 +54,7 @@ class MapComponent extends Component<Props, State> {
     this.renderPopup = this.renderPopup.bind(this);
   }
 
-  handleMarkerClick(event, currentId: string) {
+  handleMarkerClick(event: React.MouseEvent, currentId: string) {
     const { kondors, openModal } = this.props;
     const kondor = kondors.find(({ id }) => id === currentId);
 
@@ -80,7 +80,9 @@ class MapComponent extends Component<Props, State> {
               /*shadowUrl: iconShadow*/
             })}
             position={[last.latitude, last.longitude]}
-            onClick={event => this.handleMarkerClick(event, id)}
+            onClick={(event: React.MouseEvent) =>
+              this.handleMarkerClick(event, id)
+            }
           />
         );
       } else {
@@ -113,12 +115,12 @@ class MapComponent extends Component<Props, State> {
           max: 3,
           smoothFactor: 0
         }}
-        onLineClick={event => this.addPopup(event, index)}
+        onLineClick={(event: React.MouseEvent) => this.addPopup(event, index)}
       />
     ));
   }
 
-  addPopup(event, index: number) {
+  addPopup(event: React.MouseEvent, index: number) {
     const { kondors, chartInfo } = this.props;
     const { popupCount } = this.state;
 

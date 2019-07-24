@@ -3,7 +3,7 @@ import React from 'react';
 import { Field } from 'react-final-form';
 
 const DistanceInput: React.FC = () => {
-  const getInputs = ({ name, title }) => (
+  const getInputs = ({ name, title }: { name: string; title: string }) => (
     <>
       <div className="distance-input__title">{title}</div>
       <Field

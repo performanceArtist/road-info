@@ -7,11 +7,17 @@ import Input from '@shared/Input/Input';
 
 import { changeVisibility } from '@redux/measurements/actions';
 import { RootState } from '@redux/reducer';
+import { ChartInfo } from '@redux/measurements/types';
 
-type Props = typeof mapState & typeof mapDispatch;
+type MapState = {
+  chartInfo: ChartInfo;
+};
+
+type Props = MapState & typeof mapDispatch;
 
 const ChartSettings: React.FC<Props> = ({ changeVisibility, chartInfo }) => {
-  const checkboxes = chartInfo.map(({ name, units, show }) => {
+  /*
+  const checkboxes = chartInfo.lines.map(({ name, units, show }) => {
     if (name !== 'density') return null;
     return (
       <Input
@@ -27,12 +33,12 @@ const ChartSettings: React.FC<Props> = ({ changeVisibility, chartInfo }) => {
       />
     );
   });
-
+*/
   return (
     <Form>
       <div className="chart-settings">
         <div className="chart-settings__wrapper">
-          <div className="chart-settings__lines">{checkboxes}</div>
+          <div className="chart-settings__lines">{null}</div>
         </div>
       </div>
     </Form>

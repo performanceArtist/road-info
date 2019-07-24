@@ -1,8 +1,7 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form';
 
-import Input from '@shared/Input/Input';
-const onSubmit = async values => {
+const onSubmit = async (values: { [key: string]: string }) => {
   console.log(values);
 };
 
@@ -21,7 +20,7 @@ const MyForm = () => (
         {
           <div>
             <label>Interests</label>
-            <Field name="interests" component={Input} />
+            <Field name="interests" component={'input'} />
           </div>
         }
 

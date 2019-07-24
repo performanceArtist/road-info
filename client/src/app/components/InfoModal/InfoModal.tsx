@@ -14,6 +14,7 @@ interface Notice {
 type OwnProps = {
   notices: Array<Notice>;
 };
+
 type Props = OwnProps & typeof mapDispatch;
 
 const InfoModal: React.FC<Props> = ({ notices, closeModal }) => {
