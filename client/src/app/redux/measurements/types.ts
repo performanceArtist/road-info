@@ -12,6 +12,7 @@ export type ChartLines = { [key: string]: ChartLineInfo };
 
 export interface ChartInfo {
   lines: ChartLines;
+  xAxis: { units: string };
   maxTicks: number;
 }
 
@@ -23,6 +24,7 @@ export interface ChartDataItem {
   density: number;
   iri: number;
   rutting: number;
+  [key: string]: number;
 }
 
 export type ChartData = Array<ChartDataItem>;

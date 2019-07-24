@@ -6,7 +6,7 @@ type Props = {
   type?: 'button' | 'submit';
   onClick?: (event?: React.MouseEvent) => void;
   disabled?: boolean;
-}
+};
 
 const Button: React.FC<Props> = ({
   onClick = () => {},

@@ -1,5 +1,5 @@
 import { CHART, SERVER, GET } from './actions';
-import { KondorDataItem, KondorData, ChartLineInfo } from './types';
+import { KondorDataItem, KondorData, ChartInfo } from './types';
 
 import testData from '../../views/Measurements/testData';
 
@@ -26,17 +26,18 @@ const initialKondor: KondorDataItem = {
 
 const initialState: {
   kondors: KondorData;
-  chartInfo: {
-    lines: {
-      [key: string]: ChartLineInfo;
-    };
-    maxTicks: number;
-  };
+  chartInfo: ChartInfo;
   channelStatus: 'on' | 'off';
   serverStatus: 'unknown' | 'on' | 'off';
 } = {
   kondors: [initialKondor],
-  chartInfo: { lines: chartSettings, maxTicks: 10 },
+  chartInfo: {
+    lines: chartSettings,
+    maxTicks: 10,
+    xAxis: {
+      units: 'Дистанция, м'
+    }
+  },
   channelStatus: 'off',
   serverStatus: 'unknown'
 };

@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 enum Icon {
   NONE = '',
   HOME = 'images/home.png',
-  GRAPH = 'images/graph.png',
+  GRAPH = 'images/measurements.png',
   HISTORY = 'images/history.png',
   OPTIONS = 'images/options.png',
   DIAGNOSTICS = 'images/diagnostics.png',

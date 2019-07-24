@@ -1,0 +1,16 @@
+.pagination {
+  display: flex;
+
+  &__item {
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    cursor: pointer;
+    background: $light-grey;
+
+    &_selected {
+      background: black;
+      color: white;
+    }
+  }
+}

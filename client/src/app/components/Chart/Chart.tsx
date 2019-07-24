@@ -29,8 +29,8 @@ type OwnProps = {
   breakpoint?: { start: number; finish: number };
   mainColor?: string;
   warningColor?: string;
-  showY: boolean;
-  showBrush: boolean;
+  showY?: boolean;
+  showBrush?: boolean;
   showMin?: boolean;
   showMax?: boolean;
   show?: boolean;
