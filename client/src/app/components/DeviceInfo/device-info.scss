@@ -1,0 +1,46 @@
+.device-info {
+  &__wrapper {
+    padding: 0.5rem;
+    background: $pale-green;
+    border: 0.05rem solid $dark-grey;
+
+    &_error {
+      background: $danger;
+    }
+  }
+
+  &__title {
+    font-size: 0.9rem;
+    padding: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__tab-content {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    padding: 1rem;
+  }
+
+  &__chart {
+    min-width: 280px;
+    min-height: 200px;
+    width: 280px;
+    height: 200px;
+  }
+
+  &__info-item {
+    padding: 0.25rem;
+
+    &_invalid {
+      .device-info__info-value {
+        color: red;
+      }
+    }
+  }
+
+  &__info-title {
+    display: inline-block;
+    width: 9.5rem;
+  }
+}

@@ -39,7 +39,8 @@ const ChartModal: React.FC<Props> = ({
     const newLines = JSON.parse(JSON.stringify(lineInfo));
     const target = event.target as HTMLInputElement;
 
-    if (!newLines[key].breakpoint) newLines[key].breakpoint = {};
+    if (!newLines[key].breakpoint)
+      newLines[key].breakpoint = { start: 0, finish: 0 };
     newLines[key].breakpoint[target.name] = parseFloat(target.value);
 
     setLineInfo(newLines);

@@ -162,6 +162,9 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
           }}
         />
       </div>
+      {currentKondor && (
+        <div className="composite-chart__title">{`Кондор #${currentKondor}`}</div>
+      )}
       <div className="composite-chart__previews">
         {currentKondor ? getKondorChart() : getPreviews()}
       </div>

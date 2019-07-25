@@ -1,0 +1,22 @@
+.kondor-modal {
+  display: flex;
+
+  &__column {
+    width: 50%;
+    padding: 0.25rem;
+  }
+
+  &__devices {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__device {
+    margin: 0.75rem;
+    margin-top: 0;
+  }
+
+  &__device-info {
+    margin-bottom: 1rem;
+  }
+}

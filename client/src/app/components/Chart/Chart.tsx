@@ -31,6 +31,7 @@ type OwnProps = {
   warningColor?: string;
   showY?: boolean;
   showBrush?: boolean;
+  showControls?: boolean;
   showMin?: boolean;
   showMax?: boolean;
   show?: boolean;
@@ -280,6 +281,7 @@ class Chart extends React.Component<Props, State> {
 
   render() {
     const {
+      showControls = true,
       showBrush = true,
       enableZoom = true,
       data,
@@ -353,13 +355,15 @@ class Chart extends React.Component<Props, State> {
             ) : null}
           </LineChart>
         </ResponsiveContainer>
-        <div className="chart-controls">
-          <Icon
-            size="small"
-            image={IconImage.ZOOM_OUT}
-            onClick={this.zoomOut}
-          />
-        </div>
+        {showControls && (
+          <div className="chart-controls">
+            <Icon
+              size="small"
+              image={IconImage.ZOOM_OUT}
+              onClick={this.zoomOut}
+            />
+          </div>
+        )}
       </>
     );
   }

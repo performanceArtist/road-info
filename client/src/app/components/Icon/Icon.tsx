@@ -1,18 +1,20 @@
 import React from 'react';
 
 export enum IconImage {
-  WARNING = 'url("images/warning.png")',
-  EDIT = 'url("images/edit.png")',
-  DELETE = 'url("images/trashbin.png")',
-  ANGLE = 'url("images/angle-down.png")',
-  ZOOM_OUT = 'url("images/zoom-out.png")',
-  SETTINGS = 'url("images/settings.png")',
-  MAX = 'url("images/max.png")',
-  MIN = 'url("images/min.png")',
-  BACK_ARROW = 'url("images/back-arrow.png")',
-  TABLE = 'url("images/table.png")',
-  GRAPH = 'url("images/graph.png")',
-  EXPAND = 'url("images/expand.png")'
+  WARNING = 'warning.png',
+  EDIT = 'edit.png',
+  DELETE = 'trashbin.png',
+  ANGLE = 'angle-down.png',
+  ZOOM_OUT = 'zoom-out.png',
+  SETTINGS = 'settings.png',
+  MAX = 'max.png',
+  MIN = 'min.png',
+  BACK_ARROW = 'back-arrow.png',
+  TABLE = 'table.png',
+  GRAPH = 'graph.png',
+  EXPAND = 'expand.png',
+  COMPASS = 'compass.png',
+  WIFI = 'wifi.png'
 }
 
 type Props = {
@@ -30,7 +32,7 @@ export const Icon: React.FC<Props> = ({
 }) => (
   <div
     className={`icon icon_${size}`}
-    style={{ backgroundImage: image }}
+    style={{ backgroundImage: `url("images/${image}")` }}
     title={title}
     onClick={onClick}
   />

@@ -2,7 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Modal from '@components/Modal/Modal';
+import DeviceInfo from '@components/DeviceInfo/DeviceInfo';
+import DeviceMonitor from '@components/DeviceMonitor/DeviceMonitor';
+
 import { closeModal } from '@redux/modal/actions';
+import { IconImage } from '@components/Icon/Icon';
 
 type OwnProps = {
   id: string;
@@ -16,13 +20,141 @@ class KondorModal extends React.Component<Props, {}> {
   }
 
   render() {
-    const { id, coordinates, closeModal } = this.props;
+    const { id, closeModal } = this.props;
+
+    const getDevices = devices =>
+      devices.map(device => (
+        <div className="kondor-modal__device">
+          <DeviceMonitor {...device} />
+        </div>
+      ));
 
     return (
       <Modal open={true} onClose={closeModal}>
         <Modal.Header>Kondor #{id}</Modal.Header>
         <Modal.Content>
-          Ok
+          <div className="kondor-modal">
+            <div className="kondor-modal__column">
+              <div className="kondor-modal__device-info">
+                <DeviceInfo
+                  title="Плотнометр"
+                  hasError={false}
+                  tabs={[
+                    {
+                      title: 'Источник питания',
+                      info: [
+                        { title: 'Напряжение, В', value: '2.5', valid: true },
+                        { title: 'Ток, А', value: '100', valid: false }
+                      ],
+                      chartData: []
+                    },
+                    {
+                      title: 'Рентгеновская трубка',
+                      info: [
+                        { title: 'Напряжение, В', value: '2.5', valid: true },
+                        { title: 'Ток, А', value: '100', valid: false }
+                      ],
+                      chartData: []
+                    },
+                    {
+                      title: 'Детектор',
+                      info: [
+                        { title: 'Напряжение, В', value: '2.5', valid: true },
+                        { title: 'Ток, А', value: '100', valid: false }
+                      ],
+                      chartData: []
+                    },
+                    {
+                      title: 'Защита',
+                      info: [
+                        { title: 'Напряжение, В', value: '2.5', valid: true },
+                        { title: 'Ток, А', value: '100', valid: false }
+                      ],
+                      chartData: []
+                    }
+                  ]}
+                />
+              </div>
+              <div className="kondor-modal__device-info">
+                <DeviceInfo
+                  title="Система электропитания"
+                  hasError={false}
+                  tabs={[
+                    {
+                      title: 'Источник питания',
+                      info: [
+                        { title: 'Напряжение, В', value: '2.5', valid: true },
+                        { title: 'Ток, А', value: '100', valid: false }
+                      ],
+                      chartData: []
+                    }
+                  ]}
+                />
+              </div>
+            </div>
+            <div className="kondor-modal__column">
+              <div className="kondor-modal__devices">
+                {getDevices([
+                  {
+                    title: 'Георадар',
+                    devices: ['Блок управления', 'АБ2000', 'АБ400', 'Одометр'],
+                    button: { value: 'Сбросить ошибки', onClick: () => {} },
+                    hasError: false
+                  },
+                  {
+                    title: 'ПК',
+                    devices: [],
+                    button: { value: 'Перезагрузить', onClick: () => {} },
+                    hasError: true
+                  },
+                  {
+                    title: 'Коммутатор',
+                    devices: [
+                      IconImage.COMPASS,
+                      IconImage.GRAPH,
+                      IconImage.WIFI
+                    ],
+                    button: { value: 'Сбросить ошибки', onClick: () => {} },
+                    hasError: false
+                  },
+                  {
+                    title: 'Профилометр',
+                    devices: ['Лазер1', 'Лазер2'],
+                    button: { value: 'Сбросить ошибки', onClick: () => {} },
+                    hasError: true
+                  },
+                  {
+                    title: 'Фото-видео мониторинг',
+                    devices: ['Камера1', 'Камера2'],
+                    button: { value: 'Выгрузить видео', onClick: () => {} },
+                    hasError: false
+                  },
+                  {
+                    title: 'GPS мониторинг',
+                    devices: ['Спутники'],
+                    button: { value: 'Перезагрузить', onClick: () => {} },
+                    hasError: false
+                  }
+                ])}
+              </div>
+              <div className="kondor-modal__device-info">
+                <DeviceInfo
+                  title="Система жизнеобеспечения"
+                  hasError={true}
+                  tabs={[
+                    {
+                      title: 'Заголовок',
+                      info: [
+                        { title: 'Напряжение, В', value: '2.5', valid: true },
+                        { title: 'Ток, А', value: '100', valid: false }
+                      ],
+                      chartData: []
+                    }
+                  ]}
+                />
+              </div>
+            </div>
+          </div>
           <Modal.Footer />
         </Modal.Content>
       </Modal>
