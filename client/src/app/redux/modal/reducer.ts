@@ -21,7 +21,7 @@ export const ModalMap: Record<
   Kondor: KondorModal
 };
 
-interface ModalPayload {
+export interface ModalPayload {
   modalType: string;
   modalProps: any;
 }

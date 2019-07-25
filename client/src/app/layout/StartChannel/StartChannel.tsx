@@ -6,7 +6,7 @@ import socket from '@redux/measurements/socket';
 const StartChannel: React.FC<typeof mapDispatch> = ({ startChannel }) => {
   useEffect(() => {
     startChannel();
-  });
+  }, []);
 
   return null;
 };

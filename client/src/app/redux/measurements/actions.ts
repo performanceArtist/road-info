@@ -1,4 +1,4 @@
-import { ChartLineInfo } from './types';
+import { ChartLines } from '@redux/measurements/types';
 
 export const CHART = {
   CHANGE_VISIBILITY: 'CHART.CHANGE_VISIBILITY',
@@ -34,7 +34,7 @@ export const changeVisibility = (line: string, show: boolean) => ({
 });
 
 export const saveChartSettings = (settings: {
-  lines: Array<ChartLineInfo>;
+  lines: ChartLines;
   maxTicks: number;
 }) => ({
   type: CHART.SAVE_SETTINGS,

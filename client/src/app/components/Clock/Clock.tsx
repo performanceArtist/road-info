@@ -1,72 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-interface State {
-  date: Date;
-  timer: NodeJS.Timeout | null;
-}
+const useInterval = (ms: number) => {
+  const [date, setDate] = useState(new Date());
+  useEffect(() => {
+    const timer = setInterval(() => setDate(new Date()), ms);
 
-class Clock extends React.Component<{}, State> {
-  constructor(props: {}) {
-    super(props);
+    return () => clearInterval(timer);
+  });
 
-    this.state = {
-      date: new Date(),
-      timer: null
-    };
+  return date;
+};
 
-    this.getDate = this.getDate.bind(this);
-    this.getDay = this.getDay.bind(this);
-  }
+const Clock: React.FC = () => {
+  const date = useInterval(1000);
 
-  addZeros(str: number) {
-    return `0${str}`.slice(-2);
-  }
+  const addZeros = (value: number) => `0${value}`.slice(-2);
 
-  getDate() {
-    const { date } = this.state;
-
-    const day = this.addZeros(date.getUTCDate());
-    const month = this.addZeros(date.getUTCMonth());
+  const getDate = () => {
+    const day = addZeros(date.getUTCDate());
+    const month = addZeros(date.getUTCMonth());
     const year = date.getUTCFullYear();
 
     return `${day}.${month}.${year}`;
-  }
+  };
 
-  getDay() {
-    const { date } = this.state;
-
-    const hours = this.addZeros(date.getUTCHours());
-    const minutes = this.addZeros(date.getUTCMinutes());
-    const seconds = this.addZeros(date.getUTCSeconds());
+  const getDay = () => {
+    const hours = addZeros(date.getUTCHours());
+    const minutes = addZeros(date.getUTCMinutes());
+    const seconds = addZeros(date.getUTCSeconds());
 
     return `${hours}:${minutes}:${seconds}`;
-  }
+  };
 
-  componentDidMount() {
-    const timer = setInterval(() => {
-      this.setState({ date: new Date() });
-    }, 1000);
-
-    this.setState({ timer });
-  }
-
-  componentWillUnmount() {
-    const { timer } = this.state;
-
-    clearInterval(timer);
-  }
-
-  render() {
-    return (
-      <div className="clock">
-        <div className="clock__wrapper">
-          <span className="clock__title">UTC</span>
-          <span className="clock__date">{this.getDate()}</span>
-          <span className="clock__day">{this.getDay()}</span>
-        </div>
+  return (
+    <div className="clock">
+      <div className="clock__wrapper">
+        <span className="clock__title">UTC</span>
+        <span className="clock__date">{getDate()}</span>
+        <span className="clock__day">{getDay()}</span>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default Clock;

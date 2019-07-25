@@ -14,138 +14,117 @@ import { saveChartSettings } from '@redux/measurements/actions';
 import { ChartLineInfo, ChartInfo } from '@redux/measurements/types';
 import { RootState } from '@redux/reducer';
 
-interface State {
-  key: string;
-  maxTicks: number;
-  lines: Array<ChartLineInfo>;
-}
-
 type MapState = {
   chartInfo: ChartInfo;
 };
 
 type Props = typeof mapDispatch & MapState;
 
-class ChartModal extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
+const ChartModal: React.FC<Props> = ({
+  chartInfo,
+  saveChartSettings,
+  closeModal
+}) => {
+  const { lines, maxTicks } = chartInfo;
+  const [max, setMax] = useState(maxTicks);
+  const [lineInfo, setLineInfo] = useState(lines);
+  const [key, setCurrentKey] = useState('density');
 
-    const { lines, maxTicks } = props.chartInfo;
-
-    this.state = {
-      key: 'density',
-      maxTicks,
-      lines
-    };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-  }
-
-  handleSubmit() {
-    const { saveChartSettings, closeModal } = this.props;
-    const { maxTicks, lines } = this.state;
-
-    saveChartSettings({ maxTicks, lines });
+  const handleSubmit = () => {
+    saveChartSettings({ maxTicks: max, lines: lineInfo });
     closeModal();
-  }
+  };
 
-  handleInputChange(event: React.SyntheticEvent) {
-    const { key, lines } = this.state;
-    const newLines = JSON.parse(JSON.stringify(lines));
+  const handleInputChange = (event: React.SyntheticEvent) => {
+    const newLines = JSON.parse(JSON.stringify(lineInfo));
     const target = event.target as HTMLInputElement;
 
     if (!newLines[key].breakpoint) newLines[key].breakpoint = {};
     newLines[key].breakpoint[target.name] = parseFloat(target.value);
-    this.setState({ lines: newLines });
-  }
 
-  render() {
-    const { closeModal } = this.props;
-    const { key, maxTicks, lines } = this.state;
-    const currentLine = lines[key];
+    setLineInfo(newLines);
+  };
 
-    return (
-      <Modal open={true} onClose={closeModal}>
-        <Modal.Header>Настройки графика</Modal.Header>
-        <Form props={{ onSubmit: this.handleSubmit }}>
-          <Modal.Content>
-            <div className="chart-modal">
-              <div className="chart-modal__wrapper">
-                <div className="chart-modal__breakpoint-title">Полоса</div>
-                <div className="chart-modal__breakpoint">
-                  <div className="chart-modal__input">
-                    <Dropdown
-                      name="line"
-                      value={key}
-                      options={[
-                        { name: 'Плотность', value: 'density' },
-                        { name: 'IRI', value: 'iri' },
-                        { name: 'Толщина покрытия', value: 'thickness' },
-                        { name: 'Колейность', value: 'rutting' }
-                      ]}
-                      onChange={(event: React.SyntheticEvent) => {
-                        const target = event.target as HTMLInputElement;
-                        this.setState({ key: target.value });
-                      }}
-                    />
-                  </div>
-                  <div className="chart-modal__input">
-                    <Input
-                      label="От"
-                      props={{
-                        name: 'start',
-                        type: 'number',
-                        step: 0.1,
-                        value: currentLine.breakpoint
-                          ? currentLine.breakpoint.start
-                          : 0,
-                        onChange: this.handleInputChange,
-                        autoFocus: true
-                      }}
-                    />
-                  </div>
-                  <div className="chart-modal__input">
-                    <Input
-                      label="До"
-                      props={{
-                        name: 'finish',
-                        type: 'number',
-                        step: 0.1,
-                        value: currentLine.breakpoint
-                          ? currentLine.breakpoint.finish
-                          : 0,
-                        onChange: this.handleInputChange
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="chart-modal__breakpoint-title">Показания</div>
-                <Input
-                  label="Количество измерений"
-                  props={{
-                    name: 'max',
-                    type: 'number',
-                    step: 1,
-                    min: 1,
-                    value: maxTicks,
-                    onChange: (event: React.SyntheticEvent) => {
+  return (
+    <Modal open={true} onClose={closeModal}>
+      <Modal.Header>Настройки графика</Modal.Header>
+      <Form props={{ onSubmit: handleSubmit }}>
+        <Modal.Content>
+          <div className="chart-modal">
+            <div className="chart-modal__wrapper">
+              <div className="chart-modal__breakpoint-title">Полоса</div>
+              <div className="chart-modal__breakpoint">
+                <div className="chart-modal__input">
+                  <Dropdown
+                    name="line"
+                    value={key}
+                    options={[
+                      { name: 'Плотность', value: 'density' },
+                      { name: 'IRI', value: 'iri' },
+                      { name: 'Толщина покрытия', value: 'thickness' },
+                      { name: 'Колейность', value: 'rutting' }
+                    ]}
+                    onChange={(event: React.SyntheticEvent) => {
                       const target = event.target as HTMLInputElement;
-                      this.setState({ maxTicks: parseInt(target.value) });
-                    }
-                  }}
-                />
+                      setCurrentKey(target.value);
+                    }}
+                  />
+                </div>
+                <div className="chart-modal__input">
+                  <Input
+                    label="От"
+                    props={{
+                      name: 'start',
+                      type: 'number',
+                      step: 0.1,
+                      value: lineInfo[key].breakpoint
+                        ? lineInfo[key].breakpoint.start
+                        : 0,
+                      onChange: handleInputChange,
+                      autoFocus: true
+                    }}
+                  />
+                </div>
+                <div className="chart-modal__input">
+                  <Input
+                    label="До"
+                    props={{
+                      name: 'finish',
+                      type: 'number',
+                      step: 0.1,
+                      value: lineInfo[key].breakpoint
+                        ? lineInfo[key].breakpoint.finish
+                        : 0,
+                      onChange: handleInputChange
+                    }}
+                  />
+                </div>
               </div>
-              <Modal.Footer>
-                <Button type="submit">Сохранить</Button>
-              </Modal.Footer>
+              <div className="chart-modal__breakpoint-title">Показания</div>
+              <Input
+                label="Количество измерений"
+                props={{
+                  name: 'max',
+                  type: 'number',
+                  step: 1,
+                  min: 1,
+                  value: max,
+                  onChange: (event: React.SyntheticEvent) => {
+                    const target = event.target as HTMLInputElement;
+                    setMax(parseInt(target.value, 10));
+                  }
+                }}
+              />
             </div>
-          </Modal.Content>
-        </Form>
-      </Modal>
-    );
-  }
-}
+            <Modal.Footer>
+              <Button type="submit">Сохранить</Button>
+            </Modal.Footer>
+          </div>
+        </Modal.Content>
+      </Form>
+    </Modal>
+  );
+};
 
 const mapState = ({ measurements }: RootState) => ({
   chartInfo: measurements.chartInfo
