@@ -1,6 +1,7 @@
 export type ColorBreakpoint = { start: number; finish: number };
 
 export interface ChartLineInfo {
+  name?: string;
   units?: string;
   breakpoint?: ColorBreakpoint;
   mainColor?: string;

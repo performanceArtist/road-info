@@ -14,17 +14,7 @@ type MapState = {
 type Props = MapState;
 
 const Road: React.FC<Props> = ({ chartInfo, kondors }) => {
-  const data = kondors[0].measurements.map(
-    ({ distance, density, iri, rutting, thickness }) => ({
-      distance,
-      density,
-      iri,
-      rutting,
-      thickness
-    })
-  );
-
-  const getGraphs = kondors.map(kondor => {
+  const graphs = kondors.map(kondor => {
     const data = kondor.measurements.map(
       ({ distance, density, iri, rutting, thickness }) => ({
         distance,
@@ -42,7 +32,7 @@ const Road: React.FC<Props> = ({ chartInfo, kondors }) => {
     );
   });
 
-  return <div className="road">{getGraphs}</div>;
+  return <div className="road">{graphs}</div>;
 };
 
 const mapState = ({ measurements }: RootState) => ({

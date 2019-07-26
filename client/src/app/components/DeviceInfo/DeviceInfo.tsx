@@ -54,7 +54,8 @@ const DeviceInfo: React.FC<Props> = ({ title, hasError, tabs }) => {
       showBrush={false}
       showControls={false}
       enableZoom={false}
-      units="Напряжение, В"
+      name="Напряжение"
+      units="В"
     />
   );
 

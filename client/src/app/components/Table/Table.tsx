@@ -43,7 +43,7 @@ const Table: React.FC<Props> = ({ data = [], maxRows = 10, chartInfo }) => {
   const titles = Object.keys(data[0]).map(key => (
     <th className="table__head-cell">
       {chartInfo.lines[key]
-        ? chartInfo.lines[key].units
+        ? `${chartInfo.lines[key].name}, ${chartInfo.lines[key].units}`
         : chartInfo.xAxis.units}
     </th>
   ));

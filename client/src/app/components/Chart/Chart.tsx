@@ -25,6 +25,7 @@ type OwnProps = {
   keyY: string;
   data: Array<DataType>;
   maxTicks?: number;
+  name?: string;
   units?: string;
   breakpoint?: { start: number; finish: number };
   mainColor?: string;
@@ -134,7 +135,8 @@ class Chart extends React.Component<Props, State> {
     const {
       data,
       keyY,
-      units = keyY,
+      name = keyY,
+      units = '',
       breakpoint = null,
       mainColor = 'black',
       showMax = true,
@@ -151,7 +153,7 @@ class Chart extends React.Component<Props, State> {
       <Line
         yAxisId={keyY}
         type="linear"
-        name={units}
+        name={`${name}, ${units}`}
         dataKey={keyY}
         stroke={breakpoint ? `url(#${keyY})` : mainColor}
         strokeWidth={2.5}
