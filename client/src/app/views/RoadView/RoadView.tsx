@@ -2,10 +2,10 @@ import React from 'react';
 
 import Road from '@components/Road/Road';
 
-const Report = () => (
-  <div className="report">
+const RoadView = () => (
+  <div className="road-view">
     <Road />
   </div>
 );
 
-export default Report;
+export default RoadView;

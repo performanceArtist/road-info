@@ -15,10 +15,6 @@ const Calibration = () => (
       ]}
     />
     <br />
-    <TabContainer>
-      <div tab="kek">Kek</div>
-      <div tab="pok">Pok</div>
-    </TabContainer>
   </div>
 );
 

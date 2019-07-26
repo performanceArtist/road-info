@@ -1,51 +1,112 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from 'recharts';
+import { ChartLineInfo } from '@redux/measurements/types';
 
 type Props = {
+  keyX: string;
   data: Array<{ [key: string]: number }>;
-  breakpoints?: { start: number; finish: number };
+  info: { [key: string]: ChartLineInfo };
 };
 
-const RoadChart: React.FC<Props> = ({ data, breakpoints }) => {
+const RTest: React.FC<Props> = ({ keyX, data, info }) => {
+  const canvasRef = React.useRef(null);
+  const config = {
+    width: 600,
+    height: 400,
+    lineGap: 30,
+    lineHeight: 30,
+    fragmentWidth: 50
+  };
+
+  const { width, fragmentWidth } = config;
+  const max = width / fragmentWidth;
+  const start = data.length - max < 0 ? 0 : data.length - max;
+  const filteredData = data.slice(start);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#f4f4f4';
+    ctx.fillRect(0, 0, config.width, config.height);
+    filteredData.forEach((item, index) => draw(ctx, item, index));
+  });
+
+  const draw = (
+    ctx: CanvasRenderingContext2D,
+    item: { [key: string]: number },
+    index: number
+  ) => {
+    Object.keys(item).forEach((key, keyIndex) => {
+      if (key === keyX) return;
+
+      const lineInfo = info[key];
+      const isValid = (
+        breakpoint: { start: number; finish: number } | null,
+        value: number
+      ) =>
+        breakpoint
+          ? value > breakpoint.start && value < breakpoint.finish
+          : true;
+
+      ctx.fillStyle = isValid(lineInfo.breakpoint, item[key])
+        ? lineInfo.mainColor
+        : '#f62a00';
+
+      const { fragmentWidth, lineGap, lineHeight, width, height } = config;
+
+      ctx.fillRect(
+        index * fragmentWidth,
+        keyIndex * (lineGap + lineHeight),
+        fragmentWidth,
+        lineHeight
+      );
+
+      if (index === 0) {
+        ctx.fillStyle = 'black';
+        ctx.font = '14px Arial';
+        ctx.fillText(`${filteredData[index][keyX]} м`, 10, 40);
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(index * fragmentWidth, 20, 3, height - 40);
+      }
+
+      if (index === filteredData.length - 1) {
+        ctx.fillStyle = '#545454';
+        ctx.fillRect(
+          (index + 1) * fragmentWidth,
+          keyIndex * (lineGap + lineHeight),
+          width - keyIndex * lineGap,
+          lineHeight
+        );
+
+        if (filteredData.length > 1) {
+          ctx.fillStyle = 'black';
+          ctx.font = '14px Arial';
+          ctx.fillText(
+            `${filteredData[filteredData.length - 1][keyX]} м`,
+            (index + 1) * fragmentWidth - 55,
+            40
+          );
+        }
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect((index + 1) * fragmentWidth - 3, 20, 3, height - 40);
+      }
+    });
+  };
+
   return (
-    <div className="road-chart">
-      <BarChart
-        width={500}
-        height={300}
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5
-        }}
-        layout="horizontal"
-        barGap={0}
-        barCategoryGap={0}
-        stackOffset="expand"
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="distance" />
-        <Bar dataKey="distance" fill="#8884d8">
-          {data.map((entry, index) => {
-            const color =
-              entry.density > 0 && entry.density < 2 ? 'green' : 'red';
-            return <Cell fill={color} />;
-          })}
-        </Bar>
-      </BarChart>
-    </div>
+    <canvas
+      ref={canvasRef}
+      width={config.width}
+      height={config.height}
+      onClick={e => {
+        const newLocation = { x: e.clientX, y: e.clientY };
+        console.log(newLocation);
+      }}
+    />
   );
 };
 
-export default RoadChart;
+export default RTest;

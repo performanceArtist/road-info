@@ -8,9 +8,10 @@ import DeviceMonitor from '@components/DeviceMonitor/DeviceMonitor';
 import { closeModal } from '@redux/modal/actions';
 import { IconImage } from '@components/Icon/Icon';
 
+import { DeviceMonitorProps } from '@components/DeviceMonitor/DeviceMonitor';
+
 type OwnProps = {
   id: string;
-  coordinates: { x: number; y: number };
 };
 type Props = OwnProps & typeof mapDispatch;
 
@@ -22,7 +23,7 @@ class KondorModal extends React.Component<Props, {}> {
   render() {
     const { id, closeModal } = this.props;
 
-    const getDevices = devices =>
+    const getDevices = (devices: Array<DeviceMonitorProps>) =>
       devices.map(device => (
         <div className="kondor-modal__device">
           <DeviceMonitor {...device} />

@@ -3,14 +3,14 @@ import React from 'react';
 import Button from '@shared/Button/Button';
 import { Icon, IconImage } from '@components/Icon/Icon';
 
-type Props = {
+export type DeviceMonitorProps = {
   title: string;
   hasError: boolean;
   button: { onClick: (event?: React.MouseEvent) => void; value: string };
   devices: Array<string | IconImage>;
 };
 
-const DeviceMonitor: React.FC<Props> = ({
+const DeviceMonitor: React.FC<DeviceMonitorProps> = ({
   hasError,
   title,
   button,

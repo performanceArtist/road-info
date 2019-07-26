@@ -3,7 +3,7 @@
 
   &__column {
     width: 50%;
-    padding: 0.25rem;
+    padding: 0.5rem;
   }
 
   &__devices {
@@ -14,6 +14,7 @@
   &__device {
     margin: 0.75rem;
     margin-top: 0;
+    margin-left: 0;
   }
 
   &__device-info {
