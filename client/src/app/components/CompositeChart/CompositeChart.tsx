@@ -35,7 +35,7 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
 
   const fullChart = (keyY: string, data: ChartData, isOneOnScreen = false) => (
     <div
-      className="composite-chart__container"
+      className="composite-chart__chart-container"
       onDoubleClick={() => setCurrentChart(keyY)}
     >
       <div
@@ -49,7 +49,9 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
           keyX="distance"
           keyY={keyY}
           data={data}
+          maxTicks={chartInfo.maxTicks}
           {...chartInfo.lines[keyY]}
+          key={Math.random()}
         />
       </div>
     </div>
@@ -68,6 +70,7 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
         enableZoom={false}
         {...chartInfo.lines[keyY]}
         key={Math.random()}
+        maxTicks={1000}
       />
     </div>
   );
@@ -126,14 +129,19 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
 
   const getPreviews = () =>
     kondors.map(kondor => (
-      <div
-        className="composite-chart__container"
-        onDoubleClick={() => setCurrentKondor(kondor.id)}
-      >
-        <div className="composite-chart__title">{`Кондор #${kondor.id}`}</div>
-        {tables.indexOf(kondor.id) !== -1
-          ? getTable(kondor)
-          : getPreview(kondor)}
+      <div>
+        <div
+          className="composite-chart__title"
+          style={{ width: 'auto', height: 'auto' }}
+        >{`Кондор #${kondor.id}`}</div>
+        <div
+          className="composite-chart__chart-container"
+          onDoubleClick={() => setCurrentKondor(kondor.id)}
+        >
+          {tables.indexOf(kondor.id) !== -1
+            ? getTable(kondor)
+            : getPreview(kondor)}
+        </div>
       </div>
     ));
 

@@ -59,8 +59,8 @@ class Chart extends React.Component<Props, State> {
       refAreaRight: '',
       xDomain: { left: 'dataMin', right: 'dataMax' },
       yDomain: { top: 'dataMax+0.5', bottom: 'dataMin-0.5' },
-      startIndex: null,
-      endIndex: null
+      startIndex: this.getStartIndex(),
+      endIndex: this.props.data.length - 1
     };
 
     this.getAxisYDomain = this.getAxisYDomain.bind(this);
@@ -70,10 +70,6 @@ class Chart extends React.Component<Props, State> {
     this.getGradients = this.getGradients.bind(this);
     this.getStartIndex = this.getStartIndex.bind(this);
     this.getXTicks = this.getXTicks.bind(this);
-  }
-
-  componentWillReceiveProps() {
-    this.setState({ startIndex: null, endIndex: this.props.data.length - 1 });
   }
 
   getAxisYDomain(
@@ -148,6 +144,16 @@ class Chart extends React.Component<Props, State> {
     const yData = data.map(item => item[keyY]);
     const min = Math.min(...yData);
     const max = Math.max(...yData);
+    const tickCount = 3;
+    const step = Math.abs((max - min) / tickCount);
+
+    const ticks = showY
+      ? [...Array(tickCount + 1)].map((el, index) =>
+          index === 0
+            ? Math.round(min * 100) / 100
+            : Math.round((min + index * step) * 100) / 100
+        )
+      : [];
 
     return [
       <Line
@@ -167,6 +173,8 @@ class Chart extends React.Component<Props, State> {
         type="number"
         hide={!showY}
         yAxisId={keyY}
+        interval={0}
+        ticks={ticks}
         domain={[yDomain.bottom, yDomain.top]}
         allowDataOverflow
       />
@@ -269,8 +277,8 @@ class Chart extends React.Component<Props, State> {
   getXTicks() {
     const { data, keyX } = this.props;
     const { startIndex, endIndex } = this.state;
-    const start = startIndex === null ? this.getStartIndex() : startIndex;
-    const partData = data.slice(start, endIndex + 1);
+
+    const partData = data.slice(startIndex, endIndex + 1);
     const autoStep = Math.floor(partData.length / 8);
     const step = autoStep > 0 ? autoStep + 1 : 1;
 
@@ -287,7 +295,7 @@ class Chart extends React.Component<Props, State> {
       showBrush = true,
       enableZoom = true,
       data,
-      maxTicks = 10,
+      maxTicks = 100,
       keyX,
       keyY
     } = this.props;
@@ -303,7 +311,7 @@ class Chart extends React.Component<Props, State> {
 
     return (
       <>
-        <ResponsiveContainer key={`chart-${maxTicks}`}>
+        <ResponsiveContainer>
           <LineChart
             data={data}
             onMouseDown={event =>
@@ -358,12 +366,26 @@ class Chart extends React.Component<Props, State> {
           </LineChart>
         </ResponsiveContainer>
         {showControls && (
-          <div className="chart-controls">
-            <Icon
-              size="small"
-              image={IconImage.ZOOM_OUT}
-              onClick={this.zoomOut}
-            />
+          <div className="chart__icons">
+            <div className="chart__icon">
+              <Icon
+                size="small"
+                image={IconImage.ARROWS}
+                onClick={() => {
+                  this.setState(
+                    { startIndex: 0, endIndex: data.length },
+                    () => {}
+                  );
+                }}
+              />
+            </div>
+            <div className="chart__icon">
+              <Icon
+                size="small"
+                image={IconImage.ZOOM_OUT}
+                onClick={this.zoomOut}
+              />
+            </div>
           </div>
         )}
       </>
