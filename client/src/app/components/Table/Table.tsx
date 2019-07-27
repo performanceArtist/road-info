@@ -44,7 +44,7 @@ const Table: React.FC<Props> = ({ data = [], maxRows = 10, chartInfo }) => {
     <th className="table__head-cell">
       {chartInfo.lines[key]
         ? `${chartInfo.lines[key].name}, ${chartInfo.lines[key].units}`
-        : chartInfo.xAxis.units}
+        : `${chartInfo.xAxis.name}, ${chartInfo.xAxis.units}`}
     </th>
   ));
 

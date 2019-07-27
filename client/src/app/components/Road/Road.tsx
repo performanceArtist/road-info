@@ -27,7 +27,13 @@ const Road: React.FC<Props> = ({ chartInfo, kondors }) => {
 
     return (
       <div className="road__chart">
-        <RoadChart keyX="distance" data={data} info={chartInfo.lines} />
+        <RoadChart
+          keyX="distance"
+          data={data}
+          info={chartInfo.lines}
+          xUnits={chartInfo.xAxis.units}
+          config={{}}
+        />
       </div>
     );
   });

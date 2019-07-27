@@ -1,14 +1,9 @@
 .road-chart {
   display: flex;
 
-  &__info {
-    margin-top: 3.8rem;
-  }
-
   &__info-item {
-    padding: 0.5rem;
+    padding: 0 0.5rem;
     margin-right: 2rem;
-    margin-bottom: 1.25rem;
   }
 
   &__chart {

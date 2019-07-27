@@ -38,7 +38,8 @@ const initialState: {
     lines: chartSettings,
     maxTicks: 10,
     xAxis: {
-      units: 'Дистанция, м'
+      name: 'Дистанция',
+      units: 'м'
     }
   },
   channelStatus: 'off',

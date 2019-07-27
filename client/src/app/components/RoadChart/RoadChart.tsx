@@ -4,20 +4,53 @@ import Popup from '@components/Popup/Popup';
 
 import { ChartLineInfo } from '@redux/measurements/types';
 
-type Props = {
-  keyX: string;
-  data: Array<{ [key: string]: number }>;
-  info: { [key: string]: ChartLineInfo };
+type Config = {
+  width?: number;
+  height?: number;
+  rectGap?: number;
+  rectHeight?: number;
+  lineWidth?: number;
+  fragmentWidth?: number;
+  background?: string;
+  dangerColor?: string;
+  lineColor?: string;
+  remainderColor?: string;
+  textColor?: string;
+  textFont?: string;
+  textSize?: string;
 };
 
-const RoadChart: React.FC<Props> = ({ keyX, data, info }) => {
+type Props = {
+  keyX: string;
+  xUnits: string;
+  data: Array<{ [key: string]: number }>;
+  info: { [key: string]: ChartLineInfo };
+  config?: Config;
+};
+
+const RoadChart: React.FC<Props> = ({
+  keyX,
+  xUnits,
+  data,
+  info,
+  config = {}
+}) => {
   const canvasRef = React.useRef(null);
-  const config = {
+  config = {
     width: 600,
     height: 400,
-    lineGap: 15,
-    lineHeight: 40,
-    fragmentWidth: 50
+    background: '#f4f4f4',
+    rectGap: 30,
+    rectHeight: 40,
+    lineWidth: 3,
+    fragmentWidth: 50,
+    remainderColor: '#545454',
+    dangerColor: '#f62a00',
+    lineColor: 'black',
+    textColor: 'black',
+    textSize: '14px',
+    textFont: 'Arial',
+    ...config
   };
 
   const { width, fragmentWidth } = config;
@@ -29,7 +62,7 @@ const RoadChart: React.FC<Props> = ({ keyX, data, info }) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = '#f4f4f4';
+    ctx.fillStyle = config.background;
     ctx.fillRect(0, 0, config.width, config.height);
     filteredData.forEach((item, index) => draw(ctx, item, index));
   });
@@ -54,47 +87,73 @@ const RoadChart: React.FC<Props> = ({ keyX, data, info }) => {
 
       ctx.fillStyle = isValid(lineInfo.breakpoint, item[key])
         ? lineInfo.mainColor
-        : '#f62a00';
+        : config.dangerColor;
 
-      const { fragmentWidth, lineGap, lineHeight, width, height } = config;
+      const {
+        width,
+        height,
+        fragmentWidth,
+        rectGap,
+        rectHeight,
+        lineWidth,
+        lineColor,
+        textColor,
+        textSize,
+        textFont,
+        remainderColor
+      } = config;
 
       ctx.fillRect(
         index * fragmentWidth,
-        keyIndex * (lineGap + lineHeight),
+        height / 25 + keyIndex * (rectGap + rectHeight),
         fragmentWidth,
-        lineHeight
+        rectHeight
       );
 
       if (index === 0) {
-        ctx.fillStyle = 'black';
-        ctx.font = '14px Arial';
-        ctx.fillText(`${filteredData[index][keyX]} м`, 10, 40);
+        ctx.fillStyle = textColor;
+        ctx.font = `${textSize} ${textFont}`;
+        ctx.fillText(
+          `${filteredData[index][keyX]} ${xUnits}`,
+          lineWidth + 10,
+          height / 10
+        );
 
-        ctx.fillStyle = 'black';
-        ctx.fillRect(index * fragmentWidth, 20, 3, height - 40);
+        ctx.fillStyle = lineColor;
+        ctx.fillRect(
+          index * fragmentWidth,
+          height / 25,
+          lineWidth,
+          (height / 25) * 23
+        );
       }
 
       if (index === filteredData.length - 1) {
-        ctx.fillStyle = '#545454';
+        ctx.fillStyle = remainderColor;
         ctx.fillRect(
           (index + 1) * fragmentWidth,
-          keyIndex * (lineGap + lineHeight),
-          width - keyIndex * lineGap,
-          lineHeight
+          height / 25 + keyIndex * (rectGap + rectHeight),
+          width - keyIndex * rectGap,
+          rectHeight
         );
 
         if (filteredData.length > 2) {
-          ctx.fillStyle = 'black';
-          ctx.font = '14px Arial';
+          ctx.fillStyle = lineColor;
+          ctx.font = `${textSize} ${textFont}`;
           ctx.fillText(
-            `${filteredData[filteredData.length - 1][keyX]} м`,
-            (index + 1) * fragmentWidth - 55,
-            40
+            `${filteredData[filteredData.length - 1][keyX]} ${xUnits}`,
+            index * fragmentWidth - lineWidth,
+            height / 10
           );
         }
 
-        ctx.fillStyle = 'black';
-        ctx.fillRect((index + 1) * fragmentWidth - 3, 20, 3, height - 40);
+        ctx.fillStyle = lineColor;
+        ctx.fillRect(
+          (index + 1) * fragmentWidth - lineWidth,
+          height / 25,
+          lineWidth,
+          (height / 25) * 23
+        );
       }
     });
   };
@@ -108,16 +167,16 @@ const RoadChart: React.FC<Props> = ({ keyX, data, info }) => {
     const x = mouseX - left;
     const y = mouseY - top;
 
-    const { fragmentWidth, lineGap, lineHeight } = config;
+    const { fragmentWidth, rectGap, rectHeight } = config;
 
     const result = Object.keys(filteredData[0]).reduce((acc, key, keyIndex) => {
       if (key === keyX) return null;
       if (acc) return acc;
 
       const rx = 0;
-      const ry = keyIndex * (lineGap + lineHeight);
+      const ry = keyIndex * (rectGap + rectHeight);
       const rxw = fragmentWidth * filteredData.length;
-      const ryh = ry + lineHeight;
+      const ryh = ry + rectHeight;
 
       if (x > rx && x < rxw && y > ry && y < ryh) {
         const index = Math.floor((filteredData.length * x) / rxw);
@@ -134,7 +193,12 @@ const RoadChart: React.FC<Props> = ({ keyX, data, info }) => {
       return;
     }
 
-    const { error, key, value } = result;
+    const { error, key, value } = result as {
+      error: boolean;
+      key: string;
+      value: number;
+    };
+
     if (!error) {
       setPopup({
         coordinates: { x: mouseX - 80, y: mouseY - 75 + window.scrollY },
@@ -164,15 +228,27 @@ const RoadChart: React.FC<Props> = ({ keyX, data, info }) => {
     if (key === keyX) return null;
 
     return (
-      <div className="road-chart__info-item">{`${info[key].name}, ${
-        info[key].units
-      }`}</div>
+      <div
+        className="road-chart__info-item"
+        style={{
+          height: config.rectHeight,
+          lineHeight: `${config.rectHeight}px`,
+          marginBottom: config.rectGap
+        }}
+      >{`${info[key].name}, ${info[key].units}`}</div>
     );
   });
 
   return (
     <div className="road-chart">
-      <div className="road-chart__info">{charInfo}</div>
+      <div
+        className="road-chart__info"
+        style={{
+          marginTop: config.height / 25 + config.rectGap + config.rectHeight
+        }}
+      >
+        {charInfo}
+      </div>
       <div className="road-chart__chart">
         {popup && (
           <Popup coordinates={popup.coordinates} error={popup.error}>
