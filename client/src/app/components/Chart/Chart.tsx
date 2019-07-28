@@ -51,6 +51,8 @@ interface State {
 }
 
 class Chart extends React.Component<Props, State> {
+  brushRef: HTMLDivElement;
+
   constructor(props: Props) {
     super(props);
 
@@ -62,6 +64,8 @@ class Chart extends React.Component<Props, State> {
       startIndex: this.getStartIndex(),
       endIndex: this.props.data.length - 1
     };
+
+    this.brushRef = React.createRef();
 
     this.getAxisYDomain = this.getAxisYDomain.bind(this);
     this.zoom = this.zoom.bind(this);
@@ -336,6 +340,7 @@ class Chart extends React.Component<Props, State> {
             {this.getLineChart()}
             {data.length > 0 && showBrush && (
               <Brush
+                ref={this.brushRef}
                 dataKey="distance"
                 onChange={({ startIndex, endIndex }) => {
                   this.setState({ startIndex, endIndex });
@@ -368,16 +373,14 @@ class Chart extends React.Component<Props, State> {
         {showControls && (
           <div className="chart__icons">
             <div className="chart__icon">
+              {/*
               <Icon
                 size="small"
                 image={IconImage.ARROWS}
                 onClick={() => {
-                  this.setState(
-                    { startIndex: 0, endIndex: data.length },
-                    () => {}
-                  );
+                  this.setState({ startIndex: 0, endIndex: data.length });
                 }}
-              />
+              />*/}
             </div>
             <div className="chart__icon">
               <Icon

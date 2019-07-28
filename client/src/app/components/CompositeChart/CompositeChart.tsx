@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import Button from '@shared/Button/Button';
 import { Icon, IconImage } from '@components/Icon/Icon';
-import ControlForm from '@components/ControlForm/ControlForm';
 import Chart from '@components/Chart/Chart';
-import ChartSettings from '@components/ChartSettings/ChartSettings';
 import ChartControls from '@components/ChartControls/ChartControls';
 import Table from '@components/Table/Table';
-import RoadChart from '@components/RoadChart/RoadChart';
 
 import { openModal } from '@redux/modal/actions';
 import { RootState } from '@redux/reducer';
@@ -18,8 +14,6 @@ import {
   ChartInfo,
   ChartData
 } from '@redux/measurements/types';
-
-import testData from '../../views/Measurements/testData';
 
 type MapState = {
   kondors: KondorData;

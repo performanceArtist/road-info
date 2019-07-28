@@ -1,5 +1,15 @@
 .road-chart {
-  display: flex;
+  &__title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  &__content {
+    display: flex;
+    padding: 1.5rem;
+  }
 
   &__info-item {
     padding: 0 0.5rem;

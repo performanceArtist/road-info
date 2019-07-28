@@ -1,7 +1,6 @@
 import React from 'react';
 
 import MeasureTable from '@components/MeasureTable/MeasureTable';
-import VoltageChart from '@components/VoltageChart/VoltageChart';
 
 const Diagnostics = () => (
   <div className="diagnostics">
@@ -18,7 +17,7 @@ const Diagnostics = () => (
         ]}
       />
       <div className="diagnostics__chart">
-        <div className="diagnostics__chart-container">{VoltageChart}</div>
+        <div className="diagnostics__chart-container" />
       </div>
     </div>
   </div>

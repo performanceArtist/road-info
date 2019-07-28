@@ -21,6 +21,7 @@ type Config = {
 };
 
 type Props = {
+  title?: string;
   keyX: string;
   xUnits: string;
   data: Array<{ [key: string]: number }>;
@@ -29,6 +30,7 @@ type Props = {
 };
 
 const RoadChart: React.FC<Props> = ({
+  title = '',
   keyX,
   xUnits,
   data,
@@ -213,7 +215,7 @@ const RoadChart: React.FC<Props> = ({
         ? `Отклонение от нормы: ${name} меньше эталона на ${(
             breakpoint.start - value
           ).toFixed(2)}${units}`
-        : `Отклонение от нормы: ${name} превышет эталон на ${(
+        : `Отклонение от нормы: ${name} превышает эталон на ${(
             value - breakpoint.finish
           ).toFixed(2)}${units}`;
 
@@ -241,29 +243,32 @@ const RoadChart: React.FC<Props> = ({
 
   return (
     <div className="road-chart">
-      <div
-        className="road-chart__info"
-        style={{
-          marginTop: config.height / 25 + config.rectGap + config.rectHeight
-        }}
-      >
-        {charInfo}
+      <div className="road-chart__title">{title}</div>
+      <div className="road-chart__content">
+        <div
+          className="road-chart__info"
+          style={{
+            marginTop: config.height / 25 + config.rectGap + config.rectHeight
+          }}
+        >
+          {charInfo}
+        </div>
+        <div className="road-chart__chart">
+          {popup && (
+            <Popup coordinates={popup.coordinates} error={popup.error}>
+              {popup.message}
+            </Popup>
+          )}
+          <canvas
+            className="road-chart"
+            ref={canvasRef}
+            width={config.width}
+            height={config.height}
+            onClick={createPopup}
+          />
+        </div>
+        <div />
       </div>
-      <div className="road-chart__chart">
-        {popup && (
-          <Popup coordinates={popup.coordinates} error={popup.error}>
-            {popup.message}
-          </Popup>
-        )}
-        <canvas
-          className="road-chart"
-          ref={canvasRef}
-          width={config.width}
-          height={config.height}
-          onClick={createPopup}
-        />
-      </div>
-      <div />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { CHART, SERVER, GET } from './actions';
 import { KondorDataItem, KondorData, ChartInfo } from './types';
 
-import testData from '../../views/Measurements/testData';
+import testData from './testData';
 
 const chartSettings = {
   density: {

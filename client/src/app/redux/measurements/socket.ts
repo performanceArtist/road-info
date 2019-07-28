@@ -13,11 +13,11 @@ import {
 import { SERVER } from './actions';
 
 class Socket {
-  url: string;
-  socket: any;
+  private _url: string;
+  private _socket: any;
 
   constructor(url: string) {
-    this.url = url;
+    this._url = url;
 
     this.listenConnectSaga = this.listenConnectSaga.bind(this);
     this.listenDisconnectSaga = this.listenDisconnectSaga.bind(this);
@@ -26,28 +26,28 @@ class Socket {
   }
 
   private connect = () => {
-    this.socket = io(this.url);
+    this._socket = io(this._url);
     return new Promise(resolve => {
-      this.socket.on('connect', () => {
-        resolve(this.socket);
+      this._socket.on('connect', () => {
+        resolve(this._socket);
       });
     });
   };
 
   private disconnect = () => {
-    this.socket = io(this.url);
+    this._socket = io(this._url);
     return new Promise(resolve => {
-      this.socket.on('disconnect', () => {
-        resolve(this.socket);
+      this._socket.on('disconnect', () => {
+        resolve(this._socket);
       });
     });
   };
 
   private reconnect = () => {
-    this.socket = io(this.url);
+    this._socket = io(this._url);
     return new Promise(resolve => {
-      this.socket.on('reconnect', () => {
-        resolve(this.socket);
+      this._socket.on('reconnect', () => {
+        resolve(this._socket);
       });
     });
   };
@@ -57,9 +57,9 @@ class Socket {
       const handler = (data: any) => {
         emit(data);
       };
-      this.socket.on('newMeasurement', handler);
+      this._socket.on('newMeasurement', handler);
       return () => {
-        this.socket.off('newMeasurement', handler);
+        this._socket.off('newMeasurement', handler);
       };
     });
 
@@ -88,7 +88,7 @@ class Socket {
         yield put({ type: SERVER.SERVER_OFF });
       }
 
-      this.socket = yield call(this.connect);
+      this._socket = yield call(this.connect);
       const socketChannel = yield call(this.createChannel);
       yield fork(this.listenDisconnectSaga);
       yield fork(this.listenConnectSaga);
@@ -102,7 +102,7 @@ class Socket {
       console.log(error);
     } finally {
       if (yield cancelled()) {
-        this.socket.disconnect(true);
+        this._socket.disconnect(true);
         yield put({ type: SERVER.CHANNEL_OFF });
       }
     }
