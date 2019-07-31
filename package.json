@@ -10,7 +10,8 @@
     "client:dev-build": "webpack --mode=development --config ./client/webpack.config.dev.ts",
     "client:tsc": "tsc --project ./client",
     "server:dev": "ts-node-dev --respawn --transpileOnly ./server/src/server.ts",
-    "server:build": "tsc --project ./server"
+    "server:build": "tsc --project ./server",
+    "server:start": "node ./server/dist/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -65,6 +66,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-final-form": "^6.3.0",
+    "react-final-form-listeners": "^1.0.2",
     "react-hot-loader": "^4.12.9",
     "react-leaflet": "^2.4.0",
     "react-redux": "^7.1.0",

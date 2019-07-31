@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field } from 'react-final-form';
+import { OnChange } from 'react-final-form-listeners';
 
 import './final-input.scss';
 
@@ -12,9 +13,12 @@ type Props = {
   error?: boolean;
   required?: boolean;
   defaultValue?: string | number;
+  autoComplete?: string;
+  onChange?: (value: string) => void;
+  [key: string]: any;
 };
 
-const Input: React.FC<Props> = ({
+const FinalInput: React.FC<Props> = ({
   name,
   defaultValue,
   component = 'input',
@@ -22,7 +26,10 @@ const Input: React.FC<Props> = ({
   status = null,
   label = null,
   error = false,
-  required = false
+  required = false,
+  autoComplete = 'off',
+  onChange = () => {},
+  ...rest
 }) => (
   <label className="input">
     {label ? <div className="input__label">{label}</div> : null}
@@ -33,9 +40,14 @@ const Input: React.FC<Props> = ({
       component={component}
       className={error ? 'input__input input__input_invalid' : 'input__input'}
       required={required}
+      autoComplete={autoComplete}
+      {...rest}
     />
-    <div className="input__input-status">{status}</div>
+    <OnChange name={name}>
+      {(value, previous) => onChange(value, name)}
+    </OnChange>
+    {status && <div className="input__input-status">{status}</div>}
   </label>
 );
 
-export default Input;
+export default FinalInput;

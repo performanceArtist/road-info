@@ -21,7 +21,7 @@ const Input: React.FC<Props> = ({
       {...props}
       className={error ? 'input__input input__input_invalid' : 'input__input'}
     />
-    <div className="input__input-status">{status}</div>
+    {status && <div className="input__input-status">{status}</div>}
   </label>
 );
 

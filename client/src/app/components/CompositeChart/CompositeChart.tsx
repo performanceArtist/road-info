@@ -103,7 +103,7 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
   );
 
   const getTable = ({ id, measurements }: KondorDataItem) => (
-    <>
+    <div className="composite-chart__table">
       <Table
         data={measurements.map(
           ({ distance, density, iri, rutting, thickness }) => ({
@@ -118,7 +118,7 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
         maxRows={15}
       />
       {getIcons('table', id)}
-    </>
+    </div>
   );
 
   const getPreviews = () =>
