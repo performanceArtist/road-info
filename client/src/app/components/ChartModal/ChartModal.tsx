@@ -10,8 +10,8 @@ import Modal from '@components/Modal/Modal';
 import Dropdown from '@components/Dropdown/Dropdown';
 
 import { closeModal } from '@redux/modal/actions';
-import { saveChartSettings } from '@redux/measurements/actions';
-import { ChartLineInfo, ChartInfo } from '@redux/measurements/types';
+import { saveChartSettings } from '@redux/chart/actions';
+import { ChartInfo } from '@redux/chart/types';
 import { RootState } from '@redux/reducer';
 
 type MapState = {
@@ -127,8 +127,8 @@ const ChartModal: React.FC<Props> = ({
   );
 };
 
-const mapState = ({ measurements }: RootState) => ({
-  chartInfo: measurements.chartInfo
+const mapState = ({ chart }: RootState) => ({
+  chartInfo: chart
 });
 
 const mapDispatch = { saveChartSettings, closeModal };

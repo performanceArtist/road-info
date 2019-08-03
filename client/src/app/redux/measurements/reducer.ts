@@ -1,26 +1,7 @@
-import { CHART, SERVER, GET } from './actions';
-import { KondorDataItem, KondorData, ChartInfo } from './types';
+import { SERVER, GET } from './actions';
+import { KondorDataItem, KondorData } from './types';
 
 import testData from './testData';
-
-const chartSettings = {
-  density: {
-    mainColor: 'black',
-    name: 'Плотность',
-    units: 'г/см3',
-    show: true,
-    breakpoint: { start: 0, finish: 3 }
-  },
-  iri: { mainColor: 'blue', name: 'IRI', units: 'м/км', show: true },
-  rutting: { mainColor: 'teal', name: 'Колейность', units: 'мм', show: true },
-  thickness: {
-    mainColor: 'green',
-    name: 'Толщина',
-    units: 'мм',
-    show: true,
-    breakpoint: { start: 0, finish: 1 }
-  }
-};
 
 const initialKondor: KondorDataItem = {
   id: '1',
@@ -36,20 +17,11 @@ const initialKondor: KondorDataItem = {
 };
 
 const initialState: {
-  kondors: KondorData;
-  chartInfo: ChartInfo;
+  tasks: KondorData;
   channelStatus: 'on' | 'off';
   serverStatus: 'unknown' | 'on' | 'off';
 } = {
-  kondors: [initialKondor],
-  chartInfo: {
-    lines: chartSettings,
-    maxTicks: 10,
-    xAxis: {
-      name: 'Дистанция',
-      units: 'м'
-    }
-  },
+  tasks: [initialKondor],
   channelStatus: 'off',
   serverStatus: 'unknown'
 };
@@ -59,27 +31,16 @@ export default function reducer(
   { type, payload }: { type: string; payload: any }
 ) {
   switch (type) {
-    case CHART.CHANGE_VISIBILITY: {
-      const chartInfo = JSON.parse(JSON.stringify(state.chartInfo));
-      chartInfo.lines[payload.name].show = payload.show;
-      return { ...state, chartInfo };
-    }
-    case CHART.SAVE_SETTINGS: {
-      const chartInfo = JSON.parse(JSON.stringify(state.chartInfo));
-      chartInfo.lines = payload.lines;
-      chartInfo.maxTicks = payload.maxTicks;
-      return { ...state, chartInfo };
-    }
     case SERVER.ADD_MEASUREMENT: {
-      const kondors = [...state.kondors];
-      const current = kondors.find(({ id }) => id === payload.id);
+      const tasks = [...state.tasks];
+      const current = tasks.find(({ id }) => id === payload.id);
       if (current) {
         current.measurements = current.measurements.concat(payload.measurement);
-        return { ...state, kondors };
+        return { ...state, tasks };
       } else {
         return {
           ...state,
-          kondors: kondors.concat({
+          tasks: tasks.concat({
             id: payload.id,
             info: {},
             measurements: [payload.measurement]
@@ -91,7 +52,7 @@ export default function reducer(
       const { id, ...info } = payload;
       return {
         ...state,
-        kondors: state.kondors.concat({
+        tasks: state.tasks.concat({
           id: id.toString(),
           info,
           measurements: []

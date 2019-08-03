@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Pagination from '@components/Pagination/Pagination';
 
-import { ChartInfo } from '@redux/measurements/types';
+import { ChartInfo } from '@redux/chart/types';
 
 type Props = {
   data: Array<{ [key: string]: number }>;

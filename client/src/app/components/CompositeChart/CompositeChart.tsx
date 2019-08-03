@@ -5,27 +5,42 @@ import { Icon, IconImage } from '@components/Icon/Icon';
 import Chart from '@components/Chart/Chart';
 import ChartControls from '@components/ChartControls/ChartControls';
 import Table from '@components/Table/Table';
+import MeasurementInfo from '@components/MeasurementInfo/MeasurementInfo';
 
-import { openModal } from '@redux/modal/actions';
 import { RootState } from '@redux/reducer';
-import {
-  KondorData,
-  KondorDataItem,
-  ChartInfo,
-  ChartData
-} from '@redux/measurements/types';
+import { taskData, taskDataItem, ChartData } from '@redux/measurements/types';
+import { ChartInfo } from '@redux/chart/types';
 
 type MapState = {
-  kondors: KondorData;
+  tasks: taskData;
   chartInfo: ChartInfo;
 };
 
-type Props = MapState & typeof mapDispatch;
+type Props = MapState;
 
-const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
-  const [currentKondor, setCurrentKondor] = useState(null);
+const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
+  const [currenttask, setCurrenttask] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
   const [tables, setTables] = useState([]);
+  const [info, setInfo] = useState([]);
+
+  const toggleInfo = (newId: string) => {
+    const filtered = info.filter(id => id !== newId);
+
+    if (filtered.length === info.length) {
+      setInfo(info.concat(newId));
+    } else {
+      setInfo(filtered);
+    }
+  };
+
+  const renderInfo = (newId: string) => {
+    const current = info.find(id => id === newId);
+
+    if (!current) return null;
+
+    return <MeasurementInfo {...tasks.find(({ id }) => id === current).info} />;
+  };
 
   const fullChart = (keyY: string, data: ChartData, isOneOnScreen = false) => (
     <div
@@ -86,13 +101,13 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
           )}
         </div>
         <div className="composite-chart__icon">
-          <Icon image={IconImage.EXPAND} onClick={() => setCurrentKondor(id)} />
+          <Icon image={IconImage.EXPAND} onClick={() => setCurrenttask(id)} />
         </div>
       </div>
     );
   };
 
-  const getPreview = ({ id, measurements }: KondorDataItem) => (
+  const getPreview = ({ id, measurements }: taskDataItem) => (
     <>
       {preview('density', measurements)}
       {preview('rutting', measurements)}
@@ -102,7 +117,7 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
     </>
   );
 
-  const getTable = ({ id, measurements }: KondorDataItem) => (
+  const getTable = ({ id, measurements }: taskDataItem) => (
     <div className="composite-chart__table">
       <Table
         data={measurements.map(
@@ -122,25 +137,31 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
   );
 
   const getPreviews = () =>
-    kondors.map(kondor => (
+    tasks.map(task => (
       <div>
         <div
           className="composite-chart__title"
           style={{ width: 'auto', height: 'auto' }}
-        >{`Задание #${kondor.id}`}</div>
+        >
+          {`Задание #${task.id}`}
+          <Icon
+            image={IconImage.ANGLE}
+            size="small"
+            onClick={() => toggleInfo(task.id)}
+          />
+        </div>
+        {renderInfo(task.id)}
         <div
           className="composite-chart__chart-container"
-          onDoubleClick={() => setCurrentKondor(kondor.id)}
+          onDoubleClick={() => setCurrenttask(task.id)}
         >
-          {tables.indexOf(kondor.id) !== -1
-            ? getTable(kondor)
-            : getPreview(kondor)}
+          {tables.indexOf(task.id) !== -1 ? getTable(task) : getPreview(task)}
         </div>
       </div>
     ));
 
-  const getKondorChart = () => {
-    const { measurements } = kondors.find(({ id }) => id === currentKondor);
+  const gettaskChart = () => {
+    const { measurements } = tasks.find(({ id }) => id === currenttask);
 
     if (currentChart) return fullChart(currentChart, measurements, true);
 
@@ -160,29 +181,24 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
         <ChartControls
           onArrowClick={() => {
             if (currentChart) setCurrentChart(null);
-            if (!currentChart && currentKondor) setCurrentKondor(null);
+            if (!currentChart && currenttask) setCurrenttask(null);
           }}
         />
       </div>
-      {currentKondor && (
-        <div className="composite-chart__title">{`Задание #${currentKondor}`}</div>
+      {currenttask && (
+        <div className="composite-chart__title">{`Задание #${currenttask}`}</div>
       )}
       <div className="composite-chart__previews">
-        {currentKondor ? getKondorChart() : getPreviews()}
+        {currenttask ? gettaskChart() : getPreviews()}
       </div>
-      <div>{/*<RoadChart data={kondors[0].measurements} />*/}</div>
+      <div>{/*<RoadChart data={tasks[0].measurements} />*/}</div>
     </div>
   );
 };
 
-const mapState = ({ measurements }: RootState) => ({
-  kondors: measurements.kondors,
-  chartInfo: measurements.chartInfo
+const mapState = ({ measurements, chart }: RootState) => ({
+  tasks: measurements.tasks,
+  chartInfo: chart
 });
 
-const mapDispatch = { openModal };
-
-export default connect(
-  mapState,
-  mapDispatch
-)(CompositeChart);
+export default connect(mapState)(CompositeChart);

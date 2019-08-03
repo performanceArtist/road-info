@@ -1,10 +1,3 @@
-import { ChartLines } from '@redux/measurements/types';
-
-export const CHART = {
-  CHANGE_VISIBILITY: 'CHART.CHANGE_VISIBILITY',
-  SAVE_SETTINGS: 'CHART.SAVE_SETTINGS'
-};
-
 export const SERVER = {
   ADD_MEASUREMENT: 'SERVER.ADD_MEASUREMENT',
   INIT_MEASUREMENT: 'SERVER.INIT_MEASUREMENT',
@@ -27,17 +20,4 @@ export const GET = {
 export const createCondor = (id: number) => ({
   type: GET.KONDOR.REQUEST,
   payload: id
-});
-
-export const changeVisibility = (line: string, show: boolean) => ({
-  type: CHART.CHANGE_VISIBILITY,
-  payload: { line, show }
-});
-
-export const saveChartSettings = (settings: {
-  lines: ChartLines;
-  maxTicks: number;
-}) => ({
-  type: CHART.SAVE_SETTINGS,
-  payload: settings
 });

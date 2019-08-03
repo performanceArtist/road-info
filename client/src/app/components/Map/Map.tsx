@@ -7,8 +7,10 @@ import { connect } from 'react-redux';
 import { openModal } from '@redux/modal/actions';
 
 //import iconShadow from './icon/icon-shadow.png';
-import { KondorData, ChartData, ChartInfo } from '@redux/measurements/types';
+import { KondorData, ChartData } from '@redux/measurements/types';
+import { ChartInfo } from '@redux/chart/types';
 import { RootState } from '@redux/reducer';
+
 import Multicolor from './Multicolor';
 import { testData, haversine } from './helpers';
 
@@ -27,7 +29,7 @@ interface State {
 }
 
 type MapState = {
-  kondors: KondorData;
+  tasks: KondorData;
   chartInfo: ChartInfo;
 };
 
@@ -55,10 +57,10 @@ class MapComponent extends Component<Props, State> {
   }
 
   handleMarkerClick(event: React.MouseEvent, currentId: string) {
-    const { kondors, openModal } = this.props;
-    const kondor = kondors.find(({ id }) => id === currentId);
+    const { tasks, openModal } = this.props;
+    const task = tasks.find(({ id }) => id === currentId);
 
-    if (kondor)
+    if (task)
       openModal('Kondor', {
         id: currentId,
         counter: 1,
@@ -67,9 +69,9 @@ class MapComponent extends Component<Props, State> {
   }
 
   renderMarkers() {
-    const { kondors } = this.props;
+    const { tasks } = this.props;
 
-    return kondors.map(({ id, measurements }) => {
+    return tasks.map(({ id, measurements }) => {
       if (measurements.length !== 0) {
         const last = measurements[measurements.length - 1];
         return (
@@ -92,7 +94,7 @@ class MapComponent extends Component<Props, State> {
   }
 
   renderLines() {
-    const { kondors, chartInfo } = this.props;
+    const { tasks, chartInfo } = this.props;
     const { breakpoint } = chartInfo.lines.density;
     const getData = (chartData: ChartData) =>
       chartData.map(({ latitude, longitude, density }) => {
@@ -101,7 +103,7 @@ class MapComponent extends Component<Props, State> {
         return L.latLng(latitude, longitude, z);
       });
 
-    return kondors.map(({ measurements }, index) => (
+    return tasks.map(({ measurements }, index) => (
       <Multicolor
         map={this.ref}
         key={Math.random()}
@@ -121,10 +123,10 @@ class MapComponent extends Component<Props, State> {
   }
 
   addPopup(event: React.MouseEvent, index: number) {
-    const { kondors, chartInfo } = this.props;
+    const { tasks, chartInfo } = this.props;
     const { popupCount } = this.state;
 
-    const data = kondors[index].measurements;
+    const data = tasks[index].measurements;
     const closestIndex = haversine(data, {
       latitude: event.latlng.lat,
       longitude: event.latlng.lng
@@ -188,9 +190,9 @@ class MapComponent extends Component<Props, State> {
   }
 }
 
-const mapState = ({ measurements }: RootState) => ({
-  kondors: measurements.kondors,
-  chartInfo: measurements.chartInfo
+const mapState = ({ measurements, chart }: RootState) => ({
+  tasks: measurements.tasks,
+  chartInfo: chart
 });
 
 const mapDispatch = { openModal };

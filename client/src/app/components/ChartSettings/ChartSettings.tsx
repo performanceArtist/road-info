@@ -5,9 +5,9 @@ import Start from '@components/Start/Start';
 import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
 
-import { changeVisibility } from '@redux/measurements/actions';
+import { changeVisibility } from '@redux/chart/actions';
 import { RootState } from '@redux/reducer';
-import { ChartInfo } from '@redux/measurements/types';
+import { ChartInfo } from '@redux/chart/types';
 
 type MapState = {
   chartInfo: ChartInfo;
@@ -45,8 +45,8 @@ const ChartSettings: React.FC<Props> = ({ changeVisibility, chartInfo }) => {
   );
 };
 
-const mapState = ({ measurements }: RootState) => ({
-  chartInfo: measurements.chartInfo
+const mapState = ({ chart }: RootState) => ({
+  chartInfo: chart
 });
 
 const mapDispatch = { changeVisibility };
