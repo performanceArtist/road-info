@@ -33,7 +33,11 @@ router.get('/graph', (req, res) => {
 });
 router.get('/api/', (req, res) => res.json({ username: 'username' }));
 
-import { generateMeasurements, makeRoute } from '../models/Measurement';
+import {
+  createMeasurement,
+  generateMeasurements,
+  makeRoute
+} from '../models/Measurement';
 
 router.post('/api/task', (req, res) => {
   console.log(req.body);
@@ -42,8 +46,10 @@ router.post('/api/task', (req, res) => {
 
 router.get('/api/generate/:id', async (req, res) => {
   const id = req.params.id;
+
   try {
-    await generateMeasurements(id);
+    const baseId = await createMeasurement();
+    await generateMeasurements(baseId);
     res.json({ status: 'ok', message: 'yeah' });
   } catch (error) {
     console.log(error);

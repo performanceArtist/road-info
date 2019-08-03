@@ -33,6 +33,7 @@ export type ChartData = Array<ChartDataItem>;
 
 export interface KondorDataItem {
   id: string;
+  info: { [key: string]: string | number };
   measurements: ChartData;
 }
 

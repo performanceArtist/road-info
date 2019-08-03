@@ -11,27 +11,28 @@ export interface MeasurementType {
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export async function generateMeasurements(kondorId = 1) {
+export async function createMeasurement() {
+  const baseId = await knex('measurements')
+    .insert({
+      kondor_id: 1,
+      lane_number: 1,
+      road_part_id: 1,
+      order_id: 1,
+      builder_id: 1,
+      is_direction_forward: true,
+      start_distance: 0,
+      finish_distance: 2000
+    })
+    .returning('id');
+
+  return baseId;
+}
+
+export async function generateMeasurements(baseId: string) {
   const distance = 100 * (Math.round(Math.random() * 30) + 10);
   let counter = 0;
 
   for (let i = distance; i >= 0; i -= 100) {
-    const changeDirection = counter % 6 === 0;
-    const lng = changeDirection ? counter * 0.0005 : Math.random() / 1000;
-
-    const baseId = await knex('measurements')
-      .insert({
-        kondor_id: kondorId,
-        lane_number: 1,
-        road_part_id: 1,
-        order_id: 1,
-        builder_id: 1,
-        is_direction_forward: true,
-        start_distance: 0,
-        finish_distance: 2000
-      })
-      .returning('id');
-
     await delay(400);
     const date = new Date();
 

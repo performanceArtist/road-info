@@ -54,12 +54,29 @@ class Socket {
 
   private createChannel = () =>
     eventChannel(emit => {
-      const handler = (data: any) => {
-        emit(data);
+      const handler = ({ type, payload }: { type: string; payload: any }) => {
+        switch (type) {
+          case 'newMeasurement':
+            emit({
+              type: SERVER.ADD_MEASUREMENT,
+              payload
+            });
+            break;
+          case 'newBase':
+            emit({
+              type: SERVER.INIT_MEASUREMENT,
+              payload
+            });
+            break;
+          default:
+            break;
+        }
       };
-      this._socket.on('newMeasurement', handler);
+
+      this._socket.on('message', handler);
+
       return () => {
-        this._socket.off('newMeasurement', handler);
+        this._socket.off('message', handler);
       };
     });
 
@@ -89,14 +106,15 @@ class Socket {
       }
 
       this._socket = yield call(this.connect);
-      const socketChannel = yield call(this.createChannel);
+
       yield fork(this.listenDisconnectSaga);
       yield fork(this.listenConnectSaga);
       yield put({ type: SERVER.SERVER_ON });
+      const socketChannel = yield call(this.createChannel);
 
       while (true) {
-        const payload = yield take(socketChannel);
-        yield put({ type: SERVER.ADD_MEASUREMENT, payload });
+        const action = yield take(socketChannel);
+        yield put(action);
       }
     } catch (error) {
       console.log(error);

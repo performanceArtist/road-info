@@ -1,6 +1,7 @@
 import { SUGGESTION } from './actions';
+import { Suggestions } from './types';
 
-const initialState = {};
+const initialState: Suggestions = {};
 
 export default function reducer(
   state = initialState,
@@ -11,7 +12,18 @@ export default function reducer(
       const { name, suggestions } = payload;
       return {
         ...state,
-        [name]: { items: suggestions.slice(0, 5), current: null }
+        [name]: { items: suggestions.slice(0, 5), last: null }
+      };
+    }
+    case SUGGESTION.ADD_CONSTRAINT: {
+      const { id, name } = payload;
+      if (!state[name]) return state;
+      return {
+        ...state,
+        [name]: {
+          ...state[name],
+          last: id
+        }
       };
     }
     default:

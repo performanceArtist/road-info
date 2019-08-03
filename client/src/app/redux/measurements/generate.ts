@@ -14,8 +14,8 @@ function* createWorker(action: { type: string; payload: any }) {
     const { status, message } = postResult.data;
 
     if (status !== 'ok') {
-      console.error(message);
-      throw new Error(`Failed to create a generation request`);
+      console.error(postResult);
+      throw new Error(`Failed to make a generation request`);
     }
 
     yield put({

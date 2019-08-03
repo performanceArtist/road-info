@@ -2,22 +2,30 @@ import React, { useState, useEffect } from 'react';
 
 import FinalInput from '@shared/FinalInput/FinalInput';
 
+type Suggestion = {
+  value: string;
+  id: string;
+};
+
 type Props = {
   name?: string;
   label?: string;
   defaultValue?: string;
-  suggestions?: Array<string>;
-  onChange?: (event?: React.SyntheticEvent) => void;
+  suggestions?: Array<Suggestion>;
+  onSuggestionClick?: (arg: { id: string; name: string }) => void;
+  onChange?: (arg: { value: string; name: string }) => void;
 };
 
 const SuggestionInput: React.FC<Props> = ({
   name = '',
   label = '',
   suggestions = [],
+  defaultValue = null,
+  onSuggestionClick = () => {},
   onChange = () => {}
 }) => {
   const [value, setValue] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   /*
   useEffect(() => {
@@ -28,28 +36,29 @@ const SuggestionInput: React.FC<Props> = ({
     };
   });*/
 
-  const suggestionItems = suggestions.map(suggestion => (
+  const suggestionItems = suggestions.map(({ value, id }) => (
     <li
       className="suggestion-input__suggestion"
       onClick={() => {
-        setValue(suggestion);
+        setValue(value);
         setShowSuggestions(false);
+        onSuggestionClick({ name, id });
       }}
     >
-      {suggestion}
+      {value}
     </li>
   ));
 
   return (
     <div className="suggestion-input">
       <FinalInput
-        defaultValue={value}
+        defaultValue={defaultValue || value}
         name={name}
         label={label}
         onDoubleClick={() => setShowSuggestions(true)}
-        onChange={(value, name) => {
-          setShowSuggestions(true);
-          onChange(value, name);
+        onChange={value => {
+          setShowSuggestions(!showSuggestions);
+          onChange({ value, name });
         }}
       />
       {showSuggestions && suggestions.length !== 0 && (

@@ -24,7 +24,15 @@ const chartSettings = {
 
 const initialKondor: KondorDataItem = {
   id: '1',
-  measurements: testData
+  measurements: testData,
+  info: {
+    start: 0,
+    finish: 2000,
+    lane: 1,
+    description: null,
+    kondor: '1',
+    roadName: 'от ул. Нахимова до ул. Учебной'
+  }
 };
 
 const initialState: {
@@ -73,10 +81,22 @@ export default function reducer(
           ...state,
           kondors: kondors.concat({
             id: payload.id,
+            info: {},
             measurements: [payload.measurement]
           })
         };
       }
+    }
+    case SERVER.INIT_MEASUREMENT: {
+      const { id, ...info } = payload;
+      return {
+        ...state,
+        kondors: state.kondors.concat({
+          id: id.toString(),
+          info,
+          measurements: []
+        })
+      };
     }
     case SERVER.CHANNEL_ON:
       return { ...state, channelStatus: 'on' };

@@ -8,6 +8,45 @@ const postgresEmitter = (function() {
   const emitter = new EventEmitter();
   let lastSection: MeasurementType | null = null;
 
+  emitter.on(
+    'new_base',
+    async ({
+      id,
+      kondor_id,
+      road_part_id,
+      start_distance,
+      finish_distance,
+      lane_number,
+      description
+    }) => {
+      try {
+        const kondor = await knex('kondors')
+          .select('*')
+          .where({ id: kondor_id })
+          .first();
+        const roadPart = await knex('road_parts')
+          .select('*')
+          .where({ id: road_part_id })
+          .first();
+
+        io.emit('message', {
+          type: 'newBase',
+          payload: {
+            id,
+            start: start_distance,
+            finish: finish_distance,
+            lane: lane_number,
+            description,
+            kondor: kondor.serial_number,
+            roadName: roadPart.name
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  );
+
   emitter.on('new_measurement', async (measurement: MeasurementType) => {
     const section = await knex('measurement_sections')
       .select('*')
@@ -41,8 +80,13 @@ const postgresEmitter = (function() {
       iri: 0
     };
 
-    console.log(base.kondor_id, data);
-    io.emit('newMeasurement', { id: base.kondor_id, measurement: data });
+    io.emit('message', {
+      type: 'newMeasurement',
+      payload: {
+        id: base.id,
+        measurement: data
+      }
+    });
   });
 
   return emitter;

@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, select } from 'redux-saga/effects';
 import axios from 'axios';
 
 import { SUGGESTION } from './actions';
@@ -13,16 +13,32 @@ function postData(url: string, data = {}) {
   return axios.post(url, data, config);
 }
 
+const getConstraints = name => ({ suggestions }) =>
+  Object.keys(suggestions)
+    .filter(key => key !== name)
+    .map(key => {
+      const fullKey = `${key}_fias_id`;
+      return {
+        [fullKey]: suggestions[key].last
+      };
+    });
+
 function* suggestionWorker(action: { type: string; payload: any }) {
   try {
     const { name, value } = action.payload;
+    const constraints = yield select(getConstraints(name));
+
+    console.log(constraints);
+
     const postResult = yield call(
       postData,
       'http://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address',
       {
         query: value,
         from_bound: { value: name },
-        to_bound: { value: name }
+        to_bound: { value: name },
+        locations: constraints,
+        restrict_value: true
       }
     );
 
@@ -33,11 +49,16 @@ function* suggestionWorker(action: { type: string; payload: any }) {
 
     const { suggestions } = postResult.data;
 
+    console.log(postResult);
+
     yield put({
       type: SUGGESTION.GET.SUCCESS,
       payload: {
         name,
-        suggestions: suggestions.map(({ value }) => value)
+        suggestions: suggestions.map(({ value, data }) => ({
+          value,
+          id: data.region_fias_id
+        }))
       }
     });
   } catch (error) {

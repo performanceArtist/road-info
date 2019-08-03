@@ -127,7 +127,7 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
         <div
           className="composite-chart__title"
           style={{ width: 'auto', height: 'auto' }}
-        >{`Кондор #${kondor.id}`}</div>
+        >{`Задание #${kondor.id}`}</div>
         <div
           className="composite-chart__chart-container"
           onDoubleClick={() => setCurrentKondor(kondor.id)}
@@ -165,7 +165,7 @@ const CompositeChart: React.FC<Props> = ({ kondors, chartInfo, openModal }) => {
         />
       </div>
       {currentKondor && (
-        <div className="composite-chart__title">{`Кондор #${currentKondor}`}</div>
+        <div className="composite-chart__title">{`Задание #${currentKondor}`}</div>
       )}
       <div className="composite-chart__previews">
         {currentKondor ? getKondorChart() : getPreviews()}
