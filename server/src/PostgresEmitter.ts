@@ -24,9 +24,26 @@ const postgresEmitter = (function() {
           .select('*')
           .where({ id: kondor_id })
           .first();
-        const roadPart = await knex('road_parts')
+        const { name: partName, road_id, lanes_count, length } = await knex(
+          'road_parts'
+        )
           .select('*')
           .where({ id: road_part_id })
+          .first();
+
+        const { name: roadName, city_id } = await knex('roads')
+          .select('*')
+          .where({ id: road_id })
+          .first();
+
+        const { name: city, region_id } = await knex('cities')
+          .select('*')
+          .where({ id: city_id })
+          .first();
+
+        const { name: region } = await knex('regions')
+          .select('*')
+          .where({ id: region_id })
           .first();
 
         io.emit('message', {
@@ -36,9 +53,13 @@ const postgresEmitter = (function() {
             start: start_distance,
             finish: finish_distance,
             lane: lane_number,
+            lanesCount: lanes_count,
             description,
             kondor: kondor.serial_number,
-            roadName: roadPart.name
+            partName,
+            roadName,
+            city,
+            region
           }
         });
       } catch (error) {

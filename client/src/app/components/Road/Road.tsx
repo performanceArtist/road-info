@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 
 import RoadChart from '@components/RoadChart/RoadChart';
 
-import { KondorData } from '@redux/measurements/types';
+import { TaskData } from '@redux/measurements/types';
 import { ChartInfo } from '@redux/chart/types';
 import { RootState } from '@redux/reducer';
 
 type MapState = {
   chartInfo: ChartInfo;
-  tasks: KondorData;
+  tasks: TaskData;
 };
 
 type Props = MapState;

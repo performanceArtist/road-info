@@ -1,21 +1,27 @@
 import React from 'react';
 
-type Props = { [key: string]: string | number };
+type Info = {
+  title: string;
+  value: string | number;
+};
 
-const MeasurementInfo: React.FC<Props> = ({
-  description,
-  start,
-  finish,
-  lane,
-  kondor,
-  roadName
-}) => (
-  <div className="measurement-info">
-    {description && (
-      <div className="measurement-info__description">{description}</div>
-    )}
-    <div>Test</div>
-  </div>
-);
+type Props = {
+  items: Array<Info>;
+};
+
+const MeasurementInfo: React.FC<Props> = ({ items }) => {
+  const info = items.map(({ title, value }) => (
+    <div className="measurement-info__item">
+      <div className="measurement-info__title">{`${title}:`}</div>
+      <div className="measurement-info__info">{value}</div>
+    </div>
+  ));
+
+  return (
+    <div className="measurement-info">
+      <div className="measurement-info__container">{info}</div>
+    </div>
+  );
+};
 
 export default MeasurementInfo;

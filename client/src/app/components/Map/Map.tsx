@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { openModal } from '@redux/modal/actions';
 
 //import iconShadow from './icon/icon-shadow.png';
-import { KondorData, ChartData } from '@redux/measurements/types';
+import { TaskData, ChartData } from '@redux/measurements/types';
 import { ChartInfo } from '@redux/chart/types';
 import { RootState } from '@redux/reducer';
 
@@ -29,7 +29,7 @@ interface State {
 }
 
 type MapState = {
-  tasks: KondorData;
+  tasks: TaskData;
   chartInfo: ChartInfo;
 };
 

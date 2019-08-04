@@ -8,18 +8,18 @@ import Table from '@components/Table/Table';
 import MeasurementInfo from '@components/MeasurementInfo/MeasurementInfo';
 
 import { RootState } from '@redux/reducer';
-import { taskData, taskDataItem, ChartData } from '@redux/measurements/types';
+import { TaskData, TaskDataItem, ChartData } from '@redux/measurements/types';
 import { ChartInfo } from '@redux/chart/types';
 
 type MapState = {
-  tasks: taskData;
+  tasks: TaskData;
   chartInfo: ChartInfo;
 };
 
 type Props = MapState;
 
 const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
-  const [currenttask, setCurrenttask] = useState(null);
+  const [currentTask, setcurrentTask] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
   const [tables, setTables] = useState([]);
   const [info, setInfo] = useState([]);
@@ -39,7 +39,34 @@ const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
 
     if (!current) return null;
 
-    return <MeasurementInfo {...tasks.find(({ id }) => id === current).info} />;
+    const {
+      start,
+      finish,
+      lane,
+      lanesCount,
+      description,
+      kondor,
+      partName,
+      roadName,
+      city,
+      region
+    } = tasks.find(({ id }) => id === current).info;
+
+    return (
+      <MeasurementInfo
+        items={[
+          { title: 'Регион', value: region },
+          { title: 'Город', value: city },
+          { title: 'Дорога', value: roadName },
+          { title: 'Участок', value: partName },
+          { title: 'Кол-во полос', value: lanesCount },
+          { title: 'Текущая полоса', value: lane },
+          { title: 'Кондор', value: kondor },
+          { title: 'Старт', value: start },
+          { title: 'Финиш', value: finish }
+        ]}
+      />
+    );
   };
 
   const fullChart = (keyY: string, data: ChartData, isOneOnScreen = false) => (
@@ -101,23 +128,23 @@ const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
           )}
         </div>
         <div className="composite-chart__icon">
-          <Icon image={IconImage.EXPAND} onClick={() => setCurrenttask(id)} />
+          <Icon image={IconImage.EXPAND} onClick={() => setcurrentTask(id)} />
         </div>
       </div>
     );
   };
 
-  const getPreview = ({ id, measurements }: taskDataItem) => (
-    <>
+  const getPreview = ({ id, measurements }: TaskDataItem) => (
+    <div className="composite-chart__preview-container">
       {preview('density', measurements)}
       {preview('rutting', measurements)}
       {preview('iri', measurements)}
       {preview('thickness', measurements)}
       {getIcons('preview', id)}
-    </>
+    </div>
   );
 
-  const getTable = ({ id, measurements }: taskDataItem) => (
+  const getTable = ({ id, measurements }: TaskDataItem) => (
     <div className="composite-chart__table">
       <Table
         data={measurements.map(
@@ -144,24 +171,26 @@ const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
           style={{ width: 'auto', height: 'auto' }}
         >
           {`Задание #${task.id}`}
-          <Icon
-            image={IconImage.ANGLE}
-            size="small"
-            onClick={() => toggleInfo(task.id)}
-          />
+          <div className="composite-chart__title-icon">
+            <Icon
+              image={IconImage.ANGLE}
+              size="small"
+              onClick={() => toggleInfo(task.id)}
+            />
+          </div>
         </div>
         {renderInfo(task.id)}
         <div
           className="composite-chart__chart-container"
-          onDoubleClick={() => setCurrenttask(task.id)}
+          onDoubleClick={() => setcurrentTask(task.id)}
         >
           {tables.indexOf(task.id) !== -1 ? getTable(task) : getPreview(task)}
         </div>
       </div>
     ));
 
-  const gettaskChart = () => {
-    const { measurements } = tasks.find(({ id }) => id === currenttask);
+  const getTaskChart = () => {
+    const { measurements } = tasks.find(({ id }) => id === currentTask);
 
     if (currentChart) return fullChart(currentChart, measurements, true);
 
@@ -181,15 +210,27 @@ const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
         <ChartControls
           onArrowClick={() => {
             if (currentChart) setCurrentChart(null);
-            if (!currentChart && currenttask) setCurrenttask(null);
+            if (!currentChart && currentTask) setcurrentTask(null);
           }}
         />
       </div>
-      {currenttask && (
-        <div className="composite-chart__title">{`Задание #${currenttask}`}</div>
+      {currentTask && (
+        <>
+          <div className="composite-chart__title">
+            {`Задание #${currentTask}`}
+            <div className="composite-chart__title-icon">
+              <Icon
+                image={IconImage.ANGLE}
+                size="small"
+                onClick={() => toggleInfo(currentTask)}
+              />
+            </div>
+          </div>
+          {renderInfo(currentTask)}
+        </>
       )}
       <div className="composite-chart__previews">
-        {currenttask ? gettaskChart() : getPreviews()}
+        {currentTask ? getTaskChart() : getPreviews()}
       </div>
       <div>{/*<RoadChart data={tasks[0].measurements} />*/}</div>
     </div>

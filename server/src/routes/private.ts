@@ -57,6 +57,22 @@ router.get('/api/generate/:id', async (req, res) => {
   }
 });
 
+router.get('/api/sort', async (req, res) => {
+  console.log(req.query);
+  try {
+    const entries = await knex('measurements')
+      .select('*')
+      .where({ kondor_id: req.query.kondor || 1 })
+      .orderBy('id', 'desc')
+      .limit(5)
+      .offset(0);
+    res.status(200).json(entries);
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
+});
+
 router.post('/api/test-route', (req, res) => {
   console.log(req.body);
   makeRoute();

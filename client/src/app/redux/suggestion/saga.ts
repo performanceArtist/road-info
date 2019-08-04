@@ -28,8 +28,6 @@ function* suggestionWorker(action: { type: string; payload: any }) {
     const { name, value } = action.payload;
     const constraints = yield select(getConstraints(name));
 
-    console.log(constraints);
-
     const postResult = yield call(
       postData,
       'http://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address',

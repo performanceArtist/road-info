@@ -11,10 +11,10 @@ export interface ChartDataItem {
 
 export type ChartData = Array<ChartDataItem>;
 
-export interface KondorDataItem {
+export interface TaskDataItem {
   id: string;
   info: { [key: string]: string | number };
   measurements: ChartData;
 }
 
-export type KondorData = Array<KondorDataItem>;
+export type TaskData = Array<TaskDataItem>;

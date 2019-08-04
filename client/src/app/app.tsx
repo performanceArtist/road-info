@@ -14,6 +14,7 @@ import Diagnostics from './views/Diagnostics/Diagnostics';
 import Task from './views/Task/Task';
 import Measurements from './views/Measurements/Measurements';
 import Report from './views/Report/Report';
+import History from './views/HistoryView/HistoryView';
 import UI from './views/UI/UI';
 import NotFound from './views/NotFound/NotFound';
 
@@ -49,6 +50,7 @@ const App = () => {
                   title: 'Калибровка',
                   icon: Icon.OPTIONS
                 },
+                { url: '/history', title: 'История', icon: Icon.HISTORY },
                 { url: '/report', title: 'Отчёт', icon: Icon.REPORT }
               ]}
             />
@@ -59,6 +61,7 @@ const App = () => {
               <Route path="/map" component={MapView} />
               <Route path="/task" component={Task} />
               <Route path="/calibration" component={Calibration} />
+              <Route path="/history" component={History} />
               <Route path="/report" component={Report} />
               <Route path="/ui" component={UI} />
               <Route path="*" component={NotFound} />

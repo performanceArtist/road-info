@@ -1,27 +1,31 @@
 import { SERVER, GET } from './actions';
-import { KondorDataItem, KondorData } from './types';
+import { TaskDataItem, TaskData } from './types';
 
 import testData from './testData';
 
-const initialKondor: KondorDataItem = {
+const initialTask: TaskDataItem = {
   id: '1',
   measurements: testData,
   info: {
     start: 0,
     finish: 2000,
     lane: 1,
+    lanesCount: 4,
     description: null,
-    kondor: '1',
-    roadName: 'от ул. Нахимова до ул. Учебной'
+    kondor: '0',
+    partName: 'от ул. Нахимова до ул. Учебной',
+    roadName: 'пр. Ленина',
+    city: 'г. Томск',
+    region: 'Томская область'
   }
 };
 
 const initialState: {
-  tasks: KondorData;
+  tasks: TaskData;
   channelStatus: 'on' | 'off';
   serverStatus: 'unknown' | 'on' | 'off';
 } = {
-  tasks: [initialKondor],
+  tasks: [initialTask],
   channelStatus: 'off',
   serverStatus: 'unknown'
 };

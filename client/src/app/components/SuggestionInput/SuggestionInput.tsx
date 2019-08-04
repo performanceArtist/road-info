@@ -27,14 +27,17 @@ const SuggestionInput: React.FC<Props> = ({
   const [value, setValue] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  /*
   useEffect(() => {
-    const hide = () => setShowSuggestions(false);
+    const hide = (event: React.MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target.className !== 'suggestion-input') setShowSuggestions(false);
+    };
+
     window.addEventListener('click', hide);
     return () => {
       window.removeEventListener('click', hide);
     };
-  });*/
+  });
 
   const suggestionItems = suggestions.map(({ value, id }) => (
     <li
