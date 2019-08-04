@@ -39,17 +39,19 @@ import {
   makeRoute
 } from '../models/Measurement';
 
-router.post('/api/task', (req, res) => {
-  console.log(req.body);
-  res.json({ status: 'ok', message: 'yeah' });
+router.post('/api/task', async (req, res) => {
+  try {
+    await createMeasurement(req.body);
+    res.json({ status: 'ok', message: 'yeah' });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: 'error' });
+  }
 });
 
 router.get('/api/generate/:id', async (req, res) => {
-  const id = req.params.id;
-
   try {
-    const baseId = await createMeasurement();
-    await generateMeasurements(baseId);
+    await generateMeasurements(req.params.id);
     res.json({ status: 'ok', message: 'yeah' });
   } catch (error) {
     console.log(error);

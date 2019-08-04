@@ -15,10 +15,11 @@ import { closeModal } from '@redux/modal/actions';
 import { saveTask } from '@redux/task/actions';
 import { getSuggestion, addConstraint } from '@redux/suggestion/actions';
 
+import { Task } from '@redux/task/types';
 import { RootState } from '@redux/reducer';
 
 type OwnProps = {
-  task: any;
+  task: Task;
 };
 
 type Props = OwnProps & typeof mapDispatch;
@@ -45,9 +46,8 @@ const TaskModal: React.FC<Props> = ({
   suggestions
 }) => {
   const handleSubmit = async (formData: any) => {
-    console.log(formData);
     event.preventDefault();
-    saveTask(formData, task ? task.id : null);
+    saveTask(formData);
     closeModal();
   };
 
@@ -82,7 +82,7 @@ const TaskModal: React.FC<Props> = ({
   return (
     <Modal open={true} onClose={closeModal}>
       <Modal.Header>
-        {task ? `Редактировать "${task.formData.order}"` : 'Новое задание'}
+        {task ? `Редактировать "${task.id}"` : 'Новое задание'}
       </Modal.Header>
       <Form
         onSubmit={handleSubmit}
@@ -104,18 +104,20 @@ const TaskModal: React.FC<Props> = ({
                       <FinalInput
                         name="partName"
                         label="Наименование участка"
+                        defaultValue={task ? task.partName : ''}
                         required={true}
                       />
                     </div>
                   </div>
                   <div className="task-modal__parameters">
                     <div className="task-modal__input-group">
-                      <span className="task-modal__label">ID кондора</span>
+                      <span className="task-modal__label">Номер кондора</span>
                       <Field
                         className="task-modal__number-input"
                         component="input"
                         name="kondor"
                         type="number"
+                        defaultValue={task ? task.kondor : ''}
                         required
                       />
                     </div>
@@ -128,6 +130,7 @@ const TaskModal: React.FC<Props> = ({
                         component="input"
                         name="lanesCount"
                         type="number"
+                        defaultValue={task ? task.lanesCount : ''}
                         required
                       />
                       <span className="task-modal__label">Полоса</span>
@@ -136,6 +139,7 @@ const TaskModal: React.FC<Props> = ({
                         component="input"
                         name="lane"
                         type="number"
+                        defaultValue={task ? task.lane : ''}
                         required
                       />
                     </div>
@@ -159,7 +163,23 @@ const TaskModal: React.FC<Props> = ({
                       <span className="task-modal__label">Обратное</span>
                     </div>
                     <div className="task-modal__input-group">
-                      <DistanceInput />
+                      <DistanceInput
+                        defaults={
+                          task
+                            ? {
+                                from: {
+                                  kilometers: Math.floor(task.start / 1000),
+                                  meters: task.start % 1000
+                                },
+                                to: {
+                                  kilometers: Math.floor(task.finish / 1000),
+                                  meters: task.finish % 1000
+                                },
+                                distance: task.finish - task.start
+                              }
+                            : {}
+                        }
+                      />
                     </div>
                   </div>
                 </div>

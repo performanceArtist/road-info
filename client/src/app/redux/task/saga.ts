@@ -10,11 +10,7 @@ function postData(url: string, data = {}) {
 
 function* createWorker(action: { type: string; payload: any }) {
   try {
-    const postResult = yield call(
-      postData,
-      '/api/task',
-      action.payload.formData
-    );
+    const postResult = yield call(postData, '/api/task', action.payload);
 
     const { status, message } = postResult.data;
 

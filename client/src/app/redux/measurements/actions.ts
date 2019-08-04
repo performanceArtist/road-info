@@ -1,7 +1,12 @@
 import { DataItem } from './types';
 
 export const MEASUREMENTS = {
-  ADD: 'MEASUREMENTS.ADD'
+  ADD: 'MEASUREMENTS.ADD',
+  GENERATE: {
+    REQUEST: 'MEASUREMENTS.GENERATE.REQUEST',
+    SUCCESS: 'MEASUREMENTS.GENERATE.SUCCESS',
+    FAILURE: 'MEASUREMENTS.GENERATE.FAILURE'
+  }
 };
 
 export const addMeasurement = (taskId: string, data: DataItem) => ({
@@ -10,4 +15,9 @@ export const addMeasurement = (taskId: string, data: DataItem) => ({
     taskId,
     data
   }
+});
+
+export const generateMeasurements = (id: number) => ({
+  type: MEASUREMENTS.GENERATE.REQUEST,
+  payload: id
 });

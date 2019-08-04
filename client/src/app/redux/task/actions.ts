@@ -4,6 +4,7 @@ export const TASK = {
   SAVE: 'TASK.SAVE',
   REMOVE: 'TASK.REMOVE',
   SET_CURRENT: 'TASK.SET_CURRENT',
+  ADD: 'TASK.ADD',
   POST: {
     REQUEST: 'TASK.POST.REQUEST',
     SUCCESS: 'TASK.POST.SUCCESS',
@@ -11,9 +12,15 @@ export const TASK = {
   }
 };
 
-export const saveTask = (formData: TaskFormType, id: string | null = null) => {
-  return { type: TASK.SAVE, payload: { formData, taskId: id } };
-};
+export const saveTask = (formData: TaskFormType) => ({
+  type: TASK.POST.REQUEST,
+  payload: formData
+});
+
+export const addTask = (payload: any) => ({
+  type: TASK.ADD,
+  payload
+});
 
 export const setCurrentTask = (id: string | null = null) => ({
   type: TASK.SET_CURRENT,

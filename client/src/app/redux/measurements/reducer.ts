@@ -16,16 +16,15 @@ export default function reducer(
 ) {
   switch (type) {
     case MEASUREMENTS.ADD: {
-      const data = [...state];
-      const current = data.find(({ taskId }) => taskId === payload.id);
-
+      const newState = [...state];
+      const current = newState.find(({ taskId }) => taskId === payload.taskId);
       if (current) {
-        current.data = current.data.concat(payload.measurement);
-        return { ...state, data };
+        current.data = current.data.concat(payload.data);
+        return newState;
       } else {
         return state.concat({
-          taskId: payload.id,
-          data: [payload.measurement]
+          taskId: payload.taskId,
+          data: [payload.data]
         });
       }
     }

@@ -12,6 +12,7 @@ import {
 
 import { IO } from './actions';
 import { addMeasurement } from '../measurements/actions';
+import { addTask } from '../task/actions';
 
 class Socket {
   private _url: string;
@@ -53,22 +54,16 @@ class Socket {
     });
   };
 
-  /*
-            case 'newBase':
-            emit({
-              type: IO.INIT_MEASUREMENT,
-              payload
-            });
-            break;
-            */
-
   private createChannel = () =>
     eventChannel(emit => {
       const handler = ({ type, payload }: { type: string; payload: any }) => {
         switch (type) {
           case 'newMeasurement':
+            console.log(payload);
             emit(addMeasurement(payload.taskId, payload.data));
             break;
+          case 'newBase':
+            emit(addTask(payload));
           default:
             break;
         }

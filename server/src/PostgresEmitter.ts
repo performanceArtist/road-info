@@ -74,11 +74,6 @@ const postgresEmitter = (function() {
       .where({ id: measurement.measurement_section_id })
       .first();
 
-    const base = await knex('measurements')
-      .select('*')
-      .where({ id: section.measurement_id })
-      .first();
-
     if (section.distance == 0) {
       lastSection = null;
       console.log('Start');
@@ -104,7 +99,7 @@ const postgresEmitter = (function() {
     io.emit('message', {
       type: 'newMeasurement',
       payload: {
-        taskId: base.id,
+        taskId: section.measurement_id,
         data
       }
     });

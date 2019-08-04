@@ -8,7 +8,7 @@ export type OpenModal = {
   payload: { modalType: string; modalProps: any };
 };
 
-export function openModal(modalType: string, modalProps: any): OpenModal {
+export function openModal(modalType: string, modalProps = {}): OpenModal {
   return {
     type: MODAL.OPEN,
     payload: { modalType, modalProps }

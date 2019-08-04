@@ -22,30 +22,11 @@ export default function reducer(
   { type, payload }: { type: string; payload: any }
 ) {
   switch (type) {
+    case TASK.ADD:
+      return state.concat(payload);
     case TASK.REMOVE:
       return state.filter(({ id }) => id !== payload.id);
     default:
       return state;
   }
 }
-
-/*
-    case TASK.SAVE: {
-      const tasks = [...state];
-      const { formData, taskId } = payload;
-      const task = tasks.find(({ id }) => id === taskId);
-
-      if (task) {
-        task.formData = formData;
-        return {
-          ...state,
-          tasks
-        };
-      } else {
-        return state.concat({
-          id: uuid.generate(),
-          formData
-        });
-      }
-    }
-    */
