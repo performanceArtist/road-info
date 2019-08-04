@@ -104,8 +104,8 @@ const postgresEmitter = (function() {
     io.emit('message', {
       type: 'newMeasurement',
       payload: {
-        id: base.id,
-        measurement: data
+        taskId: base.id,
+        data
       }
     });
   });

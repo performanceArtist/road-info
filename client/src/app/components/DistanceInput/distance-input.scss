@@ -1,6 +1,7 @@
 .distance-input {
   &__wrapper {
     display: flex;
+    max-width: 22rem;
   }
 
   &__row {
@@ -21,7 +22,7 @@
   }
 
   &__input {
-    width: 3rem;
+    width: 3.5rem;
   }
 
   &__units {
@@ -36,7 +37,7 @@
   }
 
   &__distance {
-    font-size: 1.2rem;
+    font-size: 1rem;
     text-transform: uppercase;
     font-weight: bold;
     margin-top: 0.5rem;

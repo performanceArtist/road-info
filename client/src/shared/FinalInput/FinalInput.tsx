@@ -7,7 +7,7 @@ import './final-input.scss';
 type Props = {
   name: string;
   component?: 'input' | 'select' | 'textarea';
-  type?: 'text' | 'number';
+  type?: 'text' | 'number' | 'radio' | 'checkbox';
   status?: string | null;
   label?: string | null;
   error?: boolean;

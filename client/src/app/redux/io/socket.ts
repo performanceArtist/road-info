@@ -10,7 +10,8 @@ import {
   delay
 } from 'redux-saga/effects';
 
-import { SERVER } from './actions';
+import { IO } from './actions';
+import { addMeasurement } from '../measurements/actions';
 
 class Socket {
   private _url: string;
@@ -52,21 +53,21 @@ class Socket {
     });
   };
 
+  /*
+            case 'newBase':
+            emit({
+              type: IO.INIT_MEASUREMENT,
+              payload
+            });
+            break;
+            */
+
   private createChannel = () =>
     eventChannel(emit => {
       const handler = ({ type, payload }: { type: string; payload: any }) => {
         switch (type) {
           case 'newMeasurement':
-            emit({
-              type: SERVER.ADD_MEASUREMENT,
-              payload
-            });
-            break;
-          case 'newBase':
-            emit({
-              type: SERVER.INIT_MEASUREMENT,
-              payload
-            });
+            emit(addMeasurement(payload.taskId, payload.data));
             break;
           default:
             break;
@@ -83,33 +84,33 @@ class Socket {
   private *listenDisconnectSaga() {
     while (true) {
       yield call(this.disconnect);
-      yield put({ type: SERVER.SERVER_OFF });
+      yield put({ type: IO.SERVER_OFF });
     }
   }
 
   private *listenConnectSaga() {
     while (true) {
       yield call(this.reconnect);
-      yield put({ type: SERVER.SERVER_ON });
+      yield put({ type: IO.SERVER_ON });
     }
   }
 
   *listenServerSaga() {
     try {
-      yield put({ type: SERVER.CHANNEL_ON });
+      yield put({ type: IO.CHANNEL_ON });
       const { timeout } = yield race({
         connected: call(this.connect),
         timeout: delay(2000)
       });
       if (timeout) {
-        yield put({ type: SERVER.SERVER_OFF });
+        yield put({ type: IO.SERVER_OFF });
       }
 
       this._socket = yield call(this.connect);
 
       yield fork(this.listenDisconnectSaga);
       yield fork(this.listenConnectSaga);
-      yield put({ type: SERVER.SERVER_ON });
+      yield put({ type: IO.SERVER_ON });
       const socketChannel = yield call(this.createChannel);
 
       while (true) {
@@ -121,20 +122,20 @@ class Socket {
     } finally {
       if (yield cancelled()) {
         this._socket.disconnect(true);
-        yield put({ type: SERVER.CHANNEL_OFF });
+        yield put({ type: IO.CHANNEL_OFF });
       }
     }
   }
 
-  startChannel = () => ({ type: SERVER.START_CHANNEL });
-  stopChannel = () => ({ type: SERVER.STOP_CHANNEL });
+  startChannel = () => ({ type: IO.START_CHANNEL });
+  stopChannel = () => ({ type: IO.STOP_CHANNEL });
 
   *startStopChannel() {
     while (true) {
-      yield take(SERVER.START_CHANNEL);
+      yield take(IO.START_CHANNEL);
       yield race({
         task: call(this.listenServerSaga),
-        cancel: take(SERVER.STOP_CHANNEL)
+        cancel: take(IO.STOP_CHANNEL)
       });
     }
   }

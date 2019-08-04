@@ -4,11 +4,27 @@
   }
 
   &__meta {
-    width: 40%;
+    width: 30%;
     margin-right: 8%;
   }
 
-  &__distance {
+  &__parameters {
     width: 58%;
+  }
+
+  &__label {
+    margin-right: 0.3rem;
+  }
+
+  &__input-group {
+    padding: 1rem;
+  }
+
+  &__text-input {
+    margin-bottom: 0.5rem;
+  }
+
+  &__number-input {
+    width: 3.5rem;
   }
 }

@@ -8,17 +8,27 @@ import Table from '@components/Table/Table';
 import MeasurementInfo from '@components/MeasurementInfo/MeasurementInfo';
 
 import { RootState } from '@redux/reducer';
-import { TaskData, TaskDataItem, ChartData } from '@redux/measurements/types';
+import { Tasks } from '@redux/task/types';
+import {
+  Measurements,
+  MeasurementItem,
+  MeasurementData
+} from '@redux/measurements/types';
 import { ChartInfo } from '@redux/chart/types';
 
 type MapState = {
-  tasks: TaskData;
+  measurements: Measurements;
+  tasks: Tasks;
   chartInfo: ChartInfo;
 };
 
 type Props = MapState;
 
-const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
+const CompositeChart: React.FC<Props> = ({
+  measurements,
+  tasks,
+  chartInfo
+}) => {
   const [currentTask, setcurrentTask] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
   const [tables, setTables] = useState([]);
@@ -50,7 +60,7 @@ const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
       roadName,
       city,
       region
-    } = tasks.find(({ id }) => id === current).info;
+    } = tasks.find(({ id }) => id == current);
 
     return (
       <MeasurementInfo
@@ -69,7 +79,11 @@ const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
     );
   };
 
-  const fullChart = (keyY: string, data: ChartData, isOneOnScreen = false) => (
+  const fullChart = (
+    keyY: string,
+    data: Array<MeasurementData>,
+    isOneOnScreen = false
+  ) => (
     <div
       className="composite-chart__chart-container"
       onDoubleClick={() => setCurrentChart(keyY)}
@@ -93,7 +107,7 @@ const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
     </div>
   );
 
-  const preview = (keyY: string, data: ChartData) => (
+  const preview = (keyY: string, data: Array<MeasurementData>) => (
     <div className="composite-chart__chart composite-chart__chart_preview">
       <Chart
         keyX="distance"
@@ -134,72 +148,72 @@ const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
     );
   };
 
-  const getPreview = ({ id, measurements }: TaskDataItem) => (
+  const getPreview = ({ taskId, data }: MeasurementItem) => (
     <div className="composite-chart__preview-container">
-      {preview('density', measurements)}
-      {preview('rutting', measurements)}
-      {preview('iri', measurements)}
-      {preview('thickness', measurements)}
-      {getIcons('preview', id)}
+      {preview('density', data)}
+      {preview('rutting', data)}
+      {preview('iri', data)}
+      {preview('thickness', data)}
+      {getIcons('preview', taskId)}
     </div>
   );
 
-  const getTable = ({ id, measurements }: TaskDataItem) => (
+  const getTable = ({ taskId, data }: MeasurementItem) => (
     <div className="composite-chart__table">
       <Table
-        data={measurements.map(
-          ({ distance, density, iri, rutting, thickness }) => ({
-            distance,
-            density,
-            iri,
-            rutting,
-            thickness
-          })
-        )}
+        data={data.map(({ distance, density, iri, rutting, thickness }) => ({
+          distance,
+          density,
+          iri,
+          rutting,
+          thickness
+        }))}
         chartInfo={chartInfo}
         maxRows={15}
       />
-      {getIcons('table', id)}
+      {getIcons('table', taskId)}
     </div>
   );
 
   const getPreviews = () =>
-    tasks.map(task => (
+    measurements.map(measurement => (
       <div>
         <div
           className="composite-chart__title"
           style={{ width: 'auto', height: 'auto' }}
         >
-          {`Задание #${task.id}`}
+          {`Задание #${measurement.taskId}`}
           <div className="composite-chart__title-icon">
             <Icon
               image={IconImage.ANGLE}
               size="small"
-              onClick={() => toggleInfo(task.id)}
+              onClick={() => toggleInfo(measurement.taskId)}
             />
           </div>
         </div>
-        {renderInfo(task.id)}
+        {renderInfo(measurement.taskId)}
         <div
           className="composite-chart__chart-container"
-          onDoubleClick={() => setcurrentTask(task.id)}
+          onDoubleClick={() => setcurrentTask(measurement.taskId)}
         >
-          {tables.indexOf(task.id) !== -1 ? getTable(task) : getPreview(task)}
+          {tables.indexOf(measurement.taskId) !== -1
+            ? getTable(measurement)
+            : getPreview(measurement)}
         </div>
       </div>
     ));
 
   const getTaskChart = () => {
-    const { measurements } = tasks.find(({ id }) => id === currentTask);
+    const { data } = measurements.find(({ taskId }) => taskId === currentTask);
 
-    if (currentChart) return fullChart(currentChart, measurements, true);
+    if (currentChart) return fullChart(currentChart, data, true);
 
     return (
       <>
-        {fullChart('density', measurements)}
-        {fullChart('rutting', measurements)}
-        {fullChart('iri', measurements)}
-        {fullChart('thickness', measurements)}
+        {fullChart('density', data)}
+        {fullChart('rutting', data)}
+        {fullChart('iri', data)}
+        {fullChart('thickness', data)}
       </>
     );
   };
@@ -237,8 +251,9 @@ const CompositeChart: React.FC<Props> = ({ tasks, chartInfo }) => {
   );
 };
 
-const mapState = ({ measurements, chart }: RootState) => ({
-  tasks: measurements.tasks,
+const mapState = ({ measurements, chart, tasks }: RootState) => ({
+  measurements,
+  tasks,
   chartInfo: chart
 });
 

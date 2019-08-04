@@ -3,20 +3,20 @@ import { connect } from 'react-redux';
 
 import RoadChart from '@components/RoadChart/RoadChart';
 
-import { TaskData } from '@redux/measurements/types';
+import { Measurements } from '@redux/measurements/types';
 import { ChartInfo } from '@redux/chart/types';
 import { RootState } from '@redux/reducer';
 
 type MapState = {
+  measurements: Measurements;
   chartInfo: ChartInfo;
-  tasks: TaskData;
 };
 
 type Props = MapState;
 
-const Road: React.FC<Props> = ({ chartInfo, tasks }) => {
-  const graphs = tasks.map(task => {
-    const data = task.measurements.map(
+const Road: React.FC<Props> = ({ measurements, chartInfo }) => {
+  const graphs = measurements.map(({ taskId, data }) => {
+    const chartData = data.map(
       ({ distance, density, iri, rutting, thickness }) => ({
         distance,
         density,
@@ -25,12 +25,11 @@ const Road: React.FC<Props> = ({ chartInfo, tasks }) => {
         thickness
       })
     );
-
     return (
       <RoadChart
-        title={`Задание #${task.id}`}
+        title={`Задание #${taskId}`}
         keyX="distance"
-        data={data}
+        data={chartData}
         info={chartInfo.lines}
         xUnits={chartInfo.xAxis.units}
         config={{}}
@@ -42,8 +41,8 @@ const Road: React.FC<Props> = ({ chartInfo, tasks }) => {
 };
 
 const mapState = ({ measurements, chart }: RootState) => ({
-  chartInfo: chart,
-  tasks: measurements.tasks
+  measurements,
+  chartInfo: chart
 });
 
 export default connect(mapState)(Road);

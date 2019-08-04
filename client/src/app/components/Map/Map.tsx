@@ -7,12 +7,12 @@ import { connect } from 'react-redux';
 import { openModal } from '@redux/modal/actions';
 
 //import iconShadow from './icon/icon-shadow.png';
-import { TaskData, ChartData } from '@redux/measurements/types';
+import { Measurements, MeasurementData } from '@redux/measurements/types';
 import { ChartInfo } from '@redux/chart/types';
 import { RootState } from '@redux/reducer';
 
 import Multicolor from './Multicolor';
-import { testData, haversine } from './helpers';
+import { haversine } from './helpers';
 
 interface PopupProps {
   position: L.LatLng;
@@ -29,7 +29,7 @@ interface State {
 }
 
 type MapState = {
-  tasks: TaskData;
+  measurements: Measurements;
   chartInfo: ChartInfo;
 };
 
@@ -57,8 +57,8 @@ class MapComponent extends Component<Props, State> {
   }
 
   handleMarkerClick(event: React.MouseEvent, currentId: string) {
-    const { tasks, openModal } = this.props;
-    const task = tasks.find(({ id }) => id === currentId);
+    const { measurements, openModal } = this.props;
+    const task = measurements.find(({ taskId }) => taskId === currentId);
 
     if (task)
       openModal('Kondor', {
@@ -69,11 +69,11 @@ class MapComponent extends Component<Props, State> {
   }
 
   renderMarkers() {
-    const { tasks } = this.props;
+    const { measurements } = this.props;
 
-    return tasks.map(({ id, measurements }) => {
-      if (measurements.length !== 0) {
-        const last = measurements[measurements.length - 1];
+    return measurements.map(({ taskId, data }) => {
+      if (data.length !== 0) {
+        const last = data[data.length - 1];
         return (
           <Marker
             key={Math.random()}
@@ -83,7 +83,7 @@ class MapComponent extends Component<Props, State> {
             })}
             position={[last.latitude, last.longitude]}
             onClick={(event: React.MouseEvent) =>
-              this.handleMarkerClick(event, id)
+              this.handleMarkerClick(event, taskId)
             }
           />
         );
@@ -94,20 +94,20 @@ class MapComponent extends Component<Props, State> {
   }
 
   renderLines() {
-    const { tasks, chartInfo } = this.props;
+    const { measurements, chartInfo } = this.props;
     const { breakpoint } = chartInfo.lines.density;
-    const getData = (chartData: ChartData) =>
-      chartData.map(({ latitude, longitude, density }) => {
+    const getData = (data: Array<MeasurementData>) =>
+      data.map(({ latitude, longitude, density }) => {
         const z =
           density > breakpoint.start && density < breakpoint.finish ? 2 : 1;
         return L.latLng(latitude, longitude, z);
       });
 
-    return tasks.map(({ measurements }, index) => (
+    return measurements.map(({ data }, index) => (
       <Multicolor
         map={this.ref}
         key={Math.random()}
-        data={getData(measurements)}
+        data={getData(data)}
         options={{
           palette: { 0: '#f62a00', 0.5: '#258039', 1.0: '#f62a00' },
           outlineColor: 'black',
@@ -123,10 +123,10 @@ class MapComponent extends Component<Props, State> {
   }
 
   addPopup(event: React.MouseEvent, index: number) {
-    const { tasks, chartInfo } = this.props;
+    const { measurements, chartInfo } = this.props;
     const { popupCount } = this.state;
 
-    const data = tasks[index].measurements;
+    const data = measurements[index].data;
     const closestIndex = haversine(data, {
       latitude: event.latlng.lat,
       longitude: event.latlng.lng
@@ -191,7 +191,7 @@ class MapComponent extends Component<Props, State> {
 }
 
 const mapState = ({ measurements, chart }: RootState) => ({
-  tasks: measurements.tasks,
+  measurements,
   chartInfo: chart
 });
 

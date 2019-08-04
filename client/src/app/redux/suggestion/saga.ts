@@ -47,7 +47,7 @@ function* suggestionWorker(action: { type: string; payload: any }) {
 
     const { suggestions } = postResult.data;
 
-    console.log(postResult);
+    console.log(constraints, postResult);
 
     yield put({
       type: SUGGESTION.GET.SUCCESS,

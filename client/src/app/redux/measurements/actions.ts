@@ -1,23 +1,13 @@
-export const SERVER = {
-  ADD_MEASUREMENT: 'SERVER.ADD_MEASUREMENT',
-  INIT_MEASUREMENT: 'SERVER.INIT_MEASUREMENT',
-  START_CHANNEL: 'SERVER.START_CHANNEL',
-  STOP_CHANNEL: 'SERVER.STOP_CHANNEL',
-  CHANNEL_ON: 'SERVER.CHANNEL_ON',
-  CHANNEL_OFF: 'SERVER.CHANNEL_OFF',
-  SERVER_ON: 'SERVER.SERVER_ON',
-  SERVER_OFF: 'SERVER.SERVER_OFF'
+import { DataItem } from './types';
+
+export const MEASUREMENTS = {
+  ADD: 'MEASUREMENTS.ADD'
 };
 
-export const GET = {
-  KONDOR: {
-    REQUEST: 'GET.KONDOR.REQUEST',
-    SUCCESS: 'GET.KONDOR.SUCCESS',
-    FAILURE: 'GET.KONDOR.FAILURE'
+export const addMeasurement = (taskId: string, data: DataItem) => ({
+  type: MEASUREMENTS.ADD,
+  payload: {
+    taskId,
+    data
   }
-};
-
-export const createCondor = (id: number) => ({
-  type: GET.KONDOR.REQUEST,
-  payload: id
 });

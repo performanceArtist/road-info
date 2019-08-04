@@ -1,21 +1,37 @@
-import uuid from 'short-uuid';
-
 import { TASK } from './actions';
 import { Task } from './types';
 
-const initialState: {
-  tasks: Array<Task>;
-} = {
-  tasks: []
+const initialTask = {
+  id: 1,
+  start: 0,
+  finish: 2000,
+  lane: 1,
+  lanesCount: 4,
+  description: '',
+  kondor: '0',
+  partName: 'от ул. Нахимова до ул. Учебной',
+  roadName: 'пр. Ленина',
+  city: 'г. Томск',
+  region: 'Томская область'
 };
+
+const initialState: Array<Task> = [initialTask];
 
 export default function reducer(
   state = initialState,
   { type, payload }: { type: string; payload: any }
 ) {
   switch (type) {
+    case TASK.REMOVE:
+      return state.filter(({ id }) => id !== payload.id);
+    default:
+      return state;
+  }
+}
+
+/*
     case TASK.SAVE: {
-      const tasks = [...state.tasks];
+      const tasks = [...state];
       const { formData, taskId } = payload;
       const task = tasks.find(({ id }) => id === taskId);
 
@@ -26,21 +42,10 @@ export default function reducer(
           tasks
         };
       } else {
-        return {
-          ...state,
-          tasks: tasks.concat({
-            id: uuid.generate(),
-            formData
-          })
-        };
+        return state.concat({
+          id: uuid.generate(),
+          formData
+        });
       }
     }
-    case TASK.REMOVE:
-      return {
-        ...state,
-        tasks: state.tasks.filter(({ id }) => id !== payload.taskId)
-      };
-    default:
-      return state;
-  }
-}
+    */

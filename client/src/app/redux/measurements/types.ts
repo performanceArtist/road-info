@@ -1,4 +1,4 @@
-export interface ChartDataItem {
+export interface MeasurementData {
   distance: number;
   longitude: number;
   latitude: number;
@@ -9,12 +9,9 @@ export interface ChartDataItem {
   [key: string]: number;
 }
 
-export type ChartData = Array<ChartDataItem>;
-
-export interface TaskDataItem {
-  id: string;
-  info: { [key: string]: string | number };
-  measurements: ChartData;
+export interface MeasurementItem {
+  taskId: string;
+  data: Array<MeasurementData>;
 }
 
-export type TaskData = Array<TaskDataItem>;
+export type Measurements = Array<MeasurementItem>;

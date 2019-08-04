@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Button from '@shared/Button/Button';
-import socket from '@redux/measurements/socket';
+import socket from '@redux/io/socket';
 
 type Props = typeof mapDispatch;
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
 import Input from '@shared/Input/Input';
 import FinalInput from '@shared/FinalInput/FinalInput';
@@ -62,17 +61,22 @@ const TaskModal: React.FC<Props> = ({
 
   const suggestionInputs = [
     { name: 'region', label: 'Область' },
-    { name: 'city', label: 'Город' },
+    { name: 'settlement', label: 'Населённый пункт' },
     { name: 'street', label: 'Дорога' }
   ].map(({ name, label }) => (
-    <SuggestionInput
-      name={name}
-      label={label}
-      defaultValue={getDef(name)}
-      suggestions={suggestions[name] ? suggestions[name].items : []}
-      onChange={getSuggestion}
-      onSuggestionClick={addConstraint}
-    />
+    <div className="task-modal__text-input">
+      <SuggestionInput
+        name={name}
+        label={label}
+        defaultValue={getDef(name)}
+        suggestions={suggestions[name] ? suggestions[name].items : []}
+        onChange={({ name, value }) => {
+          addConstraint({ name, id: '' });
+          getSuggestion({ name, value });
+        }}
+        onSuggestionClick={addConstraint}
+      />
+    </div>
   ));
 
   return (
@@ -89,17 +93,74 @@ const TaskModal: React.FC<Props> = ({
                 <div className="task-modal__row">
                   <div className="task-modal__meta">
                     {suggestionInputs}
-                    <FinalInput
-                      name="order"
-                      label="Номер заказа:"
-                      required={true}
-                    />
-                    <FinalInput name="client" label="Заказчик:" />
-                    <FinalInput name="executor" label="Исполнитель:" />
-                    <FinalInput name="section" label="Наименование участка:" />
+                    <div className="task-modal__text-input">
+                      <FinalInput
+                        name="order"
+                        label="Номер заказа"
+                        required={true}
+                      />
+                    </div>
+                    <div className="task-modal__text-input">
+                      <FinalInput
+                        name="partName"
+                        label="Наименование участка"
+                        required={true}
+                      />
+                    </div>
                   </div>
-                  <div className="task-modal__distance">
-                    <DistanceInput />
+                  <div className="task-modal__parameters">
+                    <div className="task-modal__input-group">
+                      <span className="task-modal__label">ID кондора</span>
+                      <Field
+                        className="task-modal__number-input"
+                        component="input"
+                        name="kondor"
+                        type="number"
+                        required
+                      />
+                    </div>
+                    <div className="task-modal__input-group">
+                      <span className="task-modal__label">
+                        Количество полос
+                      </span>
+                      <Field
+                        className="task-modal__number-input"
+                        component="input"
+                        name="lanesCount"
+                        type="number"
+                        required
+                      />
+                      <span className="task-modal__label">Полоса</span>
+                      <Field
+                        className="task-modal__number-input"
+                        component="input"
+                        name="lane"
+                        type="number"
+                        required
+                      />
+                    </div>
+                    <div className="task-modal__input-group">
+                      <div>Направление</div>
+                      <Field
+                        component="input"
+                        name="direction"
+                        type="radio"
+                        value="forward"
+                        required
+                      />
+                      <span className="task-modal__label">Прямое</span>
+                      <Field
+                        component="input"
+                        name="direction"
+                        type="radio"
+                        value="backward"
+                        required
+                      />
+                      <span className="task-modal__label">Обратное</span>
+                    </div>
+                    <div className="task-modal__input-group">
+                      <DistanceInput />
+                    </div>
                   </div>
                 </div>
               </div>

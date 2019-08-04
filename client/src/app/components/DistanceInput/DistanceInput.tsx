@@ -38,7 +38,7 @@ const DistanceInput: React.FC = () => {
         </div>
         <div className="distance-input__column">
           <div className="distance-input__result">
-            <div>Дистанция:</div>
+            <div>Дистанция</div>
             <div className="distance-input__distance">123</div>
           </div>
         </div>

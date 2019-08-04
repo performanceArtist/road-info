@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Popup from '@components/Popup/Popup';
 
-import { ChartLineInfo } from '@redux/measurements/types';
+import { ChartLineInfo } from '@redux/chart/types';
 
 type Config = {
   width?: number;

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import socket from '@redux/measurements/socket';
+import socket from '@redux/io/socket';
 
 const StartChannel: React.FC<typeof mapDispatch> = ({ startChannel }) => {
   useEffect(() => {
