@@ -28,11 +28,6 @@ router.use('/', async (req, res, next) => {
 
 router.use(express.static(path.join(__dirname, '../static/private')));
 
-router.get('/graph', (req, res) => {
-  res.sendFile(path.join(__dirname, '../static/private/graph.html'));
-});
-router.get('/api/', (req, res) => res.json({ username: 'username' }));
-
 import {
   createMeasurement,
   generateMeasurements,

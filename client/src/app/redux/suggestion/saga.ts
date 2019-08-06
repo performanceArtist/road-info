@@ -23,6 +23,11 @@ const getConstraints = name => ({ suggestions }) =>
       };
     });
 
+const getLast = constraints => {
+  const keys = Object.keys(constraints);
+  return keys.length === 0 ? {} : constraints[keys[keys.length - 1]];
+};
+
 function* suggestionWorker(action: { type: string; payload: any }) {
   try {
     const { name, value } = action.payload;
@@ -35,7 +40,7 @@ function* suggestionWorker(action: { type: string; payload: any }) {
         query: value,
         from_bound: { value: name },
         to_bound: { value: name },
-        locations: constraints,
+        locations: getLast(constraints),
         restrict_value: true
       }
     );

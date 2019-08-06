@@ -8,11 +8,11 @@ const initialTask = {
   lane: 1,
   lanesCount: 4,
   description: '',
-  kondor: '0',
+  kondor: '1',
   partName: 'от ул. Нахимова до ул. Учебной',
   roadName: 'пр. Ленина',
   city: 'г. Томск',
-  region: 'Томская область'
+  region: 'Томская обл'
 };
 
 const initialState: Array<Task> = [initialTask];

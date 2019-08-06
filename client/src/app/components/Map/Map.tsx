@@ -115,7 +115,7 @@ class MapComponent extends Component<Props, State> {
           outlineWidth: 1,
           min: 1,
           max: 3,
-          smoothFactor: 0
+          smoothFactor: 1
         }}
         onLineClick={(event: React.MouseEvent) => this.addPopup(event, index)}
       />

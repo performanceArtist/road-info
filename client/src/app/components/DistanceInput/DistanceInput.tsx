@@ -12,12 +12,17 @@ type Props = {
   defaults?: {
     from?: Default;
     to?: Default;
-    distance?: number;
   };
 };
 
 const DistanceInput: React.FC<Props> = ({ defaults = {} }) => {
-  const [distance, setDistance] = useState(defaults.distance || 0);
+  const convertToDistance = ({ meters = 0, kilometers = 0 } = {}) =>
+    Math.abs(kilometers * 1000 + meters);
+
+  const [fromDistance, setFromDistance] = useState(
+    convertToDistance(defaults.from)
+  );
+  const [toDistance, setToDistance] = useState(convertToDistance(defaults.to));
 
   const getInputs = (
     { name, title }: { name: string; title: string },
@@ -34,27 +39,46 @@ const DistanceInput: React.FC<Props> = ({ defaults = {} }) => {
         step={1}
         min={0}
       />
+
+      <OnChange name={`${name}-km`}>
+        {(value: number) => {
+          if (name === 'to') {
+            setToDistance((toDistance % 1000) + value * 1000);
+          } else {
+            setFromDistance((fromDistance % 1000) + value * 1000);
+          }
+        }}
+      </OnChange>
+
       <span className="distance-input__units">км +</span>
       <Field
         name={`${name}-m`}
         className="distance-input__input"
         component="input"
         type="number"
-        step={100}
         defaultValue={meters}
+        step={100}
         min={0}
+        max={900}
       />
       <span className="distance-input__units">м</span>
+
+      <OnChange name={`${name}-m`}>
+        {(value: number) => {
+          if (name === 'to') {
+            setToDistance(Math.floor(toDistance / 1000) + value);
+          } else {
+            setFromDistance(Math.floor(fromDistance / 1000) + value);
+          }
+        }}
+      </OnChange>
     </>
   );
 
   return (
     <div className="distance-input">
       <div className="distance-input__wrapper">
-        <div
-          className="distance-input__column"
-          onChange={event => console.log(event.target)}
-        >
+        <div className="distance-input__column">
           <div className="distance-input__row">
             {getInputs(
               { name: 'from', title: 'Начало измерения' },
@@ -68,7 +92,9 @@ const DistanceInput: React.FC<Props> = ({ defaults = {} }) => {
         <div className="distance-input__column">
           <div className="distance-input__result">
             <div>Дистанция</div>
-            <div className="distance-input__distance">{distance}</div>
+            <div className="distance-input__distance">
+              {Math.abs(toDistance - fromDistance)}
+            </div>
           </div>
         </div>
       </div>
