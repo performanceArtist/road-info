@@ -8,7 +8,6 @@ import chart from './chart/reducer';
 import tasks from './task/reducer';
 import suggestions from './suggestion/reducer';
 import history from './history/reducer';
-import test from '@components/TSTest/redux/reducer';
 
 const rootReducer = combineReducers({
   modals,
@@ -17,8 +16,7 @@ const rootReducer = combineReducers({
   chart,
   tasks,
   suggestions,
-  history,
-  test
+  history
 });
 
 export type RootState = StateType<typeof rootReducer>;
