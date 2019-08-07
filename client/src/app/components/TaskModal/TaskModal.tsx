@@ -1,19 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
 
-import Input from '@shared/Input/Input';
 import FinalInput from '@shared/FinalInput/FinalInput';
 import Button from '@shared/Button/Button';
 
 import Modal from '@components/Modal/Modal';
-import Dropdown from '@components/Dropdown/Dropdown';
 import DistanceInput from '@components/DistanceInput/DistanceInput';
-import SuggestionInput from '@components/SuggestionInput/SuggestionInput';
+import AddressInputs from '@components/AddressInputs/AddressInputs';
 
 import { closeModal } from '@redux/modal/actions';
 import { saveTask } from '@redux/task/actions';
-import { getSuggestion, addConstraint } from '@redux/suggestion/actions';
 
 import { Task } from '@redux/task/types';
 import { RootState } from '@redux/reducer';
@@ -44,8 +41,6 @@ const debounce = (callback: Function, delay: number) => {
 const TaskModal: React.FC<Props> = ({
   saveTask,
   closeModal,
-  getSuggestion,
-  addConstraint,
   task,
   suggestions
 }) => {
@@ -54,66 +49,6 @@ const TaskModal: React.FC<Props> = ({
     saveTask(formData);
     closeModal();
   };
-
-  const getConstraintTargets = name => {
-    switch (name) {
-      case 'region':
-        return ['city', 'settlement', 'street'];
-      case 'city':
-        return ['street', 'settlement'];
-      case 'settlement':
-        return ['street'];
-      default:
-        return [];
-    }
-  };
-  const suggestionInputs = [
-    { name: 'region', label: 'Область' },
-    {
-      name: 'city',
-      label: 'Город'
-    },
-    {
-      name: 'settlement',
-      required: false,
-      label: 'Населённый пункт'
-    },
-    { name: 'street', label: 'Дорога' }
-  ].map(({ name, label, required = true }) => (
-    <div className="task-modal__text-input">
-      <SuggestionInput
-        name={name}
-        label={label}
-        defaultValue={task ? task[name] : ''}
-        suggestions={suggestions[name] ? suggestions[name].items : []}
-        required={required}
-        onChange={({ name, value }) => {
-          getConstraintTargets(name).forEach(target => {
-            addConstraint({ form: 'task', name, target, id: '' });
-          });
-
-          if (name === 'settlement') {
-            const latestCity = suggestions.city.items[0];
-            getConstraintTargets('city').forEach(target => {
-              addConstraint({
-                form: 'task',
-                name: 'city',
-                target,
-                id: latestCity ? latestCity.id : ''
-              });
-            });
-          }
-
-          getSuggestion({ form: 'task', name, value });
-        }}
-        onSuggestionClick={({ name, id }) => {
-          getConstraintTargets(name).forEach(target => {
-            addConstraint({ form: 'task', name, target, id });
-          });
-        }}
-      />
-    </div>
-  ));
 
   return (
     <Modal open={true} onClose={closeModal}>
@@ -129,7 +64,7 @@ const TaskModal: React.FC<Props> = ({
               <div className="task-modal">
                 <div className="task-modal__row">
                   <div className="task-modal__meta">
-                    {suggestionInputs}
+                    <AddressInputs form="task" suggestions={suggestions} />
                     <div className="task-modal__text-input">
                       <FinalInput
                         name="order"
@@ -231,7 +166,7 @@ const mapState = ({ suggestions }: RootState) => ({
   suggestions: suggestions.task
 });
 
-const mapDispatch = { saveTask, closeModal, getSuggestion, addConstraint };
+const mapDispatch = { saveTask, closeModal };
 
 export default connect(
   mapState,

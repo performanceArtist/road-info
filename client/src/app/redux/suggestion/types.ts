@@ -1,7 +1,8 @@
 export type Suggestion = {
   items: Array<string>;
-  current: null | string;
   constraint: null | string;
+  last?: { id: string; value: string };
+  [key: string]: any;
 };
 
 export type Suggestions = {

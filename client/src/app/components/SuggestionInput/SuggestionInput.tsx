@@ -14,7 +14,11 @@ type Props = {
   defaultValue?: string;
   suggestions?: Array<Suggestion>;
   required?: boolean;
-  onSuggestionClick?: (arg: { id: string; name: string }) => void;
+  onSuggestionClick?: (arg: {
+    id: string;
+    value: string;
+    name: string;
+  }) => void;
   onChange?: (arg: { value: string; name: string }) => void;
 };
 
@@ -27,7 +31,7 @@ const SuggestionInput: React.FC<Props> = ({
   onSuggestionClick = () => {},
   onChange = () => {}
 }) => {
-  const [value, setValue] = useState({ value: defaultValue, id: '' });
+  const [value, setValue] = useState(defaultValue || {});
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   /*
@@ -49,7 +53,7 @@ const SuggestionInput: React.FC<Props> = ({
       onClick={() => {
         setValue({ value, id });
         setShowSuggestions(false);
-        onSuggestionClick({ name, id });
+        onSuggestionClick({ name, value, id });
       }}
     >
       {value}

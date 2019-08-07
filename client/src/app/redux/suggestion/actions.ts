@@ -28,11 +28,13 @@ export const addConstraint = ({
   form,
   name,
   target,
+  value,
   id
 }: {
   form: string;
   name: string;
   target: string;
+  value: string;
   id: string;
 }) => ({
   type: SUGGESTION.ADD_CONSTRAINT,
@@ -40,6 +42,7 @@ export const addConstraint = ({
     form,
     name,
     target,
+    value,
     id
   }
 });

@@ -1,4 +1,4 @@
-import { SUGGESTION } from './actions';
+import { SUGGESTION, addConstraint } from './actions';
 import { Suggestions } from './types';
 
 const initialState: Suggestions = {
@@ -22,7 +22,7 @@ export default function reducer(
       };
     }
     case SUGGESTION.ADD_CONSTRAINT: {
-      const { form, id, target, name } = payload;
+      const { form, value, id, target, name } = payload;
       const fullName = `${name}_fias_id`;
 
       if (!state[name])
@@ -30,6 +30,10 @@ export default function reducer(
           ...state,
           [form]: {
             ...state[form],
+            [name]: {
+              ...state[form][name],
+              last: { value, id }
+            },
             [target]: {
               items: [],
               constraint: { [fullName]: id }
@@ -41,6 +45,10 @@ export default function reducer(
         ...state,
         [form]: {
           ...state[form],
+          [name]: {
+            ...state[form][name],
+            last: { value, id }
+          },
           [target]: {
             items: state[target].items,
             constraint: { [fullName]: id }

@@ -1,7 +1,18 @@
 import { HISTORY } from './actions';
 
-const initialState = {
-  entries: []
+import { History } from './types';
+
+const today = new Date();
+const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+
+const initialState: History = {
+  tasks: [],
+  measurements: [],
+  filters: {
+    kondor: 1,
+    startDate: yesterday,
+    endDate: today
+  }
 };
 
 export default function reducer(
@@ -11,8 +22,31 @@ export default function reducer(
   switch (type) {
     case HISTORY.GET.SUCCESS:
       return {
+        ...state
+      };
+    case HISTORY.SET_START_DATE:
+      return {
         ...state,
-        entries: state.entries.concat(payload)
+        filters: {
+          ...state.filters,
+          startDate: payload
+        }
+      };
+    case HISTORY.SET_END_DATE:
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          endDate: payload
+        }
+      };
+    case HISTORY.SET_KONDOR:
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          kondor: payload
+        }
       };
     default:
       return state;
