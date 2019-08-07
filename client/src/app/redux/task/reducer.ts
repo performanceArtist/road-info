@@ -5,6 +5,7 @@ const initialTask = {
   id: 1,
   start: 0,
   finish: 2000,
+  direction: 'forward',
   lane: 1,
   lanesCount: 4,
   description: '',

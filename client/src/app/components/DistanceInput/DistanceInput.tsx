@@ -92,9 +92,12 @@ const DistanceInput: React.FC<Props> = ({ defaults = {} }) => {
         <div className="distance-input__column">
           <div className="distance-input__result">
             <div>Дистанция</div>
-            <div className="distance-input__distance">
-              {Math.abs(toDistance - fromDistance)}
-            </div>
+            <input
+              name="distance"
+              value={Math.abs(toDistance - fromDistance)}
+              className="distance-input__distance"
+              readOnly
+            />
           </div>
         </div>
       </div>

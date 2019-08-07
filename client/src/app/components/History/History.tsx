@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import Input from '@shared/Input/Input';
-import Button from '@shared/Button/Button';
 import { Form } from 'react-final-form';
+import FinalInput from '@shared/Input/Input';
+import Button from '@shared/Button/Button';
 import Dropdown from '@components/Dropdown/Dropdown';
 
 import { RootState } from '@redux/reducer';
 import { getHistory } from '@redux/history/actions';
+import SuggestionInput from '@components/SuggestionInput/SuggestionInput';
 
 type MapState = {
-  history: Array<string>;
+  history: any;
 };
 
 type Props = typeof mapDispatch & MapState;
 
 const History: React.FC<Props> = ({ history, getHistory }) => {
-  const handleSubmit = (event: React.SyntheticEvent) => {
-    event.preventDefault();
+  const handleSubmit = async values => {
+    console.log(values);
     getHistory();
   };
 
@@ -27,23 +28,29 @@ const History: React.FC<Props> = ({ history, getHistory }) => {
 
   return (
     <div className="history">
-      <form onSubmit={handleSubmit}>
-        <Input
-          label="ID кондора"
-          props={{ name: 'kondor', type: 'number', step: 1 }}
+      <div className="history__form">
+        <Form
+          onSubmit={handleSubmit}
+          render={({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              <FinalInput
+                name="kondor"
+                label="ID кондора"
+                type="number"
+                step={1}
+              />
+              <div className="history__date-container">
+                <div>За период</div>
+                <div className="history__date-inputs">
+                  <FinalInput name="date-start" label="От" type="date" />
+                  <FinalInput name="date-end" label="До" type="date" />
+                </div>
+              </div>
+              <Button type="submit">Отправить</Button>
+            </form>
+          )}
         />
-        {/*
-                <Dropdown
-          name="sortBy"
-          options={[
-            { name: 'Дате', value: 'date' },
-            { name: 'Кондор', value: 'kondor' }
-          ]}
-        />
-        <Input label="Повышения" props={{ type: 'radio', name: 'order' }} />
-        <Input label="Убывания" props={{ type: 'radio', name: 'order' }} />*/}
-        <Button type="submit">Отправить</Button>
-      </form>
+      </div>
       <div className="history__results">{getResults}</div>
     </div>
   );

@@ -22,7 +22,11 @@ type OwnProps = {
   task: Task;
 };
 
-type Props = OwnProps & typeof mapDispatch;
+type MapState = {
+  suggestions: any;
+};
+
+type Props = OwnProps & MapState & typeof mapDispatch;
 
 export interface TaskFormType {
   test: string;
@@ -51,30 +55,62 @@ const TaskModal: React.FC<Props> = ({
     closeModal();
   };
 
-  const getDef = name => {
-    const res = suggestions[name]
-      ? suggestions[name].items.find(({ id }) => id === suggestions[name].last)
-      : null;
-
-    return res ? res.value : null;
+  const getConstraintTargets = name => {
+    switch (name) {
+      case 'region':
+        return ['city', 'settlement', 'street'];
+      case 'city':
+        return ['street', 'settlement'];
+      case 'settlement':
+        return ['street'];
+      default:
+        return [];
+    }
   };
-
   const suggestionInputs = [
     { name: 'region', label: 'Область' },
-    { name: 'settlement', label: 'Населённый пункт' },
+    {
+      name: 'city',
+      label: 'Город'
+    },
+    {
+      name: 'settlement',
+      required: false,
+      label: 'Населённый пункт'
+    },
     { name: 'street', label: 'Дорога' }
-  ].map(({ name, label }) => (
+  ].map(({ name, label, required = true }) => (
     <div className="task-modal__text-input">
       <SuggestionInput
         name={name}
         label={label}
-        defaultValue={getDef(name)}
+        defaultValue={task ? task[name] : ''}
         suggestions={suggestions[name] ? suggestions[name].items : []}
+        required={required}
         onChange={({ name, value }) => {
-          addConstraint({ name, id: '' });
-          getSuggestion({ name, value });
+          getConstraintTargets(name).forEach(target => {
+            addConstraint({ form: 'task', name, target, id: '' });
+          });
+
+          if (name === 'settlement') {
+            const latestCity = suggestions.city.items[0];
+            getConstraintTargets('city').forEach(target => {
+              addConstraint({
+                form: 'task',
+                name: 'city',
+                target,
+                id: latestCity ? latestCity.id : ''
+              });
+            });
+          }
+
+          getSuggestion({ form: 'task', name, value });
         }}
-        onSuggestionClick={addConstraint}
+        onSuggestionClick={({ name, id }) => {
+          getConstraintTargets(name).forEach(target => {
+            addConstraint({ form: 'task', name, target, id });
+          });
+        }}
       />
     </div>
   ));
@@ -86,6 +122,7 @@ const TaskModal: React.FC<Props> = ({
       </Modal.Header>
       <Form
         onSubmit={handleSubmit}
+        initialValues={task ? task : { direction: 'forward' }}
         render={({ handleSubmit, pristine, invalid }) => (
           <form onSubmit={handleSubmit}>
             <Modal.Content>
@@ -104,7 +141,6 @@ const TaskModal: React.FC<Props> = ({
                       <FinalInput
                         name="partName"
                         label="Наименование участка"
-                        defaultValue={task ? task.partName : ''}
                         required={true}
                       />
                     </div>
@@ -117,7 +153,6 @@ const TaskModal: React.FC<Props> = ({
                         component="input"
                         name="kondor"
                         type="number"
-                        defaultValue={task ? task.kondor : ''}
                         required
                       />
                     </div>
@@ -130,7 +165,6 @@ const TaskModal: React.FC<Props> = ({
                         component="input"
                         name="lanesCount"
                         type="number"
-                        defaultValue={task ? task.lanesCount : ''}
                         required
                       />
                       <span className="task-modal__label">Полоса</span>
@@ -139,7 +173,6 @@ const TaskModal: React.FC<Props> = ({
                         component="input"
                         name="lane"
                         type="number"
-                        defaultValue={task ? task.lane : ''}
                         required
                       />
                     </div>
@@ -174,8 +207,7 @@ const TaskModal: React.FC<Props> = ({
                                 to: {
                                   kilometers: Math.floor(task.finish / 1000),
                                   meters: task.finish % 1000
-                                },
-                                distance: task.finish - task.start
+                                }
                               }
                             : {}
                         }
@@ -196,7 +228,7 @@ const TaskModal: React.FC<Props> = ({
 };
 
 const mapState = ({ suggestions }: RootState) => ({
-  suggestions
+  suggestions: suggestions.task
 });
 
 const mapDispatch = { saveTask, closeModal, getSuggestion, addConstraint };

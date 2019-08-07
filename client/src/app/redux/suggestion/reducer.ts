@@ -1,7 +1,10 @@
 import { SUGGESTION } from './actions';
 import { Suggestions } from './types';
 
-const initialState: Suggestions = {};
+const initialState: Suggestions = {
+  task: {},
+  history: {}
+};
 
 export default function reducer(
   state = initialState,
@@ -9,20 +12,39 @@ export default function reducer(
 ) {
   switch (type) {
     case SUGGESTION.GET.SUCCESS: {
-      const { name, suggestions } = payload;
+      const { form, name, suggestions } = payload;
       return {
         ...state,
-        [name]: { items: suggestions.slice(0, 5), last: null }
+        [form]: {
+          ...state[form],
+          [name]: { ...state[form][name], items: suggestions.slice(0, 5) }
+        }
       };
     }
     case SUGGESTION.ADD_CONSTRAINT: {
-      const { id, name } = payload;
-      if (!state[name]) return state;
+      const { form, id, target, name } = payload;
+      const fullName = `${name}_fias_id`;
+
+      if (!state[name])
+        return {
+          ...state,
+          [form]: {
+            ...state[form],
+            [target]: {
+              items: [],
+              constraint: { [fullName]: id }
+            }
+          }
+        };
+
       return {
         ...state,
-        [name]: {
-          ...state[name],
-          last: id
+        [form]: {
+          ...state[form],
+          [target]: {
+            items: state[target].items,
+            constraint: { [fullName]: id }
+          }
         }
       };
     }

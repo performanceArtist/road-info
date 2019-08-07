@@ -28,14 +28,11 @@ router.use('/', async (req, res, next) => {
 
 router.use(express.static(path.join(__dirname, '../static/private')));
 
-import {
-  createMeasurement,
-  generateMeasurements,
-  makeRoute
-} from '../models/Measurement';
+import { createMeasurement, generateMeasurements } from '../models/Measurement';
 
 router.post('/api/task', async (req, res) => {
   try {
+    console.log(req.body);
     await createMeasurement(req.body);
     res.json({ status: 'ok', message: 'yeah' });
   } catch (error) {
@@ -68,12 +65,6 @@ router.get('/api/sort', async (req, res) => {
     console.log(error);
     res.status(500).end();
   }
-});
-
-router.post('/api/test-route', (req, res) => {
-  console.log(req.body);
-  makeRoute();
-  res.json({ status: 'ok', message: 'yeah' });
 });
 
 router.get('/api/track/:id', (req, res) => {

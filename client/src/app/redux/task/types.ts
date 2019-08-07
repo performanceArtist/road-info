@@ -2,6 +2,7 @@ export type Task = {
   id: number;
   start: number;
   finish: number;
+  direction: 'forward' | 'backward';
   lane: number;
   lanesCount: number;
   description: string | null;

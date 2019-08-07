@@ -14,8 +14,20 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export async function createMeasurement({
   start = 0,
   finish = 2000,
+  direction,
   lane = 1,
-  kondor = 1
+  lanesCount,
+  kondor = 1,
+  partName,
+  city,
+  cityId,
+  region,
+  regionId,
+  settlement,
+  settlementId,
+  street,
+  streetId,
+  order
 } = {}) {
   const baseId = await knex('measurements')
     .insert({
@@ -24,7 +36,7 @@ export async function createMeasurement({
       road_part_id: 1,
       order_id: 1,
       builder_id: 1,
-      is_direction_forward: true,
+      is_direction_forward: direction === 'forward',
       start_distance: start,
       finish_distance: finish
     })
