@@ -14,7 +14,7 @@ type Props = {
   required?: boolean;
   defaultValue?: string | number;
   autoComplete?: string;
-  onChange?: (value: string) => void;
+  onChange?: (value: any, name: string) => void;
   [key: string]: any;
 };
 
@@ -35,7 +35,6 @@ const FinalInput: React.FC<Props> = ({
     {label ? <div className="input__label">{label}</div> : null}
     <Field
       name={name}
-      defaultValue={defaultValue}
       type={type}
       component={component}
       className={error ? 'input__input input__input_invalid' : 'input__input'}
@@ -43,9 +42,7 @@ const FinalInput: React.FC<Props> = ({
       autoComplete={autoComplete}
       {...rest}
     />
-    <OnChange name={name}>
-      {(value, previous) => onChange(value, name)}
-    </OnChange>
+    <OnChange name={name}>{(value: any) => onChange(value, name)}</OnChange>
     {status && <div className="input__input-status">{status}</div>}
   </label>
 );

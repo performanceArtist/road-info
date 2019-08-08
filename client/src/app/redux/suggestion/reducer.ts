@@ -22,7 +22,7 @@ export default function reducer(
       };
     }
     case SUGGESTION.ADD_CONSTRAINT: {
-      const { form, value, id, target, name } = payload;
+      const { form, id, target, name } = payload;
       const fullName = `${name}_fias_id`;
 
       if (!state[name])
@@ -30,10 +30,6 @@ export default function reducer(
           ...state,
           [form]: {
             ...state[form],
-            [name]: {
-              ...state[form][name],
-              last: { value, id }
-            },
             [target]: {
               items: [],
               constraint: { [fullName]: id }
@@ -45,13 +41,23 @@ export default function reducer(
         ...state,
         [form]: {
           ...state[form],
-          [name]: {
-            ...state[form][name],
-            last: { value, id }
-          },
           [target]: {
             items: state[target].items,
             constraint: { [fullName]: id }
+          }
+        }
+      };
+    }
+    case SUGGESTION.ADD_LAST: {
+      const { form, value, id, name } = payload;
+
+      return {
+        ...state,
+        [form]: {
+          ...state[form],
+          [name]: {
+            ...state[form][name],
+            last: { value, id }
           }
         }
       };

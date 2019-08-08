@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 
 import SuggestionInput from '@components/SuggestionInput/SuggestionInput';
 import { Suggestion } from '@redux/suggestion/types';
-import { getSuggestion, addConstraint } from '@redux/suggestion/actions';
+import {
+  getSuggestion,
+  addConstraint,
+  addLast
+} from '@redux/suggestion/actions';
 
 type OwnProps = {
   form: string;
@@ -18,7 +22,8 @@ const AddressInputs: React.FC<Props> = ({
   defaults = null,
   form,
   getSuggestion,
-  addConstraint
+  addConstraint,
+  addLast
 }) => {
   const getConstraintTargets = (name: string) => {
     switch (name) {
@@ -61,7 +66,7 @@ const AddressInputs: React.FC<Props> = ({
         required={required}
         onChange={({ name, value }) => {
           getConstraintTargets(name).forEach(target => {
-            addConstraint({ form, name, target, value: '', id: '' });
+            addConstraint({ form, name, target, id: '' });
           });
 
           if (name === 'settlement') {
@@ -72,7 +77,6 @@ const AddressInputs: React.FC<Props> = ({
                 form,
                 name: 'city',
                 target,
-                value: latestCity && latestCity.value,
                 id: latestCity && latestCity.id
               });
             });
@@ -81,8 +85,9 @@ const AddressInputs: React.FC<Props> = ({
           getSuggestion({ form, name, value });
         }}
         onSuggestionClick={({ name, value, id }) => {
+          addLast({ form, name, value, id });
           getConstraintTargets(name).forEach(target => {
-            addConstraint({ form, name, target, value, id });
+            addConstraint({ form, name, target, id });
           });
         }}
       />
@@ -92,7 +97,7 @@ const AddressInputs: React.FC<Props> = ({
   return <div className="address-inputs">{elements}</div>;
 };
 
-const mapDispatch = { getSuggestion, addConstraint };
+const mapDispatch = { getSuggestion, addConstraint, addLast };
 
 export default connect(
   null,

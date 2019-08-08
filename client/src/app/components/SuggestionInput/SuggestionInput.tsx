@@ -34,7 +34,6 @@ const SuggestionInput: React.FC<Props> = ({
   const [value, setValue] = useState(defaultValue || {});
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  /*
   useEffect(() => {
     const hide = (event: React.MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -45,7 +44,7 @@ const SuggestionInput: React.FC<Props> = ({
     return () => {
       window.removeEventListener('click', hide);
     };
-  });*/
+  });
 
   const suggestionItems = suggestions.map(({ value, id }) => (
     <li

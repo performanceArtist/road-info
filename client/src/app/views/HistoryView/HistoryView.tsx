@@ -1,10 +1,12 @@
 import React from 'react';
 
-import History from '@components/History/History';
+import HistoryForm from '@components/HistoryForm/HistoryForm';
 
 const HistoryView = () => (
-  <div>
-    <History />
+  <div className="history-view">
+    <div className="history-view__form">
+      <HistoryForm />
+    </div>
   </div>
 );
 

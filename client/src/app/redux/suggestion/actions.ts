@@ -4,7 +4,8 @@ export const SUGGESTION = {
     SUCCESS: 'SUGGESTION.GET.SUCCESS',
     FAILURE: 'SUGGESTION.GET.FAILURE'
   },
-  ADD_CONSTRAINT: 'SUGGESTION.ADD_CONSTRAINT'
+  ADD_CONSTRAINT: 'SUGGESTION.ADD_CONSTRAINT',
+  ADD_LAST: 'SUGGESTION.ADD_LAST'
 };
 
 export const getSuggestion = ({
@@ -28,13 +29,11 @@ export const addConstraint = ({
   form,
   name,
   target,
-  value,
   id
 }: {
   form: string;
   name: string;
   target: string;
-  value: string;
   id: string;
 }) => ({
   type: SUGGESTION.ADD_CONSTRAINT,
@@ -42,6 +41,25 @@ export const addConstraint = ({
     form,
     name,
     target,
+    id
+  }
+});
+
+export const addLast = ({
+  form,
+  name,
+  value,
+  id
+}: {
+  form: string;
+  name: string;
+  value: string;
+  id: string;
+}) => ({
+  type: SUGGESTION.ADD_LAST,
+  payload: {
+    form,
+    name,
     value,
     id
   }
