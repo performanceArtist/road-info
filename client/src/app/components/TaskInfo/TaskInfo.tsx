@@ -7,7 +7,6 @@ import { Icon, IconImage } from '@components/Icon/Icon';
 import MeasurementInfo from '@components/MeasurementInfo/MeasurementInfo';
 
 import { openModal } from '@redux/modal/actions';
-import { generateMeasurements } from '@redux/measurements/actions';
 import { Task } from '@redux/task/types';
 
 type OwnProps = {
@@ -16,11 +15,7 @@ type OwnProps = {
 
 type Props = OwnProps & typeof mapDispatch;
 
-const TaskInfo: React.FC<Props> = ({
-  task,
-  openModal,
-  generateMeasurements
-}) => {
+const TaskInfo: React.FC<Props> = ({ task, openModal }) => {
   return (
     <div className="task-info">
       <header className="task-info__header">
@@ -35,7 +30,7 @@ const TaskInfo: React.FC<Props> = ({
                 if (event.target.checked) generateMeasurements(task.id);
               }}
             />*/}
-            <Button onClick={() => generateMeasurements(task.id)}>
+            <Button onClick={() => openModal('Generation', { id: task.id })}>
               Генерация
             </Button>
           </div>
@@ -50,6 +45,8 @@ const TaskInfo: React.FC<Props> = ({
       </header>
       <div className="task-info__content">
         <MeasurementInfo
+          status={task.status}
+          kondor={task.kondor}
           items={[
             { title: 'Регион', value: task.region },
             { title: 'Город', value: task.city },
@@ -68,8 +65,7 @@ const TaskInfo: React.FC<Props> = ({
 };
 
 const mapDispatch = {
-  openModal,
-  generateMeasurements
+  openModal
 };
 
 export default connect(

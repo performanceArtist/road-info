@@ -17,7 +17,12 @@ export const addMeasurement = (taskId: string, data: DataItem) => ({
   }
 });
 
-export const generateMeasurements = (id: number) => ({
+export const generateMeasurements = (payload: {
+  id: number;
+  lane: number;
+  kondorId: number;
+  isForward: boolean;
+}) => ({
   type: MEASUREMENTS.GENERATE.REQUEST,
-  payload: id
+  payload
 });

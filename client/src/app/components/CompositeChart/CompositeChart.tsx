@@ -50,6 +50,7 @@ const CompositeChart: React.FC<Props> = ({
     if (!current) return null;
 
     const {
+      status,
       start,
       finish,
       lane,
@@ -64,6 +65,8 @@ const CompositeChart: React.FC<Props> = ({
 
     return (
       <MeasurementInfo
+        status={status}
+        kondor={kondor}
         items={[
           { title: 'Регион', value: region },
           { title: 'Город', value: city },

@@ -6,6 +6,7 @@ import MaterialModal from '@components/MaterialModal/MaterialModal';
 import ChartModal from '@components/ChartModal/ChartModal';
 import TaskModal from '@components/TaskModal/TaskModal';
 import KondorModal from '@components/KondorModal/KondorModal';
+import GenerationModal from '@components/GenerationModal/GenerationModal';
 
 import { ConnectedComponentClass } from 'react-redux';
 
@@ -18,7 +19,8 @@ export const ModalMap: Record<
   Material: MaterialModal,
   Task: TaskModal,
   Chart: ChartModal,
-  Kondor: KondorModal
+  Kondor: KondorModal,
+  Generation: GenerationModal
 };
 
 export interface ModalPayload {

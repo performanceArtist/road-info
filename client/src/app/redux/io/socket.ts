@@ -12,7 +12,7 @@ import {
 
 import { IO } from './actions';
 import { addMeasurement } from '../measurements/actions';
-import { addTask } from '../task/actions';
+import { addTask, updateTask } from '../task/actions';
 
 class Socket {
   private _url: string;
@@ -59,11 +59,14 @@ class Socket {
       const handler = ({ type, payload }: { type: string; payload: any }) => {
         switch (type) {
           case 'newMeasurement':
-            console.log(payload);
             emit(addMeasurement(payload.taskId, payload.data));
             break;
           case 'newOrder':
             emit(addTask(payload));
+            break;
+          case 'orderUpdate':
+            emit(updateTask(payload));
+            break;
           default:
             break;
         }

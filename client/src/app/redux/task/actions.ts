@@ -5,6 +5,7 @@ export const TASK = {
   REMOVE: 'TASK.REMOVE',
   SET_CURRENT: 'TASK.SET_CURRENT',
   ADD: 'TASK.ADD',
+  UPDATE: 'TASK.UPDATE',
   POST: {
     REQUEST: 'TASK.POST.REQUEST',
     SUCCESS: 'TASK.POST.SUCCESS',
@@ -19,6 +20,15 @@ export const saveTask = (formData: TaskFormType) => ({
 
 export const addTask = (payload: any) => ({
   type: TASK.ADD,
+  payload
+});
+
+export const updateTask = (payload: {
+  status: 'ready' | 'taken' | 'done';
+  kondor: null | string;
+  id: string;
+}) => ({
+  type: TASK.UPDATE,
   payload
 });
 

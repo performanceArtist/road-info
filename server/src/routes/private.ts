@@ -34,17 +34,18 @@ router.post('/api/task', async (req, res) => {
   try {
     console.log(req.body);
     await createTask(req.body);
-    res.json({ status: 'ok', message: 'yeah' });
+    res.json({ status: 'ok' });
   } catch (error) {
     console.log(error);
     res.json({ status: 'error' });
   }
 });
 
-router.get('/api/generate/:id', async (req, res) => {
+router.get('/api/generate', async (req, res) => {
   try {
-    await generateMeasurements(req.params.id);
-    res.json({ status: 'ok', message: 'yeah' });
+    console.log(req.query);
+    await generateMeasurements(req.query);
+    res.json({ status: 'ok' });
   } catch (error) {
     console.log(error);
     res.json({ status: 'error' });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import SuggestionInput from '@components/SuggestionInput/SuggestionInput';
@@ -25,6 +25,15 @@ const AddressInputs: React.FC<Props> = ({
   addConstraint,
   addLast
 }) => {
+  useEffect(() => {
+    inputs.forEach(({ name }) => {
+      getConstraintTargets(name).forEach(target => {
+        const id = getDefaultValue(name) ? getDefaultValue(name).id : '';
+        addConstraint({ form, name, target, id });
+      });
+    });
+  }, []);
+
   const getConstraintTargets = (name: string) => {
     switch (name) {
       case 'region':
@@ -52,44 +61,53 @@ const AddressInputs: React.FC<Props> = ({
     { name: 'street', label: 'Дорога' }
   ];
 
+  const addConstraints = (name: string) => {
+    getConstraintTargets(name).forEach(target => {
+      addConstraint({ form, name, target, id: '' });
+    });
+
+    if (name === 'settlement') {
+      const latestCity = suggestions.city.last;
+
+      getConstraintTargets('city').forEach(target => {
+        addConstraint({
+          form,
+          name: 'city',
+          target,
+          id: latestCity && latestCity.id
+        });
+      });
+    }
+  };
+
+  const handleChange = ({ name, value }: { name: string; value: string }) => {
+    addConstraints(name);
+    getSuggestion({ form, name, value });
+  };
+
+  const handleSuggestionClick = ({ name, value, id }) => {
+    addLast({ form, name, value, id });
+    getConstraintTargets(name).forEach(target => {
+      addConstraint({ form, name, target, id });
+    });
+  };
+
+  const getDefaultValue = (name: string) => {
+    return defaults
+      ? { value: defaults[name], id: defaults[`${name}Id`] }
+      : suggestions[name] && suggestions[name].last;
+  };
+
   const elements = inputs.map(({ name, label, required = true }) => (
     <div className="address-inputs__input">
       <SuggestionInput
         name={name}
         label={label}
-        defaultValue={
-          defaults
-            ? { value: defaults[name], id: defaults[`${name}Id`] }
-            : suggestions[name] && suggestions[name].last
-        }
+        defaultValue={getDefaultValue(name)}
         suggestions={suggestions[name] ? suggestions[name].items : []}
         required={required}
-        onChange={({ name, value }) => {
-          getConstraintTargets(name).forEach(target => {
-            addConstraint({ form, name, target, id: '' });
-          });
-
-          if (name === 'settlement') {
-            const latestCity = suggestions.city.last;
-
-            getConstraintTargets('city').forEach(target => {
-              addConstraint({
-                form,
-                name: 'city',
-                target,
-                id: latestCity && latestCity.id
-              });
-            });
-          }
-
-          getSuggestion({ form, name, value });
-        }}
-        onSuggestionClick={({ name, value, id }) => {
-          addLast({ form, name, value, id });
-          getConstraintTargets(name).forEach(target => {
-            addConstraint({ form, name, target, id });
-          });
-        }}
+        onChange={handleChange}
+        onSuggestionClick={handleSuggestionClick}
       />
     </div>
   ));

@@ -6,7 +6,7 @@ export type Task = {
   lane: number;
   lanesCount: number;
   description: string | null;
-  kondor: string;
+  kondor: string | null;
   partName: string;
   roadName: string;
   city: string;

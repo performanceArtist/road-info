@@ -5,7 +5,9 @@ import { MEASUREMENTS } from './actions';
 
 function* createWorker(action: { type: string; payload: any }) {
   try {
-    const postResult = yield call(axios.get, `/api/generate/${action.payload}`);
+    const postResult = yield call(axios.get, `/api/generate`, {
+      params: action.payload
+    });
 
     const { status, message } = postResult.data;
 

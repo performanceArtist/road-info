@@ -24,12 +24,7 @@ const postgresEmitter = (function() {
       road_part_id
     }) => {
       try {
-        /*
-        const kondor = await knex('kondors')
-          .select('*')
-          .where({ id: kondor_id })
-          .first();*/
-        const { name: partName, road_id, lanes_count } = await knex(
+        const { name: roadPartName, road_id, lanes_count } = await knex(
           'road_parts'
         )
           .select('*')
@@ -69,16 +64,23 @@ const postgresEmitter = (function() {
           .where({ id: region_id })
           .first();
 
+        const directions = { forward: false, backward: false };
+        directions.forward = direction === 'forward' || direction === 'both';
+        directions.backward = direction === 'backward' || direction === 'both';
+
         io.emit('message', {
           type: 'newOrder',
           payload: {
             id,
+            order: number,
+            status,
             start: start_distance,
             finish: finish_distance,
+            ...directions,
             lanesCount: lanes_count,
             description,
             kondor: kondor_id,
-            partName,
+            roadPartName,
             street: road,
             streetId: roadId,
             settlement,
@@ -95,10 +97,39 @@ const postgresEmitter = (function() {
     }
   );
 
+  emitter.on('order_update', async ({ id, status, kondor_id }) => {
+    const payload = {
+      id,
+      status,
+      kondor: kondor_id
+    };
+
+    if (status !== 'ready') {
+      const { lane_number, is_direction_forward } = await knex('measurements')
+        .select('*')
+        .where({ order_id: id })
+        .first();
+
+      payload.lane = lane_number;
+      payload.isForward = is_direction_forward;
+    }
+
+    io.emit('message', {
+      type: 'orderUpdate',
+      payload
+    });
+  });
+
   emitter.on('new_measurement', async (measurement: MeasurementType) => {
+    console.log(measurement);
     const section = await knex('measurement_sections')
       .select('*')
       .where({ id: measurement.measurement_section_id })
+      .first();
+
+    const measurementBase = await knex('measurements')
+      .select('*')
+      .where({ id: section.measurement_id })
       .first();
 
     if (section.distance == 0) {
@@ -126,7 +157,7 @@ const postgresEmitter = (function() {
     io.emit('message', {
       type: 'newMeasurement',
       payload: {
-        taskId: section.measurement_id,
+        taskId: measurementBase.order_id,
         data
       }
     });

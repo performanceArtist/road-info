@@ -8,7 +8,7 @@ const initialData: MeasurementItem = {
   data: testData
 };
 
-const initialState: Measurements = [initialData];
+const initialState: Measurements = [];
 
 export default function reducer(
   state = initialState,
