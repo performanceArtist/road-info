@@ -10,7 +10,7 @@ const knex = require('knex')({
 (async function init() {
   const connection = await knex.client.acquireRawConnection();
   connection.query('LISTEN new_measurement');
-  connection.query('LISTEN new_base');
+  connection.query('LISTEN new_order');
   connection.on(
     'notification',
     async (data: { payload: string; channel: string }) => {

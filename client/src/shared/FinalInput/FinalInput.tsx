@@ -39,6 +39,7 @@ const FinalInput: React.FC<Props> = ({
       component={component}
       className={error ? 'input__input input__input_invalid' : 'input__input'}
       required={required}
+      defaultValue={defaultValue}
       autoComplete={autoComplete}
       {...rest}
     />

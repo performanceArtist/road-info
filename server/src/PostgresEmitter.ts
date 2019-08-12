@@ -9,57 +9,84 @@ const postgresEmitter = (function() {
   let lastSection: MeasurementType | null = null;
 
   emitter.on(
-    'new_base',
+    'new_order',
     async ({
       id,
+      number,
+      customer_id,
+      reporter_id,
+      description,
       kondor_id,
-      road_part_id,
+      status,
+      direction,
       start_distance,
       finish_distance,
-      lane_number,
-      description
+      road_part_id
     }) => {
       try {
+        /*
         const kondor = await knex('kondors')
           .select('*')
           .where({ id: kondor_id })
-          .first();
-        const { name: partName, road_id, lanes_count, length } = await knex(
+          .first();*/
+        const { name: partName, road_id, lanes_count } = await knex(
           'road_parts'
         )
           .select('*')
           .where({ id: road_part_id })
           .first();
 
-        const { name: roadName, city_id } = await knex('roads')
+        const {
+          name: road,
+          fias_id: roadId,
+          city_id,
+          settlement_id
+        } = await knex('roads')
           .select('*')
           .where({ id: road_id })
           .first();
 
-        const { name: city, region_id } = await knex('cities')
+        let settlement = null;
+        let settlementId = null;
+
+        if (settlement_id) {
+          const oldSettlement = await knex('settlements')
+            .select('*')
+            .where({ id: settlement_id })
+            .first();
+
+          settlement = oldSettlement.name;
+          settlementId = oldSettlement.fias_id;
+        }
+
+        const { name: city, fias_id: cityId, region_id } = await knex('cities')
           .select('*')
           .where({ id: city_id })
           .first();
 
-        const { name: region } = await knex('regions')
+        const { name: region, fias_id: regionId } = await knex('regions')
           .select('*')
           .where({ id: region_id })
           .first();
 
         io.emit('message', {
-          type: 'newBase',
+          type: 'newOrder',
           payload: {
             id,
             start: start_distance,
             finish: finish_distance,
-            lane: lane_number,
             lanesCount: lanes_count,
             description,
-            kondor: kondor.serial_number,
+            kondor: kondor_id,
             partName,
-            roadName,
+            street: road,
+            streetId: roadId,
+            settlement,
+            settlementId,
             city,
-            region
+            cityId,
+            region,
+            regionId
           }
         });
       } catch (error) {

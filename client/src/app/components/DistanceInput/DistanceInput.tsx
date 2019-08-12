@@ -31,6 +31,12 @@ const DistanceInput: React.FC<Props> = ({ defaults = {} }) => {
     <>
       <div className="distance-input__title">{title}</div>
       <Field
+        name={name === 'from' ? 'start' : 'finish'}
+        component="input"
+        type="hidden"
+        defaultValue={name === 'from' ? fromDistance : toDistance}
+      />
+      <Field
         name={`${name}-km`}
         className="distance-input__input"
         component="input"
@@ -61,6 +67,7 @@ const DistanceInput: React.FC<Props> = ({ defaults = {} }) => {
         min={0}
         max={900}
       />
+
       <span className="distance-input__units">м</span>
 
       <OnChange name={`${name}-m`}>

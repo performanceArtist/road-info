@@ -11,14 +11,32 @@ export interface MeasurementType {
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export async function createMeasurement({
-  start = 0,
-  finish = 2000,
-  direction,
-  lane = 1,
-  lanesCount,
-  kondor = 1,
-  partName,
+const getLastId = async (
+  from: string,
+  name: string,
+  fiasId: string,
+  insert = {}
+) => {
+  const oldRegion = await knex(from)
+    .select('*')
+    .where({ fias_id: fiasId })
+    .first();
+  let newRegionId = null;
+
+  if (!oldRegion) {
+    newRegionId = await knex(from)
+      .insert({ name, fias_id: fiasId, ...insert })
+      .returning('id');
+  }
+
+  return oldRegion ? parseInt(oldRegion.id, 10) : parseInt(newRegionId, 10);
+};
+
+export async function createTask({
+  order,
+  customer,
+  executor,
+  description,
   city,
   cityId,
   region,
@@ -27,22 +45,53 @@ export async function createMeasurement({
   settlementId,
   street,
   streetId,
-  order
-} = {}) {
-  const baseId = await knex('measurements')
+  roadPartName,
+  lanesCount,
+  forward,
+  backward,
+  start,
+  finish
+}: {
+  [key: string]: string;
+}) {
+  const lastRegionId = await getLastId('regions', region, regionId);
+  const lastCityId = await getLastId('cities', city, cityId, {
+    region_id: lastRegionId
+  });
+  const lastSettlementId = settlement
+    ? await getLastId('settlements', settlement, settlementId, {
+        city_id: lastCityId
+      })
+    : null;
+  const lastRoadId = await getLastId('roads', street, streetId, {
+    city_id: lastCityId,
+    settlement_id: lastSettlementId
+  });
+
+  const roadPartId = await knex('road_parts')
     .insert({
-      kondor_id: kondor,
-      lane_number: lane,
-      road_part_id: 1,
-      order_id: 1,
-      builder_id: 1,
-      is_direction_forward: direction === 'forward',
-      start_distance: start,
-      finish_distance: finish
+      name: roadPartName,
+      lanes_count: parseInt(lanesCount, 10),
+      road_id: lastRoadId
     })
     .returning('id');
 
-  return baseId;
+  let direction = '';
+
+  if (forward) direction = 'forward';
+  if (backward) direction = 'backward';
+  if (forward && backward) direction = 'both';
+
+  await knex('orders').insert({
+    number: order,
+    customer_id: parseInt(customer, 10),
+    reporter_id: parseInt(executor, 10),
+    description,
+    start_distance: start,
+    finish_distance: finish,
+    direction,
+    road_part_id: parseInt(roadPartId, 10)
+  });
 }
 
 export async function generateMeasurements(baseId: string) {

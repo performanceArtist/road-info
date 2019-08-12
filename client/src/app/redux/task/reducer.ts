@@ -16,7 +16,7 @@ const initialTask = {
   region: 'Томская обл'
 };
 
-const initialState: Array<Task> = [initialTask];
+const initialState: Array<Task> = [];
 
 export default function reducer(
   state = initialState,

@@ -41,7 +41,7 @@ const debounce = (callback: Function, delay: number) => {
 const TaskModal: React.FC<Props> = ({
   saveTask,
   closeModal,
-  task,
+  task = null,
   suggestions
 }) => {
   const handleSubmit = async (formData: any) => {
@@ -50,6 +50,14 @@ const TaskModal: React.FC<Props> = ({
     closeModal();
   };
 
+  const companies = (
+    <>
+      <option value="5">АО Элеси</option>
+      <option value="4">НИИ Элеси</option>
+      <option value="1">Стройкомплект</option>
+    </>
+  );
+
   return (
     <Modal open={true} onClose={closeModal}>
       <Modal.Header>
@@ -57,38 +65,50 @@ const TaskModal: React.FC<Props> = ({
       </Modal.Header>
       <Form
         onSubmit={handleSubmit}
-        initialValues={task ? task : { direction: 'forward' }}
+        initialValues={
+          task ? task : { direction: 'forward', customer: '5', executor: '5' }
+        }
         render={({ handleSubmit, pristine, invalid }) => (
           <form onSubmit={handleSubmit}>
             <Modal.Content>
               <div className="task-modal">
                 <div className="task-modal__row">
                   <div className="task-modal__meta">
-                    <AddressInputs form="task" suggestions={suggestions} />
                     <div className="task-modal__text-input">
-                      <FinalInput
-                        name="order"
-                        label="Номер заказа"
-                        required={true}
-                      />
+                      <span className="task-modal__label">Номер заказа</span>
+                      <Field name="order" component="input" required={true} />
                     </div>
                     <div className="task-modal__text-input">
-                      <FinalInput
-                        name="partName"
-                        label="Наименование участка"
-                        required={true}
-                      />
+                      <span className="task-modal__label">Заказчик</span>
+                      <Field name="customer" component="select" required={true}>
+                        {companies}
+                      </Field>
                     </div>
+                    <div className="task-modal__text-input">
+                      <span className="task-modal__label">Исполнитель</span>
+                      <Field name="executor" component="select" required={true}>
+                        {companies}
+                      </Field>
+                    </div>
+                    <div className="task-modal__text-input">
+                      <span className="task-modal__label">Описание</span>
+                      <Field name="description" component="textarea" />
+                    </div>
+                    <AddressInputs
+                      form="task"
+                      defaults={task}
+                      suggestions={suggestions}
+                    />
                   </div>
                   <div className="task-modal__parameters">
-                    <div className="task-modal__input-group">
-                      <span className="task-modal__label">Номер кондора</span>
+                    <div className="task-modal__text-input">
+                      <span className="task-modal__label">
+                        Наименование участка
+                      </span>
                       <Field
-                        className="task-modal__number-input"
+                        name="roadPartName"
                         component="input"
-                        name="kondor"
-                        type="number"
-                        required
+                        required={true}
                       />
                     </div>
                     <div className="task-modal__input-group">
@@ -102,31 +122,15 @@ const TaskModal: React.FC<Props> = ({
                         type="number"
                         required
                       />
-                      <span className="task-modal__label">Полоса</span>
-                      <Field
-                        className="task-modal__number-input"
-                        component="input"
-                        name="lane"
-                        type="number"
-                        required
-                      />
                     </div>
                     <div className="task-modal__input-group">
                       <div>Направление</div>
-                      <Field
-                        component="input"
-                        name="direction"
-                        type="radio"
-                        value="forward"
-                        required
-                      />
+                      <Field component="input" name="forward" type="checkbox" />
                       <span className="task-modal__label">Прямое</span>
                       <Field
                         component="input"
-                        name="direction"
-                        type="radio"
-                        value="backward"
-                        required
+                        name="backward"
+                        type="checkbox"
                       />
                       <span className="task-modal__label">Обратное</span>
                     </div>

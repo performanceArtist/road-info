@@ -28,12 +28,12 @@ router.use('/', async (req, res, next) => {
 
 router.use(express.static(path.join(__dirname, '../static/private')));
 
-import { createMeasurement, generateMeasurements } from '../models/Measurement';
+import { createTask, generateMeasurements } from '../models/Measurement';
 
 router.post('/api/task', async (req, res) => {
   try {
     console.log(req.body);
-    await createMeasurement(req.body);
+    await createTask(req.body);
     res.json({ status: 'ok', message: 'yeah' });
   } catch (error) {
     console.log(error);

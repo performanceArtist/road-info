@@ -59,7 +59,7 @@ const AddressInputs: React.FC<Props> = ({
         label={label}
         defaultValue={
           defaults
-            ? defaults[name]
+            ? { value: defaults[name], id: defaults[`${name}Id`] }
             : suggestions[name] && suggestions[name].last
         }
         suggestions={suggestions[name] ? suggestions[name].items : []}

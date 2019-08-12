@@ -62,7 +62,7 @@ class Socket {
             console.log(payload);
             emit(addMeasurement(payload.taskId, payload.data));
             break;
-          case 'newBase':
+          case 'newOrder':
             emit(addTask(payload));
           default:
             break;
