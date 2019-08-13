@@ -1,5 +1,3 @@
 node_modules/
-client/dist
-server/src/static
-server/dist
-server/src/config.ts
+dist
+src/config.ts
