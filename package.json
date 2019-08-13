@@ -13,10 +13,10 @@
     "server:start": "node dist/server.js"
   },
   "_moduleAliases": {
-    "@components": "dist/client/components",
-    "@redux": "dist/client/redux",
+    "@components": "dist/client/app/components",
+    "@redux": "dist/client/app/redux",
     "@shared": "dist/client/shared",
-    "@views": "dist/client/views"
+    "@views": "dist/client/app/views"
   },
   "author": "",
   "license": "ISC",

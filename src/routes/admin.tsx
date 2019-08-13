@@ -1,6 +1,12 @@
 import * as express from 'express';
+import * as React from 'react';
+import { renderToString } from 'react-dom/server';
+import Helmet from 'react-helmet';
 const path = require('path');
 const router = express.Router();
+
+import html from '../html';
+import App from '../client/admin/app';
 
 import { User } from '../models/User';
 
@@ -11,7 +17,11 @@ router.use('/admin/', (req, res, next) => {
 });
 
 router.get('/admin/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../static/admin/admin.html'));
+  const jsx = <App />;
+  const reactDom = renderToString(jsx);
+  const helmetData = Helmet.renderStatic();
+
+  res.send(html(reactDom, null, helmetData, 'admin'));
 });
 
 router.post('/admin/create', async (req, res) => {

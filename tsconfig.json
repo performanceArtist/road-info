@@ -17,13 +17,13 @@
         "client/shared/*"
       ],
       "@redux/*": [
-        "client/redux/*"
+        "client/app/redux/*"
       ],
       "@components/*": [
-        "client/components/*"
+        "client/app/components/*"
       ],
       "@views/*": [
-        "client/views/*"
+        "client/app/views/*"
       ],
     },
     "jsx": "react",

@@ -5,7 +5,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const config = {
   entry: {
     rhl: 'react-hot-loader/patch',
-    main: ['@babel/polyfill', path.join(__dirname, 'src/client/main.tsx')]
+    app: ['@babel/polyfill', path.join(__dirname, 'src/client/app/main.tsx')],
+    login: [
+      '@babel/polyfill',
+      path.join(__dirname, 'src/client/login/main.tsx')
+    ],
+    admin: [
+      '@babel/polyfill',
+      path.join(__dirname, 'src/client/admin/main.tsx')
+    ]
   },
   node: {
     fs: 'empty'
@@ -16,9 +24,21 @@ const config = {
     alias: {
       'react-dom': '@hot-loader/react-dom',
       '@shared': path.resolve(__dirname, 'src/client/shared'),
-      '@redux': path.resolve(__dirname, 'src/client/redux'),
-      '@components': path.resolve(__dirname, 'src/client/components'),
-      '@views': path.resolve(__dirname, 'src/client/views')
+      '@redux': path.resolve(__dirname, 'src/client/app/redux'),
+      '@components': path.resolve(__dirname, 'src/client/app/components'),
+      '@views': path.resolve(__dirname, 'src/client/app/views')
+    }
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: 'commons',
+          chunks: 'initial',
+          minChunks: 2,
+          minSize: 0
+        }
+      }
     }
   },
   output: {
@@ -78,8 +98,18 @@ const config = {
       filename: '[name].css'
     }),
     new HtmlWebpackPlugin({
-      template: 'src/client/index.html',
+      template: 'src/client/app/index.html',
       filename: `index.html`,
+      chunks: []
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/client/pages/login/login.html',
+      filename: `login.html`,
+      chunks: []
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/client/pages/admin/admin.html',
+      filename: `admin.html`,
       chunks: []
     })
   ]

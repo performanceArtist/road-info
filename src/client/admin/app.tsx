@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import CreateForm from '@components/CreateForm/CreateForm';
+import CreateForm from './CreateForm/CreateForm';
 
 const Admin = () => (
   <div className="admin">

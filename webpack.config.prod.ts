@@ -4,7 +4,15 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const config = {
   entry: {
-    main: ['@babel/polyfill', path.join(__dirname, 'src/client/main.tsx')]
+    app: ['@babel/polyfill', path.join(__dirname, 'src/client/app/main.tsx')],
+    login: [
+      '@babel/polyfill',
+      path.join(__dirname, 'src/client/login/main.tsx')
+    ],
+    admin: [
+      '@babel/polyfill',
+      path.join(__dirname, 'src/client/admin/main.tsx')
+    ]
   },
 
   resolve: {
@@ -12,9 +20,9 @@ const config = {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@shared': path.resolve(__dirname, 'src/client/shared'),
-      '@redux': path.resolve(__dirname, 'src/client/redux'),
-      '@components': path.resolve(__dirname, 'src/client/components'),
-      '@views': path.resolve(__dirname, 'src/client/views')
+      '@redux': path.resolve(__dirname, 'src/client/app/redux'),
+      '@components': path.resolve(__dirname, 'src/client/app/components'),
+      '@views': path.resolve(__dirname, 'src/client/app/views')
     }
   },
   optimization: {

@@ -1,4 +1,4 @@
-//import 'module-alias/register';
+import 'module-alias/register';
 import * as express from 'express';
 const morgan = require('morgan');
 const cors = require('cors');
@@ -24,11 +24,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // public routes
 app.use(loginRouter);
 
-// protected routes - auth check
-app.use(appRouter);
-
 // admin pages - check privilege level
 app.use(adminRouter);
+
+// protected routes - auth check
+app.use(appRouter);
 
 app.get('*', (req, res) => {
   res.status(404).send('<h1>Not Found</h1>');
