@@ -9,6 +9,9 @@ type Props = {
 const MyDatePicker: React.FC<Props> = ({
   handleChange,
   startDate = new Date()
-}) => <DatePicker selected={startDate} onChange={handleChange} />;
+}) => {
+  console.log(startDate);
+  return <DatePicker selected={startDate} onChange={handleChange} />;
+};
 
 export default MyDatePicker;
