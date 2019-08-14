@@ -1,16 +1,38 @@
 export type Task = {
   id: number;
+  order: number;
+  status: 'ready' | 'taken' | 'done';
   start: number;
   finish: number;
-  direction: 'forward' | 'backward';
-  lane: number;
+  forward: boolean;
+  backward: boolean;
+  isForward: boolean;
   lanesCount: number;
   description: string | null;
+  lane?: number;
   kondor: string | null;
-  partName: string;
-  roadName: string;
+  roadPartName: string;
+  street: string;
+  streetId: string;
+  settlement: string;
+  settlementId: string;
   city: string;
+  cityId: string;
+  regionId: string;
   region: string;
 };
 
-export type Tasks = Array<Task>;
+export type TaskInstance = {
+  status: 'ready' | 'taken' | 'done';
+  isForward: boolean;
+  lane: number;
+  kondor: string;
+  date: Date;
+};
+
+export type Tasks = {
+  tasks: Array<Task>;
+  instances: {
+    [key: string]: Array<TaskInstance>;
+  };
+};

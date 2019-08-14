@@ -66,7 +66,9 @@ const TaskModal: React.FC<Props> = ({
       <Form
         onSubmit={handleSubmit}
         initialValues={
-          task ? task : { direction: 'forward', customer: '5', executor: '5' }
+          task
+            ? { ...task, customer: '5', executor: '5' }
+            : { direction: 'forward', customer: '5', executor: '5' }
         }
         render={({ handleSubmit, pristine, invalid }) => (
           <form onSubmit={handleSubmit}>

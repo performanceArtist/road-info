@@ -15,7 +15,8 @@ export enum IconImage {
   EXPAND = 'expand.png',
   COMPASS = 'compass.png',
   WIFI = 'wifi.png',
-  ARROWS = 'arrows.png'
+  ARROWS = 'arrows.png',
+  INFO = 'info.png'
 }
 
 type Props = {

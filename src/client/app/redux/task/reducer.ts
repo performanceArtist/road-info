@@ -2,28 +2,33 @@ import { TASK } from './actions';
 import { Task } from './types';
 
 const initialTask = {
-  id: 22,
-  order: '1178',
-  status: 'ready',
-  start: 300,
-  finish: 2200,
+  id: 23,
+  order: '12399',
+  status: 'done',
+  start: 0,
+  finish: 2000,
   forward: true,
-  backward: true,
-  lanesCount: 4,
-  description: 'Description',
-  kondor: null,
-  roadPartName: 'Test1',
-  street: 'ул Еланская',
-  streetId: '7ef1e3da-f9cf-4b9a-9728-ca0fa06eba2a',
-  settlement: 'поселок Апрель',
-  settlementId: 'fbc209af-f3e8-46be-94cd-450761404e44',
+  backward: false,
+  lanesCount: 3,
+  description: 'test',
+  kondor: 3,
+  roadPartName: 'Тест',
+  street: 'пр-кт Фрунзе',
+  streetId: 'ba3c2344-f2c5-41e5-8a15-52b4ad9d95bd',
+  settlement: null,
+  settlementId: null,
   city: 'г Томск',
   cityId: 'e3b0eae8-a4ce-4779-ae04-5c0797de66be',
   region: 'Томская обл',
-  regionId: '889b1f3a-98aa-40fc-9d3d-0f41192758ab'
+  regionId: '889b1f3a-98aa-40fc-9d3d-0f41192758ab',
+  lane: 2,
+  isForward: true
 };
 
-const initialState: Array<Task> = [initialTask];
+const initialState: { tasks: Array<Task>; instances: any } = {
+  tasks: [initialTask],
+  instances: { '23': [] }
+};
 
 export default function reducer(
   state = initialState,
@@ -31,22 +36,38 @@ export default function reducer(
 ) {
   switch (type) {
     case TASK.ADD:
-      return state.concat(payload);
+      return {
+        tasks: state.tasks.concat(payload),
+        instances: { [payload.id]: [], ...state.instances }
+      };
     case TASK.UPDATE: {
-      const newState = JSON.parse(JSON.stringify(state));
-      const task = newState.find(({ id }) => id == payload.id);
+      const newTasks = JSON.parse(JSON.stringify(state.tasks));
+      const task = newTasks.find(({ id }) => id == payload.id);
       task.status = payload.status;
       task.kondor = payload.kondor;
 
       if (payload.status !== 'ready') {
         task.lane = payload.lane;
-        task.ifForward = payload.isForward;
+        task.isForward = payload.isForward;
       }
 
-      return newState;
+      return {
+        ...state,
+        tasks: newTasks,
+        instances: {
+          ...state.instances,
+          [payload.id]: state.instances[payload.id].concat({
+            date: new Date(),
+            ...payload
+          })
+        }
+      };
     }
     case TASK.REMOVE:
-      return state.filter(({ id }) => id !== payload.id);
+      return {
+        ...state,
+        tasks: state.tasks.filter(({ id }) => id !== payload.id)
+      };
     default:
       return state;
   }

@@ -28,6 +28,7 @@ const AddressInputs: React.FC<Props> = ({
 }) => {
   useEffect(() => {
     inputs.forEach(({ name }) => {
+      console.log('wot');
       getConstraintTargets(name).forEach(target => {
         const id = getDefaultValue(name) ? getDefaultValue(name).id : '';
         addConstraint({ form, name, target, id });

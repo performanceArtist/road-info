@@ -103,12 +103,12 @@ const config = {
       chunks: []
     }),
     new HtmlWebpackPlugin({
-      template: 'src/client/pages/login/login.html',
+      template: 'src/client/login/login.html',
       filename: `login.html`,
       chunks: []
     }),
     new HtmlWebpackPlugin({
-      template: 'src/client/pages/admin/admin.html',
+      template: 'src/client/admin/admin.html',
       filename: `admin.html`,
       chunks: []
     })

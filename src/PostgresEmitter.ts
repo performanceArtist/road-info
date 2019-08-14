@@ -104,14 +104,19 @@ const postgresEmitter = (function() {
       kondor: kondor_id
     };
 
-    if (status !== 'ready') {
-      const { lane_number, is_direction_forward } = await knex('measurements')
-        .select('*')
-        .where({ order_id: id })
-        .first();
+    try {
+      if (status !== 'ready') {
+        const { lane_number, is_direction_forward } = await knex('measurements')
+          .select('*')
+          .where({ order_id: parseInt(id, 10) })
+          .first();
 
-      payload.lane = lane_number;
-      payload.isForward = is_direction_forward;
+        payload.lane = lane_number;
+        payload.isForward = is_direction_forward;
+      }
+    } catch (error) {
+      console.log(error);
+      return;
     }
 
     io.emit('message', {

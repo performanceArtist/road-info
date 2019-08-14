@@ -83,7 +83,7 @@ export async function createTask({
   if (forward && backward) direction = 'both';
 
   await knex('orders').insert({
-    number: order,
+    number: parseInt(order, 10),
     customer_id: parseInt(customer, 10),
     reporter_id: parseInt(executor, 10),
     description,
@@ -95,10 +95,6 @@ export async function createTask({
 }
 
 export async function generateMeasurements({ id, lane, kondorId, isForward }) {
-  await knex('orders')
-    .where({ id })
-    .update({ status: 'taken', kondor_id: kondorId });
-
   const baseId = await knex('measurements')
     .insert({
       order_id: id,
@@ -106,6 +102,10 @@ export async function generateMeasurements({ id, lane, kondorId, isForward }) {
       lane_number: lane
     })
     .returning('id');
+
+  await knex('orders')
+    .where({ id })
+    .update({ status: 'taken', kondor_id: kondorId });
 
   const distance = 100 * (Math.round(Math.random() * 30) + 10);
   let counter = 0;
