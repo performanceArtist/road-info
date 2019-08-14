@@ -14,6 +14,7 @@ type OwnProps = {
   form: string;
   suggestions: Suggestion;
   defaults?: { [key: string]: string };
+  addressRequired?: boolean;
 };
 
 type Props = OwnProps & typeof mapDispatch;
@@ -22,13 +23,13 @@ const AddressInputs: React.FC<Props> = ({
   suggestions,
   defaults = null,
   form,
+  addressRequired = true,
   getSuggestion,
   addConstraint,
   addLast
 }) => {
   useEffect(() => {
     inputs.forEach(({ name }) => {
-      console.log('wot');
       getConstraintTargets(name).forEach(target => {
         const id = getDefaultValue(name) ? getDefaultValue(name).id : '';
         addConstraint({ form, name, target, id });
@@ -65,7 +66,7 @@ const AddressInputs: React.FC<Props> = ({
 
   const addConstraints = (name: string) => {
     getConstraintTargets(name).forEach(target => {
-      addConstraint({ form, name, target, id: '' });
+      addConstraint({ form, name, target, id: null });
     });
 
     if (name === 'settlement') {
@@ -107,7 +108,7 @@ const AddressInputs: React.FC<Props> = ({
         label={label}
         defaultValue={getDefaultValue(name)}
         suggestions={suggestions[name] ? suggestions[name].items : []}
-        required={required}
+        required={addressRequired && required}
         onChange={handleChange}
         onSuggestionClick={handleSuggestionClick}
       />

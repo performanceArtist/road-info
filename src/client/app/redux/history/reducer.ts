@@ -7,9 +7,10 @@ const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
 const initialState: History = {
   tasks: [],
+  instances: [],
   measurements: [],
   filters: {
-    kondor: 1,
+    kondor: null,
     startDate: yesterday,
     endDate: today
   }
@@ -22,7 +23,17 @@ export default function reducer(
   switch (type) {
     case HISTORY.GET.SUCCESS:
       return {
-        ...state
+        ...state,
+        tasks: payload.orders,
+        instances: payload.instances
+      };
+    case HISTORY.GET_MEASUREMENTS.SUCCESS:
+      return {
+        ...state,
+        measurements: {
+          ...state.measurements,
+          [payload.id]: payload.measurements
+        }
       };
     case HISTORY.SET_START_DATE:
       return {

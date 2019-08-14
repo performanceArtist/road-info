@@ -1,0 +1,13 @@
+.history {
+  display: flex;
+
+  &__panel {
+    width: 100%;
+  }
+
+  &__form {
+    width: 22rem;
+    padding: 0.5rem;
+    margin-right: 2rem;
+  }
+}

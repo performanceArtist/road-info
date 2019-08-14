@@ -9,6 +9,7 @@ export type Filters = {
 
 export type History = {
   tasks: Array<Tasks>;
+  instances: { [key: string]: any };
   measurements: Array<Measurements>;
   filters: Filters;
 };

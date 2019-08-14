@@ -6,11 +6,22 @@ export const HISTORY = {
     REQUEST: 'HISTORY.GET.REQUEST',
     SUCCESS: 'HISTORY.GET.SUCCESS',
     FAILURE: 'HISTORY.GET.FAILURE'
+  },
+  GET_MEASUREMENTS: {
+    REQUEST: 'HISTORY.GET_MEASUREMENTS.REQUEST',
+    SUCCESS: 'HISTORY.GET_MEASUREMENTS.SUCCESS',
+    FAILURE: 'HISTORY.GET_MEASUREMENTS.FAILURE'
   }
 };
 
-export const getHistory = () => ({
-  type: HISTORY.GET.REQUEST
+export const getHistory = (formData: { [key: string]: string | number }) => ({
+  type: HISTORY.GET.REQUEST,
+  payload: formData
+});
+
+export const getMeasurements = (id: string) => ({
+  type: HISTORY.GET_MEASUREMENTS.REQUEST,
+  payload: id
 });
 
 export const setStartDate = (date: Date) => ({

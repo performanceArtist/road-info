@@ -5,6 +5,7 @@ import suggest from './suggestion/saga';
 import generate from './measurements/saga';
 import socket from './io/socket';
 import history from './history/saga';
+import getMeasurements from './history/getMeasurements';
 
 export default function* rootSaga() {
   yield all([
@@ -12,6 +13,7 @@ export default function* rootSaga() {
     task(),
     suggest(),
     generate(),
-    history()
+    history(),
+    getMeasurements()
   ]);
 }

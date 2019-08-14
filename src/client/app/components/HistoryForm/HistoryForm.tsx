@@ -5,7 +5,6 @@ import { Form, Field } from 'react-final-form';
 import FinalInput from '@shared/Input/Input';
 import Button from '@shared/Button/Button';
 
-import { RootState } from '@redux/reducer';
 import {
   getHistory,
   setStartDate,
@@ -18,12 +17,12 @@ import MyDatePicker from '@components/DatePicker/DatePicker';
 import { Suggestion } from '@redux/suggestion/types';
 import { Filters } from '@redux/history/types';
 
-type MapState = {
+type OwnProps = {
   suggestions: Suggestion;
   filters: Filters;
 };
 
-type Props = typeof mapDispatch & MapState;
+type Props = typeof mapDispatch & OwnProps;
 
 const History: React.FC<Props> = ({
   suggestions,
@@ -33,9 +32,8 @@ const History: React.FC<Props> = ({
   setEndDate,
   setKondor
 }) => {
-  const handleSubmit = async (values: any) => {
-    console.log(values);
-    //getHistory();
+  const handleSubmit = async (addressValues: any) => {
+    getHistory({ ...filters, ...addressValues });
   };
 
   return (
@@ -45,11 +43,12 @@ const History: React.FC<Props> = ({
         initialValues={{ kondor: filters.kondor }}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <Field
+            <div>Кондор</div>
+            <input
               name="kondor"
-              component="input"
               type="number"
-              onChange={(id: number | string) => setKondor(id)}
+              value={filters.kondor}
+              onChange={event => setKondor(event.target.value)}
               step={1}
             />
             <div className="history-form__datepickers">
@@ -72,7 +71,11 @@ const History: React.FC<Props> = ({
                 />
               </div>
             </div>
-            <AddressInputs form="history" suggestions={suggestions} />
+            <AddressInputs
+              form="history"
+              addressRequired={false}
+              suggestions={suggestions}
+            />
             <div className="history-form__submit">
               <Button type="submit">Отправить</Button>
             </div>
@@ -83,14 +86,9 @@ const History: React.FC<Props> = ({
   );
 };
 
-const mapState = ({ history: { filters }, suggestions }: RootState) => ({
-  filters,
-  suggestions: suggestions.history
-});
-
 const mapDispatch = { getHistory, setStartDate, setEndDate, setKondor };
 
 export default connect(
-  mapState,
+  null,
   mapDispatch
 )(History);
