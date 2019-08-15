@@ -25,15 +25,13 @@ export default function reducer(
       return {
         ...state,
         tasks: payload.orders,
-        instances: payload.instances
+        instances: payload.instances,
+        measurements: {}
       };
     case HISTORY.GET_MEASUREMENTS.SUCCESS:
       return {
         ...state,
-        measurements: {
-          ...state.measurements,
-          [payload.id]: payload.measurements
-        }
+        measurements: state.measurements.concat(payload)
       };
     case HISTORY.SET_START_DATE:
       return {

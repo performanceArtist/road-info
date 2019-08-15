@@ -51,12 +51,7 @@ const GenerationModal: React.FC<Props> = ({
               </div>
               <div>
                 <span>Прямое направление</span>
-                <Field
-                  name="isForward"
-                  component="input"
-                  type="checkbox"
-                  required
-                />
+                <Field name="isForward" component="input" type="checkbox" />
               </div>
               <Modal.Footer>
                 <Button type="submit">Generate</Button>

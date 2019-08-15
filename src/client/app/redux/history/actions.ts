@@ -19,9 +19,9 @@ export const getHistory = (formData: { [key: string]: string | number }) => ({
   payload: formData
 });
 
-export const getMeasurements = (id: string) => ({
+export const getMeasurements = (taskId: string, instanceId: string) => ({
   type: HISTORY.GET_MEASUREMENTS.REQUEST,
-  payload: id
+  payload: { taskId, instanceId }
 });
 
 export const setStartDate = (date: Date) => ({

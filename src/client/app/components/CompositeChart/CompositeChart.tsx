@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { connect } from 'react-redux';
 
 import { Icon, IconImage } from '@components/Icon/Icon';
 import Chart from '@components/Chart/Chart';
@@ -8,22 +7,22 @@ import ChartControls from '@components/ChartControls/ChartControls';
 import Table from '@components/Table/Table';
 import MeasurementInfo from '@components/MeasurementInfo/MeasurementInfo';
 
-import { RootState } from '@redux/reducer';
 import { Tasks } from '@redux/task/types';
 import {
   Measurements,
   MeasurementItem,
-  MeasurementData
+  MeasurementData,
+  MeasurementInstances
 } from '@redux/measurements/types';
 import { ChartInfo } from '@redux/chart/types';
 
-type MapState = {
+type OwnProps = {
   measurements: Measurements;
   tasks: Tasks;
   chartInfo: ChartInfo;
 };
 
-type Props = MapState;
+type Props = OwnProps;
 
 const CompositeChart: React.FC<Props> = ({
   measurements,
@@ -152,41 +151,60 @@ const CompositeChart: React.FC<Props> = ({
     );
   };
 
-  const getPreview = ({ taskId, data }: MeasurementItem) => (
-    <div className="composite-chart__preview-container">
-      {preview('density', data)}
-      {preview('rutting', data)}
-      {preview('iri', data)}
-      {preview('thickness', data)}
-      {getIcons('preview', taskId)}
-    </div>
-  );
+  const getPreview = ({ taskId, data }: MeasurementItem) => {
+    const keys = Object.keys(data);
+    const lastData = data[keys[keys.length - 1]];
 
-  const getTable = ({ taskId, data }: MeasurementItem) => (
-    <div className="composite-chart__table">
-      <Table
-        data={data.map(({ distance, density, iri, rutting, thickness }) => ({
-          distance,
-          density,
-          iri,
-          rutting,
-          thickness
-        }))}
-        chartInfo={chartInfo}
-        maxRows={15}
-      />
-      {getIcons('table', taskId)}
-    </div>
-  );
+    return (
+      <div className="composite-chart__preview-container">
+        {preview('density', lastData)}
+        {preview('rutting', lastData)}
+        {preview('iri', lastData)}
+        {preview('thickness', lastData)}
+        {getIcons('preview', taskId)}
+      </div>
+    );
+  };
+
+  const getTable = ({ taskId, data }: MeasurementItem) => {
+    const keys = Object.keys(data);
+    const lastData = data[keys[keys.length - 1]];
+
+    return (
+      <div className="composite-chart__table">
+        <Table
+          data={lastData.map(
+            ({ distance, density, iri, rutting, thickness }) => ({
+              distance,
+              density,
+              iri,
+              rutting,
+              thickness
+            })
+          )}
+          chartInfo={chartInfo}
+          maxRows={15}
+        />
+        {getIcons('table', taskId)}
+      </div>
+    );
+  };
 
   const getPreviews = () =>
     measurements.map(measurement => (
-      <div>
+      <div key={measurement.taskId}>
         <div
           className="composite-chart__title"
           style={{ width: 'auto', height: 'auto' }}
         >
-          {`Задание #${measurement.taskId}`}
+          <span className="composite-chart__title-task">{`Задание #${
+            measurement.taskId
+          }, заезд`}</span>
+          <select name="instance">
+            {Object.keys(measurement.data).map(id => (
+              <option value={id}>{id}</option>
+            ))}
+          </select>
           <div className="composite-chart__title-icon">
             <Icon
               image={IconImage.ANGLE}
@@ -209,15 +227,17 @@ const CompositeChart: React.FC<Props> = ({
 
   const getTaskChart = () => {
     const { data } = measurements.find(({ taskId }) => taskId === currentTask);
+    const keys = Object.keys(data);
+    const lastData = data[keys[keys.length - 1]];
 
-    if (currentChart) return fullChart(currentChart, data, true);
+    if (currentChart) return fullChart(currentChart, lastData, true);
 
     return (
       <>
-        {fullChart('density', data)}
-        {fullChart('rutting', data)}
-        {fullChart('iri', data)}
-        {fullChart('thickness', data)}
+        {fullChart('density', lastData)}
+        {fullChart('rutting', lastData)}
+        {fullChart('iri', lastData)}
+        {fullChart('thickness', lastData)}
       </>
     );
   };
@@ -250,15 +270,8 @@ const CompositeChart: React.FC<Props> = ({
       <div className="composite-chart__previews">
         {currentTask ? getTaskChart() : getPreviews()}
       </div>
-      <div>{/*<RoadChart data={tasks[0].measurements} />*/}</div>
     </div>
   );
 };
 
-const mapState = ({ measurements, chart, tasks }: RootState) => ({
-  measurements,
-  tasks,
-  chartInfo: chart
-});
-
-export default connect(mapState)(CompositeChart);
+export default CompositeChart;

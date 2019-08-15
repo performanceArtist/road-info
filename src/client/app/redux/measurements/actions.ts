@@ -9,12 +9,13 @@ export const MEASUREMENTS = {
   }
 };
 
-export const addMeasurement = (taskId: string, data: DataItem) => ({
+export const addMeasurement = (payload: {
+  taskId: string;
+  instanceId: string;
+  data: DataItem;
+}) => ({
   type: MEASUREMENTS.ADD,
-  payload: {
-    taskId,
-    data
-  }
+  payload
 });
 
 export const generateMeasurements = (payload: {

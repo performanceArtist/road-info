@@ -65,8 +65,6 @@ class Chart extends React.Component<Props, State> {
       endIndex: this.props.data.length - 1
     };
 
-    this.brushRef = React.createRef();
-
     this.getAxisYDomain = this.getAxisYDomain.bind(this);
     this.zoom = this.zoom.bind(this);
     this.zoomOut = this.zoomOut.bind(this);
@@ -340,7 +338,6 @@ class Chart extends React.Component<Props, State> {
             {this.getLineChart()}
             {data.length > 0 && showBrush && (
               <Brush
-                ref={this.brushRef}
                 dataKey="distance"
                 onChange={({ startIndex, endIndex }) => {
                   this.setState({ startIndex, endIndex });

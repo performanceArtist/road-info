@@ -26,7 +26,7 @@ const MeasurementInfo: React.FC<Props> = ({ items, kondor, status }) => {
   };
 
   const info = items.map(({ title, value }) => (
-    <div className="measurement-info__item">
+    <div className="measurement-info__item" key={title}>
       <div className="measurement-info__title">{`${title}:`}</div>
       <div className="measurement-info__info">{value}</div>
     </div>

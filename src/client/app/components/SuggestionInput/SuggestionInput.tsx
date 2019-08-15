@@ -68,7 +68,7 @@ const SuggestionInput: React.FC<Props> = ({
         label={label}
         onDoubleClick={() => setShowSuggestions(true)}
         onChange={value => {
-          setValue({ value, id: null });
+          setValue({ value, id: '' });
           setShowSuggestions(!showSuggestions);
           onChange({ value, name });
         }}

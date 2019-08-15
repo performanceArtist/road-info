@@ -98,7 +98,7 @@ export async function generateMeasurements({ id, lane, kondorId, isForward }) {
   const baseId = await knex('measurements')
     .insert({
       order_id: id,
-      is_direction_forward: isForward,
+      is_direction_forward: isForward || false,
       lane_number: lane
     })
     .returning('id');

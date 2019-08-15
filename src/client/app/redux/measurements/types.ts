@@ -9,9 +9,13 @@ export interface MeasurementData {
   [key: string]: number;
 }
 
+export type MeasurementInstances = {
+  [key: string]: Array<MeasurementData>;
+};
+
 export interface MeasurementItem {
   taskId: string;
-  data: Array<MeasurementData>;
+  data: MeasurementInstances;
 }
 
 export type Measurements = Array<MeasurementItem>;

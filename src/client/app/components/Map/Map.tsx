@@ -72,8 +72,11 @@ class MapComponent extends Component<Props, State> {
     const { measurements } = this.props;
 
     return measurements.map(({ taskId, data }) => {
-      if (data.length !== 0) {
-        const last = data[data.length - 1];
+      const keys = Object.keys(data);
+      const lastData = data[keys[keys.length - 1]];
+
+      if (lastData && lastData.length !== 0) {
+        const last = lastData[lastData.length - 1];
         return (
           <Marker
             key={Math.random()}
@@ -94,6 +97,7 @@ class MapComponent extends Component<Props, State> {
 
   renderLines() {
     const { measurements, chartInfo } = this.props;
+
     const { breakpoint } = chartInfo.lines.density;
     const getData = (data: Array<MeasurementData>) =>
       data.map(({ latitude, longitude, density }) => {
@@ -102,23 +106,28 @@ class MapComponent extends Component<Props, State> {
         return L.latLng(latitude, longitude, z);
       });
 
-    return measurements.map(({ data }, index) => (
-      <Multicolor
-        map={this.ref}
-        key={Math.random()}
-        data={getData(data)}
-        options={{
-          palette: { 0: '#f62a00', 0.5: '#258039', 1.0: '#f62a00' },
-          outlineColor: 'black',
-          weight: 7,
-          outlineWidth: 1,
-          min: 1,
-          max: 3,
-          smoothFactor: 1
-        }}
-        onLineClick={(event: React.MouseEvent) => this.addPopup(event, index)}
-      />
-    ));
+    return measurements.map(({ data }, index) => {
+      const keys = Object.keys(data);
+      const lastData = data[keys[keys.length - 1]];
+
+      return (
+        <Multicolor
+          map={this.ref}
+          key={Math.random()}
+          data={getData(lastData)}
+          options={{
+            palette: { 0: '#f62a00', 0.5: '#258039', 1.0: '#f62a00' },
+            outlineColor: 'black',
+            weight: 7,
+            outlineWidth: 1,
+            min: 1,
+            max: 3,
+            smoothFactor: 1
+          }}
+          onLineClick={(event: React.MouseEvent) => this.addPopup(event, index)}
+        />
+      );
+    });
   }
 
   addPopup(event: React.MouseEvent, index: number) {
@@ -126,12 +135,15 @@ class MapComponent extends Component<Props, State> {
     const { popupCount } = this.state;
 
     const data = measurements[index].data;
-    const closestIndex = haversine(data, {
+    const keys = Object.keys(data);
+    const lastData = data[keys[keys.length - 1]];
+
+    const closestIndex = haversine(lastData, {
       latitude: event.latlng.lat,
       longitude: event.latlng.lng
     });
     const breakpoint = chartInfo.lines.density.breakpoint;
-    const closestDensity = data[closestIndex].density;
+    const closestDensity = lastData[closestIndex].density;
 
     this.setState({
       popupCount: popupCount + 1,

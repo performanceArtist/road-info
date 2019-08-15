@@ -66,7 +66,7 @@ const AddressInputs: React.FC<Props> = ({
 
   const addConstraints = (name: string) => {
     getConstraintTargets(name).forEach(target => {
-      addConstraint({ form, name, target, id: null });
+      addConstraint({ form, name, target, id: '' });
     });
 
     if (name === 'settlement') {
@@ -102,7 +102,7 @@ const AddressInputs: React.FC<Props> = ({
   };
 
   const elements = inputs.map(({ name, label, required = true }) => (
-    <div className="address-inputs__input">
+    <div className="address-inputs__input" key={name}>
       <SuggestionInput
         name={name}
         label={label}

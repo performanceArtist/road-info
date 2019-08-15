@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import CompositeChart from '@components/CompositeChart/CompositeChart';
+import CompositeChart from '@components/CompositeChart/container';
 
 const Measurements: React.FC = () => {
   return (

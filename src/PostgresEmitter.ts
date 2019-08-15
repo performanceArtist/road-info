@@ -163,6 +163,7 @@ const postgresEmitter = (function() {
       type: 'newMeasurement',
       payload: {
         taskId: measurementBase.order_id,
+        instanceId: section.measurement_id,
         data
       }
     });

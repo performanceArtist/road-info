@@ -59,7 +59,7 @@ class Socket {
       const handler = ({ type, payload }: { type: string; payload: any }) => {
         switch (type) {
           case 'newMeasurement':
-            emit(addMeasurement(payload.taskId, payload.data));
+            emit(addMeasurement(payload));
             break;
           case 'newOrder':
             emit(addTask(payload));

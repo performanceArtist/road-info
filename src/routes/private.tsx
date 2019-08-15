@@ -90,13 +90,14 @@ router.get('/api/sort', async (req, res) => {
 });
 
 router.get('/api/measurements', async (req, res) => {
-  if (!req.query.id) {
+  if (!req.query.instanceId) {
     return res.status(500).end();
   }
+
   try {
     const measurements = await knex('measurement_sections')
       .select('*')
-      .where({ measurement_id: req.query.id });
+      .where({ measurement_id: req.query.instanceId });
     const filteredMeasurements = measurements.map(
       ({ latitude, longitude, distance }) => ({ latitude, longitude, distance })
     );
@@ -121,7 +122,13 @@ router.get('/api/measurements', async (req, res) => {
       ...filteredLayers[index]
     }));
 
-    res.status(200).json({ id: req.query.id, measurements: merged });
+    res
+      .status(200)
+      .json({
+        taskId: req.query.taskId,
+        instanceId: req.query.instanceId,
+        data: merged
+      });
   } catch (error) {
     console.log(error);
     res.status(500).end();
