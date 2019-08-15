@@ -1,21 +1,10 @@
 .task-panel {
-  max-height: 370px;
+  max-height: 37.5rem;
+  max-width: 80rem;
   overflow-y: auto;
 
   &__task {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-  }
-
-  &__create {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    margin-top: 1rem;
-  }
-
-  &__button {
-    margin-right: 2rem;
+    padding: 2rem;
+    border-bottom: 0.125rem solid black;
   }
 }

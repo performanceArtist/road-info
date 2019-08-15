@@ -3,6 +3,7 @@ import * as React from 'react';
 type Props = {
   open?: boolean;
   coordinates?: { x: number; y: number };
+  maxWidthPercentage?: number;
   onClose: () => void;
   children: JSX.Element[] | JSX.Element | string;
 };
@@ -61,7 +62,7 @@ class Modal extends React.Component<Props, State> {
   }
 
   render() {
-    const { children, coordinates, open } = this.props;
+    const { children, maxWidthPercentage = 50, coordinates, open } = this.props;
 
     if (!open) {
       return null;
@@ -79,9 +80,10 @@ class Modal extends React.Component<Props, State> {
             coordinates
               ? {
                   left: coordinates.x,
-                  top: coordinates.y
+                  top: coordinates.y,
+                  maxWidth: `${maxWidthPercentage}%`
                 }
-              : {}
+              : { maxWidth: `${maxWidthPercentage}%` }
           }
         >
           {children}

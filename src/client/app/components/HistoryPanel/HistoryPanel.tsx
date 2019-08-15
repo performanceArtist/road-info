@@ -22,18 +22,21 @@ const HistoryPanel: React.FC<Props> = ({
     if (tasks.length === 0) return null;
 
     return (
-      <select
-        name="task"
-        value={taskId}
-        onChange={event => setTaskId(event.target.value)}
-      >
-        <option />
-        {tasks.map(({ id }) => (
-          <option value={id} key={id}>
-            {id}
-          </option>
-        ))}
-      </select>
+      <>
+        Задание #
+        <select
+          name="task"
+          value={taskId}
+          onChange={event => setTaskId(event.target.value)}
+        >
+          <option />
+          {tasks.map(({ id }) => (
+            <option value={id} key={id}>
+              {id}
+            </option>
+          ))}
+        </select>
+      </>
     );
   };
 

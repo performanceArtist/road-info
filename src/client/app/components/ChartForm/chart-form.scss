@@ -1,19 +1,27 @@
-.chart-modal {
+.chart-form {
   &__wrapper {
     margin-bottom: 1.5rem;
+  }
+
+  &__input-group {
+    margin-bottom: 2rem;
   }
 
   &__breakpoint {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
   }
 
   &__input {
     margin-right: 1.8rem;
   }
 
-  &__breakpoint-title {
+  &__scroll-input {
+    margin-top: 0.7rem;
+  }
+
+  &__title {
     font-size: 1.2rem;
     font-weight: bold;
   }

@@ -1,9 +1,12 @@
 import * as React from 'react';
+
 import { Component } from 'react';
 
 import { connect } from 'react-redux';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+
+import { Icon, IconImage } from '@components/Icon/Icon';
 
 import { openModal } from '@redux/modal/actions';
 
@@ -33,7 +36,11 @@ type MapState = {
   chartInfo: ChartInfo;
 };
 
-type Props = typeof mapDispatch & MapState;
+type OwnProps = {
+  toggleFullscreen: () => void;
+};
+
+type Props = OwnProps & typeof mapDispatch & MapState;
 
 class MapComponent extends Component<Props, State> {
   private ref = React.createRef<HTMLDivElement>();
@@ -54,6 +61,7 @@ class MapComponent extends Component<Props, State> {
     this.renderLines = this.renderLines.bind(this);
     this.addPopup = this.addPopup.bind(this);
     this.renderPopup = this.renderPopup.bind(this);
+    this.handleFullscreen = this.handleFullscreen.bind(this);
   }
 
   handleMarkerClick(event: React.MouseEvent, currentId: string) {
@@ -184,19 +192,34 @@ class MapComponent extends Component<Props, State> {
     );
   }
 
+  handleFullscreen() {
+    const { toggleFullscreen } = this.props;
+
+    toggleFullscreen();
+
+    setTimeout(() => {
+      this.ref.current.leafletElement.invalidateSize();
+    }, 200);
+  }
+
   render() {
     const { lat, lng, zoom } = this.state;
 
     return (
-      <Map center={[lat, lng]} zoom={zoom} ref={this.ref}>
-        <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {this.renderLines()}
-        {this.renderMarkers()}
-        {this.renderPopup()}
-      </Map>
+      <>
+        <Map center={[lat, lng]} zoom={zoom} ref={this.ref}>
+          <TileLayer
+            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {this.renderLines()}
+          {this.renderMarkers()}
+          {this.renderPopup()}
+        </Map>
+        <div className="fullscreen-button">
+          <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
+        </div>
+      </>
     );
   }
 }

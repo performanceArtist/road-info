@@ -42,7 +42,7 @@ const TaskInfo: React.FC<Props> = ({ task, instances, openModal }) => {
           <div className="task-info__icon">
             <Icon
               size="small"
-              image={IconImage.EDIT}
+              image={IconImage.COPY}
               onClick={() => openModal('Task', { task })}
             />
           </div>

@@ -31,7 +31,7 @@ class KondorModal extends React.Component<Props, {}> {
       ));
 
     return (
-      <Modal open={true} onClose={closeModal}>
+      <Modal open={true} onClose={closeModal} maxWidthPercentage={70}>
         <Modal.Header>Kondor #{id}</Modal.Header>
         <Modal.Content>
           <div className="kondor-modal">

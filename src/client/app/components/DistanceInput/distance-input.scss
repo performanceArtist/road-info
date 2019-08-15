@@ -8,8 +8,12 @@
     margin-bottom: 0.5rem;
   }
 
-  &__column {
-    width: 50%;
+  &__input--container {
+    width: 55%;
+  }
+
+  &__distance-container {
+    width: 40%;
   }
 
   &__title {
@@ -31,9 +35,9 @@
   }
 
   &__result {
-    padding-left: 1.5rem;
+    padding-left: 2rem;
     text-align: center;
-    margin-bottom: 3.3rem;
+    margin-top: 1.8rem;
   }
 
   &__distance {

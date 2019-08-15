@@ -29,16 +29,18 @@ const TaskHistoryModal: React.FC<Props> = ({ closeModal, instances = [] }) => {
     <Modal open={true} onClose={closeModal}>
       <Modal.Header>История</Modal.Header>
       <Modal.Content>
-        {instances.map(
-          ({ status, lane, isForward, kondor, date }: TaskInstance) => (
-            <div>
-              <h3>{`${date.toDateString()} ${date.toTimeString()}`}</h3>
-              <div>{getStatus(status, kondor)}</div>
-              <div>Полоса: {lane}</div>
-              <div>Направление: {isForward ? 'Прямое' : 'Обратное'}</div>
-            </div>
-          )
-        )}
+        <div className="task-history">
+          {instances.map(
+            ({ status, lane, isForward, kondor, date }: TaskInstance) => (
+              <div className="task-history__entry">
+                <h3>{`${date.toDateString()} ${date.toTimeString()}`}</h3>
+                <div>{getStatus(status, kondor)}</div>
+                <div>Полоса: {lane}</div>
+                <div>Направление: {isForward ? 'Прямое' : 'Обратное'}</div>
+              </div>
+            )
+          )}
+        </div>
       </Modal.Content>
       <Modal.Footer />
     </Modal>

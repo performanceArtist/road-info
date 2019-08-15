@@ -1,4 +1,6 @@
 .history-panel {
+  display: flex;
+
   &__title {
     text-align: center;
     font-size: 1.4rem;
@@ -7,5 +9,6 @@
 
   &__select-container {
     margin-bottom: 1rem;
+    margin-right: 2rem;
   }
 }

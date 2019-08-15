@@ -1,5 +1,5 @@
 import MapView from './views/MapView/MapView';
-import Calibration from './views/Calibration/Calibration';
+import Settings from './views/Settings/Settings';
 import Diagnostics from './views/Diagnostics/Diagnostics';
 import Task from './views/Task/Task';
 import Measurements from './views/Measurements/Measurements';
@@ -38,16 +38,16 @@ export default [
     component: Task
   },
   {
-    path: '/calibration',
-    title: 'Калибровка',
-    icon: Icon.OPTIONS,
-    component: Calibration
-  },
-  {
     path: '/history',
     title: 'История',
     icon: Icon.HISTORY,
     component: History
+  },
+  {
+    path: '/settings',
+    title: 'Настройки',
+    icon: Icon.OPTIONS,
+    component: Settings
   },
   { path: '/report', title: 'Отчёт', icon: Icon.REPORT, component: Report }
 ];

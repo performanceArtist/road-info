@@ -1,12 +1,14 @@
 import * as React from 'react';
+import { useEffect } from 'react';
+
 import { connect } from 'react-redux';
 
 import Button from '@shared/Button/Button';
 import TaskInfo from '@components/TaskInfo/TaskInfo';
 
-import { openModal } from '@redux/modal/actions';
 import { Task, TaskInstance } from '@redux/task/types';
 import { RootState } from '@redux/reducer';
+import { openModal } from '@redux/modal/actions';
 
 type OwnProps = {
   tasks: Array<Task>;
@@ -23,15 +25,19 @@ const TaskPanel: React.FC<Props> = ({ tasks = [], instances, openModal }) => {
       </div>
     );
   });
+  const ref = React.createRef();
+
+  useEffect(() => {
+    ref.current.scrollIntoView({ behavior: 'smooth' });
+  }, [tasks]);
 
   return (
     <div className="task-panel">
       {elements}
-      <div className="task-panel__create">
-        <div className="task-panel__button">
-          <Button onClick={() => openModal('Task')}>Новое задание</Button>
-        </div>
+      <div className="task-info__create-button">
+        <Button onClick={() => openModal('Task')}>Новое задание</Button>
       </div>
+      <div style={{ float: 'left', clear: 'both' }} ref={ref} />
     </div>
   );
 };
@@ -41,9 +47,7 @@ const mapState = ({ tasks }: RootState) => ({
   instances: tasks.instances
 });
 
-const mapDispatch = {
-  openModal
-};
+const mapDispatch = { openModal };
 
 export default connect(
   mapState,

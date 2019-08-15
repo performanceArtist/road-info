@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Form, Field } from 'react-final-form';
 
 import Button from '@shared/Button/Button';
+import FinalInput from '@shared/FinalInput/FinalInput';
+
 import Modal from '@components/Modal/Modal';
 import { closeModal } from '@redux/modal/actions';
 import { generateMeasurements } from '@redux/measurements/actions';
@@ -29,32 +31,36 @@ const GenerationModal: React.FC<Props> = ({
 
   return (
     <Modal open={true} onClose={closeModal}>
-      <Modal.Header>Generate</Modal.Header>
+      <Modal.Header>Генерация значений</Modal.Header>
       <Modal.Content>
         <Form
           onSubmit={handleSubmit}
           render={({ handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
-              <div>
-                <span>Полоса</span>
-                <Field name="lane" component="input" type="number" required />
-              </div>
-
-              <div>
-                <span>Кондор</span>
-                <Field
-                  name="kondorId"
-                  component="input"
+            <form onSubmit={handleSubmit} className="generation-modal">
+              <div className="generation-modal__inputs">
+                <FinalInput
+                  name="lane"
+                  label="Полоса:"
                   type="number"
-                  required
+                  remWidth={4}
+                  required={true}
                 />
-              </div>
-              <div>
-                <span>Прямое направление</span>
-                <Field name="isForward" component="input" type="checkbox" />
+
+                <FinalInput
+                  name="kondorId"
+                  label="Кондор:"
+                  type="number"
+                  remWidth={4}
+                  required={true}
+                />
+
+                <div>
+                  <span>Прямое направление:</span>
+                  <Field name="isForward" component="input" type="checkbox" />
+                </div>
               </div>
               <Modal.Footer>
-                <Button type="submit">Generate</Button>
+                <Button type="submit">Старт</Button>
               </Modal.Footer>
             </form>
           )}

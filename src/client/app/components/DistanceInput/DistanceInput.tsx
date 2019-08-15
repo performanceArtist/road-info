@@ -86,7 +86,7 @@ const DistanceInput: React.FC<Props> = ({ defaults = {} }) => {
   return (
     <div className="distance-input">
       <div className="distance-input__wrapper">
-        <div className="distance-input__column">
+        <div className="distance-input__input-container">
           <div className="distance-input__row">
             {getInputs(
               { name: 'from', title: 'Начало измерения' },
@@ -97,7 +97,7 @@ const DistanceInput: React.FC<Props> = ({ defaults = {} }) => {
             {getInputs({ name: 'to', title: 'Конец измерения' }, defaults.to)}
           </div>
         </div>
-        <div className="distance-input__column">
+        <div className="distance-input__distance-container">
           <div className="distance-input__result">
             <div>Дистанция</div>
             <input

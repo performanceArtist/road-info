@@ -43,14 +43,6 @@ const History: React.FC<Props> = ({
         initialValues={{ kondor: filters.kondor }}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <div>Кондор</div>
-            <input
-              name="kondor"
-              type="number"
-              value={filters.kondor}
-              onChange={event => setKondor(event.target.value)}
-              step={1}
-            />
             <div className="history-form__datepickers">
               <div className="history-form__datepicker">
                 От{' '}
@@ -71,6 +63,14 @@ const History: React.FC<Props> = ({
                 />
               </div>
             </div>
+            <div>Кондор</div>
+            <input
+              name="kondor"
+              type="number"
+              value={filters.kondor}
+              onChange={event => setKondor(event.target.value)}
+              step={1}
+            />
             {/*
             <AddressInputs
               form="history"

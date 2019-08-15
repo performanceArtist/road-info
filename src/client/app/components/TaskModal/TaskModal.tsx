@@ -59,9 +59,9 @@ const TaskModal: React.FC<Props> = ({
   );
 
   return (
-    <Modal open={true} onClose={closeModal}>
+    <Modal open={true} onClose={closeModal} maxWidthPercentage={58}>
       <Modal.Header>
-        {task ? `Редактировать "${task.id}"` : 'Новое задание'}
+        {task ? `На основе "${task.id}"` : 'Новое задание'}
       </Modal.Header>
       <Form
         onSubmit={handleSubmit}
@@ -77,25 +77,31 @@ const TaskModal: React.FC<Props> = ({
                 <div className="task-modal__row">
                   <div className="task-modal__meta">
                     <div className="task-modal__text-input">
-                      <span className="task-modal__label">Номер заказа</span>
+                      <div className="task-modal__label">Номер заказа</div>
                       <Field name="order" component="input" required={true} />
                     </div>
                     <div className="task-modal__text-input">
-                      <span className="task-modal__label">Заказчик</span>
+                      <div className="task-modal__label">Заказчик</div>
                       <Field name="customer" component="select" required={true}>
                         {companies}
                       </Field>
                     </div>
                     <div className="task-modal__text-input">
-                      <span className="task-modal__label">Исполнитель</span>
+                      <div className="task-modal__label">Исполнитель</div>
                       <Field name="executor" component="select" required={true}>
                         {companies}
                       </Field>
                     </div>
                     <div className="task-modal__text-input">
-                      <span className="task-modal__label">Описание</span>
-                      <Field name="description" component="textarea" />
+                      <div className="task-modal__label">Описание</div>
+                      <Field
+                        name="description"
+                        component="textarea"
+                        style={{ width: 200, height: 60 }}
+                      />
                     </div>
+                  </div>
+                  <div className="task-modal__address">
                     <AddressInputs
                       form="task"
                       defaults={task}
@@ -103,10 +109,10 @@ const TaskModal: React.FC<Props> = ({
                     />
                   </div>
                   <div className="task-modal__parameters">
-                    <div className="task-modal__text-input">
-                      <span className="task-modal__label">
+                    <div className="task-modal__input-group">
+                      <div className="task-modal__label">
                         Наименование участка
-                      </span>
+                      </div>
                       <Field
                         name="roadPartName"
                         component="input"
@@ -126,7 +132,7 @@ const TaskModal: React.FC<Props> = ({
                       />
                     </div>
                     <div className="task-modal__input-group">
-                      <div>Направление</div>
+                      <div className="task-modal__label">Направление</div>
                       <Field component="input" name="forward" type="checkbox" />
                       <span className="task-modal__label">Прямое</span>
                       <Field

@@ -51,6 +51,15 @@ const CompositeChart: React.FC<Props> = ({
     );
   }, [measurements]);
 
+  const controls = (
+    <ChartControls
+      onArrowClick={() => {
+        if (currentChart) setCurrentChart(null);
+        if (!currentChart && currentTask) setcurrentTask(null);
+      }}
+    />
+  );
+
   const toggleInfo = (newId: string) => {
     const filtered = info.filter(id => id !== newId);
 
@@ -318,6 +327,7 @@ const CompositeChart: React.FC<Props> = ({
               onClick={() => toggleInfo(currentTask)}
             />
           </div>
+          {controls}
         </div>
         {renderInfo(currentTask)}
       </>
@@ -326,14 +336,6 @@ const CompositeChart: React.FC<Props> = ({
 
   return (
     <div className="composite-chart">
-      <div className="composite-chart__controls">
-        <ChartControls
-          onArrowClick={() => {
-            if (currentChart) setCurrentChart(null);
-            if (!currentChart && currentTask) setcurrentTask(null);
-          }}
-        />
-      </div>
       {currentTask && getCurrentTitle()}
       <div className="composite-chart__previews">
         {currentTask ? getTaskChart() : getPreviews()}

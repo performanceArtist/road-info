@@ -66,6 +66,7 @@ const SuggestionInput: React.FC<Props> = ({
         defaultValue={value.value}
         name={name}
         label={label}
+        remWidth={13}
         onDoubleClick={() => setShowSuggestions(true)}
         onChange={value => {
           setValue({ value, id: '' });

@@ -4,24 +4,39 @@
   }
 
   &__meta {
-    width: 30%;
-    margin-right: 8%;
+    width: 29%;
+    padding: 0 0.8rem;
   }
 
   &__parameters {
-    width: 35%;
+    width: 42%;
+    padding: 0 0.8rem;
+    padding-right: 0;
+  }
+
+  &__address {
+    width: 29%;
+    padding: 0 0.8rem;
   }
 
   &__label {
     margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   &__input-group {
     padding: 1rem;
+    padding-bottom: 0.8rem;
+
+    &:first-child {
+      padding-top: 0;
+    }
   }
 
   &__text-input {
-    margin-bottom: 0.5rem;
+    padding: 1rem;
+    padding-top: 0;
+    padding-left: 0;
   }
 
   &__number-input {

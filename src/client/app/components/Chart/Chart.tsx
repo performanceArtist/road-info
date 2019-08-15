@@ -369,15 +369,15 @@ class Chart extends React.Component<Props, State> {
         </ResponsiveContainer>
         {showControls && (
           <div className="chart__icons">
-            <div className="chart__icon">
-              {/*
+            {/* <div className="chart__icon">
+              
               <Icon
                 size="small"
                 image={IconImage.ARROWS}
                 onClick={() => {
                   this.setState({ startIndex: 0, endIndex: data.length });
                 }}
-              />*/}
+              />
             </div>
             <div className="chart__icon">
               <Icon
@@ -385,7 +385,7 @@ class Chart extends React.Component<Props, State> {
                 image={IconImage.ZOOM_OUT}
                 onClick={this.zoomOut}
               />
-            </div>
+            </div>*/}
           </div>
         )}
       </>

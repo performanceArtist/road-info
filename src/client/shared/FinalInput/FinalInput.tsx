@@ -6,6 +6,8 @@ type Props = {
   name: string;
   component?: 'input' | 'select' | 'textarea';
   type?: 'text' | 'number' | 'radio' | 'checkbox';
+  remWidth?: number;
+  modifier?: 'inline';
   status?: string | null;
   label?: string | null;
   error?: boolean;
@@ -21,6 +23,8 @@ const FinalInput: React.FC<Props> = ({
   defaultValue,
   component = 'input',
   type = 'text',
+  modifier = null,
+  remWidth = null,
   status = null,
   label = null,
   error = false,
@@ -39,6 +43,7 @@ const FinalInput: React.FC<Props> = ({
       required={required}
       defaultValue={defaultValue}
       autoComplete={autoComplete}
+      style={{ width: `${remWidth}rem` }}
       {...rest}
     />
     <OnChange name={name}>{(value: any) => onChange(value, name)}</OnChange>

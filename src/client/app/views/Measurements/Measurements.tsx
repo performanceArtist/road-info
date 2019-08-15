@@ -4,7 +4,7 @@ import CompositeChart from '@components/CompositeChart/container';
 
 const Measurements: React.FC = () => {
   return (
-    <div>
+    <div className="measurements-view">
       <CompositeChart />
     </div>
   );
