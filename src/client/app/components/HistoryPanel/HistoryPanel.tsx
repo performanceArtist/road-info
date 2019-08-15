@@ -7,20 +7,16 @@ import ChartContainer from './ChartContainer';
 type Props = {
   tasks: Array<any>;
   instances: Array<any>;
-  onInstanceChange: Function;
   measurements: Array<any>;
+  fetchMeasurements: (taskId: string, instanceId: string) => void;
 };
 
 const HistoryPanel: React.FC<Props> = ({
   tasks = [],
-  instances = [],
   measurements = [],
-  onInstanceChange
+  fetchMeasurements
 }) => {
   const [taskId, setTaskId] = useState(tasks[0] ? tasks[0].id : null);
-  const [instanceId, setInstanceId] = useState(
-    instances[0] ? instances[0].id : null
-  );
 
   const taskSelect = () => {
     if (tasks.length === 0) return null;
@@ -41,42 +37,18 @@ const HistoryPanel: React.FC<Props> = ({
     );
   };
 
-  const instanceSelect = () => {
-    const filtered = instances.filter(({ order_id }) => order_id === taskId);
-
-    if (filtered.length === 0) return null;
-
-    return (
-      <select
-        name="instance"
-        value={instanceId}
-        onChange={event => {
-          setInstanceId(event.target.value);
-          if (
-            measurements.find(({ taskId }) => taskId === event.target.value)
-          ) {
-            return;
-          }
-
-          onInstanceChange(taskId, instanceId);
-        }}
-      >
-        <option />
-        {filtered.map(({ id }) => (
-          <option value={id} key={id}>
-            {id}
-          </option>
-        ))}
-      </select>
-    );
-  };
-
-  const current = measurements.find(({ taskId }) => taskId === instanceId);
+  const current = measurements.find(
+    ({ taskId: listTaskId }) => listTaskId === taskId
+  );
 
   const chart = (
     <div>
       {current ? (
-        <ChartContainer tasks={tasks} measurements={[current]} />
+        <ChartContainer
+          tasks={tasks}
+          measurements={[current]}
+          onSelectChange={fetchMeasurements}
+        />
       ) : (
         <Spinner />
       )}
@@ -85,12 +57,8 @@ const HistoryPanel: React.FC<Props> = ({
 
   return (
     <div className="history-panel">
-      <div className="history-panel__select-container">
-        {taskSelect()}
-        {instanceSelect()}
-      </div>
-
-      {taskId && instanceId && chart}
+      <div className="history-panel__select-container">{taskSelect()}</div>
+      {taskId && chart}
     </div>
   );
 };

@@ -90,7 +90,8 @@ router.get('/api/sort', async (req, res) => {
 });
 
 router.get('/api/measurements', async (req, res) => {
-  if (!req.query.instanceId) {
+  if (!req.query.instanceId || !req.query.taskId) {
+    console.log('No ids');
     return res.status(500).end();
   }
 
@@ -122,13 +123,11 @@ router.get('/api/measurements', async (req, res) => {
       ...filteredLayers[index]
     }));
 
-    res
-      .status(200)
-      .json({
-        taskId: req.query.taskId,
-        instanceId: req.query.instanceId,
-        data: merged
-      });
+    res.status(200).json({
+      taskId: req.query.taskId,
+      instanceId: req.query.instanceId,
+      data: merged
+    });
   } catch (error) {
     console.log(error);
     res.status(500).end();

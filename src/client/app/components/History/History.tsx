@@ -39,7 +39,7 @@ const History: React.FC<Props> = ({
           tasks={tasks}
           instances={instances}
           measurements={measurements}
-          onInstanceChange={getMeasurements}
+          fetchMeasurements={getMeasurements}
         />
       </div>
     </div>

@@ -29,10 +29,20 @@ const AddressInputs: React.FC<Props> = ({
   addLast
 }) => {
   useEffect(() => {
-    inputs.forEach(({ name }) => {
+    inputs.forEach(({ name, value }) => {
       getConstraintTargets(name).forEach(target => {
-        const id = getDefaultValue(name) ? getDefaultValue(name).id : '';
-        addConstraint({ form, name, target, id });
+        const getId = (name: string) =>
+          getDefaultValue(name) ? getDefaultValue(name).id : '';
+        addConstraint({ form, name, target, id: getId(name) });
+
+        if (name === 'settlement' && !value) {
+          addConstraint({
+            form,
+            name: 'city',
+            target: 'street',
+            id: getId('city')
+          });
+        }
       });
     });
   }, []);

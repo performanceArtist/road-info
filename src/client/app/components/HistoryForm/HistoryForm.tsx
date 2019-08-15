@@ -71,11 +71,12 @@ const History: React.FC<Props> = ({
                 />
               </div>
             </div>
+            {/*
             <AddressInputs
               form="history"
               addressRequired={false}
               suggestions={suggestions}
-            />
+            />*/}
             <div className="history-form__submit">
               <Button type="submit">Отправить</Button>
             </div>

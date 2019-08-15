@@ -81,28 +81,32 @@ class Login extends React.Component<{}, State> {
               <div className="login__title">Вход</div>
             </Form.Header>
             <Form.Content>
-              <Input
-                status={loginError}
-                error={loginError ? true : false}
-                props={{
-                  type: 'text',
-                  name: 'username',
-                  placeholder: 'Логин',
-                  required: true,
-                  onChange: () => this.setState({ loginError: null })
-                }}
-              />
-              <Input
-                status={passwordError}
-                error={passwordError ? true : false}
-                props={{
-                  type: 'password',
-                  name: 'password',
-                  placeholder: 'Пароль',
-                  required: true,
-                  onChange: () => this.setState({ passwordError: null })
-                }}
-              />
+              <div className="login__input">
+                <Input
+                  status={loginError}
+                  error={loginError ? true : false}
+                  props={{
+                    type: 'text',
+                    name: 'username',
+                    placeholder: 'Логин',
+                    required: true,
+                    onChange: () => this.setState({ loginError: null })
+                  }}
+                />
+              </div>
+              <div className="login__input">
+                <Input
+                  status={passwordError}
+                  error={passwordError ? true : false}
+                  props={{
+                    type: 'password',
+                    name: 'password',
+                    placeholder: 'Пароль',
+                    required: true,
+                    onChange: () => this.setState({ passwordError: null })
+                  }}
+                />
+              </div>
             </Form.Content>
             <Form.Footer>
               <div className="login__submit-container">

@@ -6,7 +6,7 @@ import { HISTORY } from './actions';
 function* getWorker(action: { type: string; payload: any }) {
   try {
     const response = yield call(axios.get, '/api/measurements', {
-      params: { id: action.payload }
+      params: action.payload
     });
 
     if (response.status !== 200) {

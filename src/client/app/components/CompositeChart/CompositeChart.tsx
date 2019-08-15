@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Icon, IconImage } from '@components/Icon/Icon';
 import Chart from '@components/Chart/Chart';
@@ -20,6 +20,7 @@ type OwnProps = {
   measurements: Measurements;
   tasks: Tasks;
   chartInfo: ChartInfo;
+  onSelectChange?: (taskId: string, instanceId: string) => void;
 };
 
 type Props = OwnProps;
@@ -27,12 +28,28 @@ type Props = OwnProps;
 const CompositeChart: React.FC<Props> = ({
   measurements,
   tasks,
-  chartInfo
+  chartInfo,
+  onSelectChange
 }) => {
   const [currentTask, setcurrentTask] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
   const [tables, setTables] = useState([]);
   const [info, setInfo] = useState([]);
+  const [instances, setInstances] = useState(
+    measurements.map(({ taskId, data }) => {
+      const keys = Object.keys(data);
+      return { taskId, instanceId: keys[keys.length - 1] };
+    })
+  );
+
+  useEffect(() => {
+    setInstances(
+      measurements.map(({ taskId, data }) => {
+        const keys = Object.keys(data);
+        return { taskId, instanceId: keys[keys.length - 1] };
+      })
+    );
+  }, [measurements]);
 
   const toggleInfo = (newId: string) => {
     const filtered = info.filter(id => id !== newId);
@@ -152,8 +169,12 @@ const CompositeChart: React.FC<Props> = ({
   };
 
   const getPreview = ({ taskId, data }: MeasurementItem) => {
-    const keys = Object.keys(data);
-    const lastData = data[keys[keys.length - 1]];
+    const ids = instances.find(
+      ({ taskId: listTaskId }) => listTaskId === taskId
+    );
+    if (!ids) return;
+
+    const lastData = data[ids.instanceId];
 
     return (
       <div className="composite-chart__preview-container">
@@ -167,8 +188,10 @@ const CompositeChart: React.FC<Props> = ({
   };
 
   const getTable = ({ taskId, data }: MeasurementItem) => {
-    const keys = Object.keys(data);
-    const lastData = data[keys[keys.length - 1]];
+    const ids = instances.find(
+      ({ taskId: listTaskId }) => listTaskId === taskId
+    );
+    const lastData = data[ids.instanceId];
 
     return (
       <div className="composite-chart__table">
@@ -190,6 +213,24 @@ const CompositeChart: React.FC<Props> = ({
     );
   };
 
+  const handleSelectChange = (event: React.SyntheticEvent, taskId: string) => {
+    const target = event.target as HTMLFormElement;
+    const newInstances = JSON.parse(JSON.stringify(instances));
+    const current = newInstances.find(
+      ({ taskId: listTaskId }) => listTaskId == taskId
+    );
+    current.instanceId = target.value;
+
+    const measurement = measurements.find(
+      ({ taskId: listTaskId }) => listTaskId === taskId
+    );
+
+    if (onSelectChange && measurement.data[target.value].length === 0)
+      onSelectChange(taskId, target.value);
+
+    setInstances(newInstances);
+  };
+
   const getPreviews = () =>
     measurements.map(measurement => (
       <div key={measurement.taskId}>
@@ -200,7 +241,12 @@ const CompositeChart: React.FC<Props> = ({
           <span className="composite-chart__title-task">{`Задание #${
             measurement.taskId
           }, заезд`}</span>
-          <select name="instance">
+          <select
+            name="instance"
+            value={instances[measurement.taskId]}
+            onChange={event => handleSelectChange(event, measurement.taskId)}
+          >
+            {onSelectChange && <option />}
             {Object.keys(measurement.data).map(id => (
               <option value={id}>{id}</option>
             ))}
@@ -227,8 +273,10 @@ const CompositeChart: React.FC<Props> = ({
 
   const getTaskChart = () => {
     const { data } = measurements.find(({ taskId }) => taskId === currentTask);
-    const keys = Object.keys(data);
-    const lastData = data[keys[keys.length - 1]];
+    const ids = instances.find(
+      ({ taskId: listTaskId }) => listTaskId === currentTask
+    );
+    const lastData = data[ids.instanceId];
 
     if (currentChart) return fullChart(currentChart, lastData, true);
 
@@ -238,6 +286,40 @@ const CompositeChart: React.FC<Props> = ({
         {fullChart('rutting', lastData)}
         {fullChart('iri', lastData)}
         {fullChart('thickness', lastData)}
+      </>
+    );
+  };
+
+  const getCurrentTitle = () => {
+    const measurement = measurements.find(
+      ({ taskId }) => taskId === currentTask
+    );
+
+    return (
+      <>
+        <div className="composite-chart__title">
+          <span className="composite-chart__title-task">{`Задание #${currentTask}, заезд`}</span>
+          {
+            <select
+              name="instance"
+              value={instances[currentTask]}
+              onChange={event => handleSelectChange(event, measurement.taskId)}
+            >
+              {Object.keys(measurement.data).map(id => (
+                <option value={id}>{id}</option>
+              ))}
+            </select>
+          }
+
+          <div className="composite-chart__title-icon">
+            <Icon
+              image={IconImage.ANGLE}
+              size="small"
+              onClick={() => toggleInfo(currentTask)}
+            />
+          </div>
+        </div>
+        {renderInfo(currentTask)}
       </>
     );
   };
@@ -252,21 +334,7 @@ const CompositeChart: React.FC<Props> = ({
           }}
         />
       </div>
-      {currentTask && (
-        <>
-          <div className="composite-chart__title">
-            {`Задание #${currentTask}`}
-            <div className="composite-chart__title-icon">
-              <Icon
-                image={IconImage.ANGLE}
-                size="small"
-                onClick={() => toggleInfo(currentTask)}
-              />
-            </div>
-          </div>
-          {renderInfo(currentTask)}
-        </>
-      )}
+      {currentTask && getCurrentTitle()}
       <div className="composite-chart__previews">
         {currentTask ? getTaskChart() : getPreviews()}
       </div>
