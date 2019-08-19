@@ -10,7 +10,7 @@ type Props = {
   onLineClick: Function;
 };
 
-class Multicolor extends MapLayer<Props> {
+class Multicolor extends MapLayer {
   constructor(props: Props) {
     super(props);
   }

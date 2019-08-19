@@ -10,7 +10,11 @@ import { Icon, IconImage } from '@components/Icon/Icon';
 
 import { openModal } from '@redux/modal/actions';
 
-import { Measurements, MeasurementData } from '@redux/measurements/types';
+import {
+  Measurements,
+  MeasurementData,
+  MeasurementInstances
+} from '@redux/measurements/types';
 import { ChartInfo } from '@redux/chart/types';
 import { RootState } from '@redux/reducer';
 
@@ -58,6 +62,7 @@ class MapComponent extends Component<Props, State> {
 
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.renderMarkers = this.renderMarkers.bind(this);
+    this.getCombined = this.getCombined.bind(this);
     this.renderLines = this.renderLines.bind(this);
     this.addPopup = this.addPopup.bind(this);
     this.renderPopup = this.renderPopup.bind(this);
@@ -74,6 +79,47 @@ class MapComponent extends Component<Props, State> {
         counter: 1,
         coordinates: { x: event.clientX, y: event.clientY }
       });
+  }
+
+  getCombined(data: MeasurementInstances) {
+    const keys = Object.keys(data);
+    const lengths = keys.map(key => data[key].length);
+    const max = Math.max(...lengths);
+    const { chartInfo } = this.props;
+
+    const sum = (param: string, index: number) =>
+      keys.reduce(
+        (acc, key) => (data[key][index] ? acc + data[key][index][param] : acc),
+        0
+      );
+    const outOfBounds = (param: string, index: number) =>
+      keys.reduce((acc, key) => {
+        const measurement = data[key][index];
+        if (!measurement) return acc;
+        const breakpoint = chartInfo.lines[param].breakpoint;
+
+        if (
+          measurement[param] > breakpoint.start &&
+          measurement[param] < breakpoint.finish
+        ) {
+          return acc;
+        } else {
+          return acc + 1;
+        }
+      }, 0);
+
+    const getDivider = (index: number) =>
+      keys.reduce((acc, key) => (data[key][index] ? acc + 1 : acc), 0);
+
+    return [...Array(max)].map((el, index) => {
+      const divider = getDivider(index);
+      const latitude = sum('latitude', index) / divider;
+      const longitude = sum('longitude', index) / divider;
+      const out = outOfBounds('density', index);
+      const z = out === 0 ? divider + 4 : out;
+
+      return L.latLng(latitude, longitude, z - 0.1);
+    });
   }
 
   renderMarkers() {
@@ -104,32 +150,52 @@ class MapComponent extends Component<Props, State> {
   }
 
   renderLines() {
-    const { measurements, chartInfo } = this.props;
+    const { measurements } = this.props;
 
-    const { breakpoint } = chartInfo.lines.density;
-    const getData = (data: Array<MeasurementData>) =>
-      data.map(({ latitude, longitude, density }) => {
-        const z =
-          density > breakpoint.start && density < breakpoint.finish ? 2 : 1;
-        return L.latLng(latitude, longitude, z);
-      });
+    /*
+    const colors = [
+      '#ff8c8c',
+      '#ff7373',
+      '#fc3838',
+      '#ff0000',
+      '#b8b8b8',
+      '#8c8c8c',
+      '#595959',
+      '#000000'
+    ];
+    */
+
+    const colors = [
+      '#ffb3b3',
+      '#fc8888',
+      '#ff5252',
+      '#ff1f1f',
+      '#ffffff',
+      '#cccccc',
+      '#919191',
+      '#363636'
+    ];
+    const length = colors.length;
+    type Palette = { [key: number]: string };
+
+    const palette: Palette = colors.reduce((acc, color, index) => {
+      acc[index / length] = color;
+      return acc;
+    }, {});
 
     return measurements.map(({ data }, index) => {
-      const keys = Object.keys(data);
-      const lastData = data[keys[keys.length - 1]];
-
       return (
         <Multicolor
           map={this.ref}
           key={Math.random()}
-          data={getData(lastData)}
+          data={this.getCombined(data)}
           options={{
-            palette: { 0: '#f62a00', 0.5: '#258039', 1.0: '#f62a00' },
+            palette,
             outlineColor: 'black',
             weight: 7,
             outlineWidth: 1,
             min: 1,
-            max: 3,
+            max: 8,
             smoothFactor: 1
           }}
           onLineClick={(event: React.MouseEvent) => this.addPopup(event, index)}
@@ -207,14 +273,14 @@ class MapComponent extends Component<Props, State> {
 
     return (
       <>
-        <Map center={[lat, lng]} zoom={zoom} ref={this.ref}>
+        <Map center={[lat, lng]} zoom={zoom} ref={this.ref} maxZoom={19}>
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {this.renderLines()}
           {this.renderMarkers()}
-          {this.renderPopup()}
+          {/*this.renderPopup()*/}
         </Map>
         <div className="fullscreen-button">
           <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
