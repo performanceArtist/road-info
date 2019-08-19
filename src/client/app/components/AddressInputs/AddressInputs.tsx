@@ -20,9 +20,9 @@ type OwnProps = {
 type Props = OwnProps & typeof mapDispatch;
 
 const AddressInputs: React.FC<Props> = ({
-  suggestions,
-  defaults = null,
   form,
+  defaults = null,
+  suggestions,
   addressRequired = true,
   getSuggestion,
   addConstraint,
@@ -94,15 +94,12 @@ const AddressInputs: React.FC<Props> = ({
   };
 
   const handleChange = ({ name, value }: { name: string; value: string }) => {
-    addConstraints(name);
     getSuggestion({ form, name, value });
   };
 
   const handleSuggestionClick = ({ name, value, id }) => {
     addLast({ form, name, value, id });
-    getConstraintTargets(name).forEach(target => {
-      addConstraint({ form, name, target, id });
-    });
+    addConstraints(name);
   };
 
   const getDefaultValue = (name: string) => {

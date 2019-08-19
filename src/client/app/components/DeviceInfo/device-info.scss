@@ -9,6 +9,10 @@
     }
   }
 
+  &__chart {
+    margin-left: 1.2rem;
+  }
+
   &__title {
     font-size: 0.9rem;
     padding: 0.25rem;
@@ -17,16 +21,8 @@
 
   &__tab-content {
     display: flex;
-    justify-content: space-between;
     background: white;
     padding: 1rem;
-  }
-
-  &__chart {
-    min-width: 280px;
-    min-height: 200px;
-    width: 280px;
-    height: 200px;
   }
 
   &__info-item {

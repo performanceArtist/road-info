@@ -8,6 +8,7 @@ import { MeasurementItem } from '@redux/measurements/types';
 type Props = {
   measurement: MeasurementItem;
   selectValue: string;
+  showArrow?: boolean;
   onAngleClick: (id: string) => void;
   onArrowClick?: () => void;
   onSelectChange?: (value: string, id: string) => void;
@@ -16,6 +17,7 @@ type Props = {
 const ChartHeader: React.FC<Props> = ({
   measurement,
   selectValue,
+  showArrow = true,
   onAngleClick,
   onArrowClick,
   onSelectChange
@@ -24,27 +26,30 @@ const ChartHeader: React.FC<Props> = ({
 
   return (
     <div className="chart-header">
-      <span className="chart-header__title">{`Задание #${taskId}, заезд`}</span>
-      {
-        <select
-          name="instance"
-          value={selectValue}
-          onChange={event => onSelectChange(event.target.value, taskId)}
-        >
-          {Object.keys(data).map(id => (
-            <option value={id}>{id}</option>
-          ))}
-        </select>
-      }
+      <div className="chart-header__wrapper">
+        <span className="chart-header__title">{`Задание #${taskId}, заезд`}</span>
+        {
+          <select
+            className="chart-header__select"
+            name="instance"
+            value={selectValue}
+            onChange={event => onSelectChange(event.target.value, taskId)}
+          >
+            {Object.keys(data).map(id => (
+              <option value={id}>{id}</option>
+            ))}
+          </select>
+        }
 
-      <div className="chart-header__angle">
-        <Icon
-          image={IconImage.ANGLE}
-          size="small"
-          onClick={() => onAngleClick(taskId)}
-        />
+        <div className="chart-header__angle">
+          <Icon
+            image={IconImage.ANGLE}
+            size="small"
+            onClick={() => onAngleClick(taskId)}
+          />
+        </div>
+        {showArrow && <ChartControls onArrowClick={onArrowClick} />}
       </div>
-      <ChartControls onArrowClick={onArrowClick} />
     </div>
   );
 };

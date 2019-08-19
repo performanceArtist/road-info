@@ -5,27 +5,8 @@
     justify-content: center;
   }
 
-  &__title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    padding: 1rem;
-    padding-top: 0;
-    width: auto;
-    height: auto;
-  }
-
-  &__title-task {
-    margin-right: 0.5rem;
-  }
-
-  &__title-icon {
-    display: inline-block;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
+  &__chart {
+    padding: 1.2rem;
   }
 
   &__chart-container {

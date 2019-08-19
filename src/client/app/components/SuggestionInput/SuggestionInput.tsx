@@ -69,7 +69,7 @@ const SuggestionInput: React.FC<Props> = ({
         remWidth={13}
         onDoubleClick={() => setShowSuggestions(true)}
         onChange={value => {
-          setValue({ value, id: '' });
+          //setValue({ value, id: '' });
           setShowSuggestions(!showSuggestions);
           onChange({ value, name });
         }}

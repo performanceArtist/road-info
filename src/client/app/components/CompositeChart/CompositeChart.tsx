@@ -159,7 +159,8 @@ const CompositeChart: React.FC<Props> = ({
         {getHeader(
           measurement,
           instances.find(({ taskId }) => taskId === measurement.taskId)
-            .instanceId
+            .instanceId,
+          false
         )}
         {renderInfo(measurement.taskId)}
         <div
@@ -179,16 +180,18 @@ const CompositeChart: React.FC<Props> = ({
     data: Array<MeasurementData>,
     isOneOnScreen = false
   ) => (
-    <div onDoubleClick={() => setCurrentChart(keyY)}>
-      <Chart
-        modifier={isOneOnScreen ? 'big' : 'default'}
-        keyX="distance"
-        keyY={keyY}
-        data={data}
-        maxTicks={chartInfo.maxTicks}
-        {...chartInfo.lines[keyY]}
-        key={Math.random()}
-      />
+    <div className="composite-chart__chart">
+      <div onDoubleClick={() => setCurrentChart(keyY)}>
+        <Chart
+          modifier={isOneOnScreen ? 'big' : 'default'}
+          keyX="distance"
+          keyY={keyY}
+          data={data}
+          maxTicks={chartInfo.maxTicks}
+          {...chartInfo.lines[keyY]}
+          key={Math.random()}
+        />
+      </div>
     </div>
   );
 
@@ -228,12 +231,17 @@ const CompositeChart: React.FC<Props> = ({
     setInstances(newInstances);
   };
 
-  const getHeader = (measurement: MeasurementItem, selectValue: string) => {
+  const getHeader = (
+    measurement: MeasurementItem,
+    selectValue: string,
+    showArrow = true
+  ) => {
     return (
       <ChartHeader
         measurement={measurement}
         selectValue={selectValue}
-        onAngleClick={() => toggleInfo(currentTask)}
+        showArrow={showArrow}
+        onAngleClick={(id: string) => toggleInfo(id)}
         onArrowClick={() => {
           if (currentChart) setCurrentChart(null);
           if (!currentChart && currentTask) setcurrentTask(null);
@@ -250,6 +258,7 @@ const CompositeChart: React.FC<Props> = ({
           measurements.find(({ taskId }) => taskId === currentTask),
           instances.find(({ taskId }) => taskId === currentTask).instanceId
         )}
+      {renderInfo(currentTask)}
       <div className="composite-chart__previews">
         {currentTask ? getCurrentChart() : getPreviews()}
       </div>

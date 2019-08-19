@@ -48,7 +48,7 @@ const DeviceInfo: React.FC<Props> = ({ title, hasError, tabs }) => {
     <Chart
       keyX={keyX}
       keyY={keyY}
-      modifier="preview"
+      modifier="small"
       data={data}
       showMax={false}
       showMin={false}
