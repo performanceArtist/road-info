@@ -23,6 +23,7 @@ const initialState = {
   lines: chartSettings,
   maxTicks: 10,
   xAxis: {
+    key: 'distance',
     name: 'Дистанция',
     units: 'м'
   }

@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import Form from '@shared/Form/Form';
 import Input from '@shared/Input/Input';
 import Button from '@shared/Button/Button';
-
-import Modal from '@components/Modal/Modal';
 import Dropdown from '@components/Dropdown/Dropdown';
 
 import { saveChartSettings } from '@redux/chart/actions';

@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 
-import { Icon, IconImage } from '@components/Icon/Icon';
 import Chart from '@components/Chart/Chart';
-import ChartControls from '@components/ChartControls/ChartControls';
 import Table from '@components/Table/Table';
 import MeasurementInfo from '@components/MeasurementInfo/MeasurementInfo';
 
@@ -15,6 +13,10 @@ import {
   MeasurementInstances
 } from '@redux/measurements/types';
 import { ChartInfo } from '@redux/chart/types';
+
+import ChartPreview from './ChartPreview';
+import ChartFooter from './ChartFooter';
+import ChartHeader from './ChartHeader';
 
 type OwnProps = {
   measurements: Measurements;
@@ -51,15 +53,6 @@ const CompositeChart: React.FC<Props> = ({
     );
   }, [measurements]);
 
-  const controls = (
-    <ChartControls
-      onArrowClick={() => {
-        if (currentChart) setCurrentChart(null);
-        if (!currentChart && currentTask) setcurrentTask(null);
-      }}
-    />
-  );
-
   const toggleInfo = (newId: string) => {
     const filtered = info.filter(id => id !== newId);
 
@@ -81,7 +74,6 @@ const CompositeChart: React.FC<Props> = ({
       finish,
       lane,
       lanesCount,
-      description,
       kondor,
       partName,
       roadName,
@@ -108,72 +100,14 @@ const CompositeChart: React.FC<Props> = ({
     );
   };
 
-  const fullChart = (
-    keyY: string,
-    data: Array<MeasurementData>,
-    isOneOnScreen = false
-  ) => (
-    <div
-      className="composite-chart__chart-container"
-      onDoubleClick={() => setCurrentChart(keyY)}
-    >
-      <div
-        className={
-          isOneOnScreen
-            ? 'composite-chart__chart composite-chart__chart_big'
-            : 'composite-chart__chart'
-        }
-      >
-        <Chart
-          keyX="distance"
-          keyY={keyY}
-          data={data}
-          maxTicks={chartInfo.maxTicks}
-          {...chartInfo.lines[keyY]}
-          key={Math.random()}
-        />
-      </div>
-    </div>
-  );
-
-  const preview = (keyY: string, data: Array<MeasurementData>) => (
-    <div className="composite-chart__chart composite-chart__chart_preview">
-      <Chart
-        keyX="distance"
-        keyY={keyY}
-        data={data}
-        showMax={false}
-        showMin={false}
-        showY={false}
-        showBrush={false}
-        enableZoom={false}
-        {...chartInfo.lines[keyY]}
-        key={Math.random()}
-        maxTicks={1000}
-      />
-    </div>
-  );
-
-  const getIcons = (type: 'table' | 'preview', id: string) => {
+  const getFooter = (type: 'table' | 'preview', id: string) => {
     return (
-      <div className="composite-chart__icons">
-        <div className="composite-chart__icon">
-          {type === 'table' ? (
-            <Icon
-              image={IconImage.GRAPH}
-              onClick={() => setTables(tables.filter(el => el !== id))}
-            />
-          ) : (
-            <Icon
-              image={IconImage.TABLE}
-              onClick={() => setTables(tables.concat(id))}
-            />
-          )}
-        </div>
-        <div className="composite-chart__icon">
-          <Icon image={IconImage.EXPAND} onClick={() => setcurrentTask(id)} />
-        </div>
-      </div>
+      <ChartFooter
+        type={type}
+        onExpandIconClick={() => setcurrentTask(id)}
+        onGraphIconClick={() => setTables(tables.filter(el => el !== id))}
+        onTableIconClick={() => setTables(tables.concat(id))}
+      />
     );
   };
 
@@ -187,11 +121,8 @@ const CompositeChart: React.FC<Props> = ({
 
     return (
       <div className="composite-chart__preview-container">
-        {preview('density', lastData)}
-        {preview('rutting', lastData)}
-        {preview('iri', lastData)}
-        {preview('thickness', lastData)}
-        {getIcons('preview', taskId)}
+        <ChartPreview chartInfo={chartInfo} data={lastData} />
+        {getFooter('preview', taskId)}
       </div>
     );
   };
@@ -217,57 +148,19 @@ const CompositeChart: React.FC<Props> = ({
           chartInfo={chartInfo}
           maxRows={15}
         />
-        {getIcons('table', taskId)}
+        {getFooter('table', taskId)}
       </div>
     );
   };
 
-  const handleSelectChange = (event: React.SyntheticEvent, taskId: string) => {
-    const target = event.target as HTMLFormElement;
-    const newInstances = JSON.parse(JSON.stringify(instances));
-    const current = newInstances.find(
-      ({ taskId: listTaskId }) => listTaskId == taskId
-    );
-    current.instanceId = target.value;
-
-    const measurement = measurements.find(
-      ({ taskId: listTaskId }) => listTaskId === taskId
-    );
-
-    if (onSelectChange && measurement.data[target.value].length === 0)
-      onSelectChange(taskId, target.value);
-
-    setInstances(newInstances);
-  };
-
-  const getPreviews = () =>
-    measurements.map(measurement => (
+  const getPreviews = () => {
+    return measurements.map(measurement => (
       <div key={measurement.taskId}>
-        <div
-          className="composite-chart__title"
-          style={{ width: 'auto', height: 'auto' }}
-        >
-          <span className="composite-chart__title-task">{`Задание #${
-            measurement.taskId
-          }, заезд`}</span>
-          <select
-            name="instance"
-            value={instances[measurement.taskId]}
-            onChange={event => handleSelectChange(event, measurement.taskId)}
-          >
-            {onSelectChange && <option />}
-            {Object.keys(measurement.data).map(id => (
-              <option value={id}>{id}</option>
-            ))}
-          </select>
-          <div className="composite-chart__title-icon">
-            <Icon
-              image={IconImage.ANGLE}
-              size="small"
-              onClick={() => toggleInfo(measurement.taskId)}
-            />
-          </div>
-        </div>
+        {getHeader(
+          measurement,
+          instances.find(({ taskId }) => taskId === measurement.taskId)
+            .instanceId
+        )}
         {renderInfo(measurement.taskId)}
         <div
           className="composite-chart__chart-container"
@@ -279,8 +172,27 @@ const CompositeChart: React.FC<Props> = ({
         </div>
       </div>
     ));
+  };
 
-  const getTaskChart = () => {
+  const fullChart = (
+    keyY: string,
+    data: Array<MeasurementData>,
+    isOneOnScreen = false
+  ) => (
+    <div onDoubleClick={() => setCurrentChart(keyY)}>
+      <Chart
+        modifier={isOneOnScreen ? 'big' : 'default'}
+        keyX="distance"
+        keyY={keyY}
+        data={data}
+        maxTicks={chartInfo.maxTicks}
+        {...chartInfo.lines[keyY]}
+        key={Math.random()}
+      />
+    </div>
+  );
+
+  const getCurrentChart = () => {
     const { data } = measurements.find(({ taskId }) => taskId === currentTask);
     const ids = instances.find(
       ({ taskId: listTaskId }) => listTaskId === currentTask
@@ -299,46 +211,47 @@ const CompositeChart: React.FC<Props> = ({
     );
   };
 
-  const getCurrentTitle = () => {
+  const handleSelectChange = (value: string, taskId: string) => {
+    const newInstances = JSON.parse(JSON.stringify(instances));
+    const current = newInstances.find(
+      ({ taskId: listTaskId }) => listTaskId == taskId
+    );
+    current.instanceId = value;
+
     const measurement = measurements.find(
-      ({ taskId }) => taskId === currentTask
+      ({ taskId: listTaskId }) => listTaskId === taskId
     );
 
-    return (
-      <>
-        <div className="composite-chart__title">
-          <span className="composite-chart__title-task">{`Задание #${currentTask}, заезд`}</span>
-          {
-            <select
-              name="instance"
-              value={instances[currentTask]}
-              onChange={event => handleSelectChange(event, measurement.taskId)}
-            >
-              {Object.keys(measurement.data).map(id => (
-                <option value={id}>{id}</option>
-              ))}
-            </select>
-          }
+    if (onSelectChange && measurement.data[value].length === 0)
+      onSelectChange(taskId, value);
 
-          <div className="composite-chart__title-icon">
-            <Icon
-              image={IconImage.ANGLE}
-              size="small"
-              onClick={() => toggleInfo(currentTask)}
-            />
-          </div>
-          {controls}
-        </div>
-        {renderInfo(currentTask)}
-      </>
+    setInstances(newInstances);
+  };
+
+  const getHeader = (measurement: MeasurementItem, selectValue: string) => {
+    return (
+      <ChartHeader
+        measurement={measurement}
+        selectValue={selectValue}
+        onAngleClick={() => toggleInfo(currentTask)}
+        onArrowClick={() => {
+          if (currentChart) setCurrentChart(null);
+          if (!currentChart && currentTask) setcurrentTask(null);
+        }}
+        onSelectChange={handleSelectChange}
+      />
     );
   };
 
   return (
     <div className="composite-chart">
-      {currentTask && getCurrentTitle()}
+      {currentTask &&
+        getHeader(
+          measurements.find(({ taskId }) => taskId === currentTask),
+          instances.find(({ taskId }) => taskId === currentTask).instanceId
+        )}
       <div className="composite-chart__previews">
-        {currentTask ? getTaskChart() : getPreviews()}
+        {currentTask ? getCurrentChart() : getPreviews()}
       </div>
     </div>
   );

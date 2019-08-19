@@ -5,16 +5,6 @@
     justify-content: center;
   }
 
-  &__icons {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 0.5rem;
-  }
-
-  &__icon {
-    margin-left: 0.5rem;
-  }
-
   &__title {
     display: flex;
     justify-content: center;
@@ -43,35 +33,6 @@
     flex-direction: column;
     align-items: center;
     padding: 1.5rem;
-  }
-
-  &__chart {
-    @extend %unselectable;
-    min-width: 600px;
-    min-height: 400px;
-    width: 600px;
-    height: 300px;
-    padding: 1.2rem;
-    padding-bottom: 3rem;
-    background: $light-grey;
-    resize: both;
-    overflow: hidden;
-
-    &_preview {
-      resize: none;
-      min-width: 531px;
-      min-height: 143px;
-      width: 425px;
-      height: 125px;
-      padding: 0;
-    }
-
-    &_big {
-      min-width: 80vw;
-      min-height: 600px;
-      width: 80vw;
-      height: 600px;
-    }
   }
 
   &__table {

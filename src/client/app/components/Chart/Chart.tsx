@@ -24,6 +24,7 @@ type OwnProps = {
   keyX: string;
   keyY: string;
   data: Array<DataType>;
+  modifier?: 'default' | 'preview' | 'big';
   maxTicks?: number;
   name?: string;
   units?: string;
@@ -293,6 +294,7 @@ class Chart extends React.Component<Props, State> {
 
   render() {
     const {
+      modifier = 'default',
       showControls = true,
       showBrush = true,
       enableZoom = true,
@@ -312,64 +314,66 @@ class Chart extends React.Component<Props, State> {
     if (data.length === 0) return null;
 
     return (
-      <>
-        <ResponsiveContainer>
-          <LineChart
-            data={data}
-            onMouseDown={event =>
-              this.setState({ refAreaLeft: event.activeLabel })
-            }
-            onMouseMove={event =>
-              refAreaLeft && this.setState({ refAreaRight: event.activeLabel })
-            }
-            onMouseUp={this.zoom}
-          >
-            <defs>{this.getGradients()}</defs>
-            <CartesianGrid stroke="#ccc" />
-            <XAxis
-              type="number"
-              dataKey={keyX}
-              domain={[xDomain.left, xDomain.right]}
-              interval={0}
-              tick={{ fontSize: '0.8rem' }}
-              ticks={this.getXTicks()}
-              allowDataOverflow
-            />
-            {this.getLineChart()}
-            {data.length > 0 && showBrush && (
-              <Brush
-                dataKey="distance"
-                onChange={({ startIndex, endIndex }) => {
-                  this.setState({ startIndex, endIndex });
+      <div className={`chart chart_${modifier}`}>
+        <div className="chart__wrapper">
+          <ResponsiveContainer>
+            <LineChart
+              data={data}
+              onMouseDown={event =>
+                this.setState({ refAreaLeft: event.activeLabel })
+              }
+              onMouseMove={event =>
+                refAreaLeft &&
+                this.setState({ refAreaRight: event.activeLabel })
+              }
+              onMouseUp={this.zoom}
+            >
+              <defs>{this.getGradients()}</defs>
+              <CartesianGrid stroke="#ccc" />
+              <XAxis
+                type="number"
+                dataKey={keyX}
+                domain={[xDomain.left, xDomain.right]}
+                interval={0}
+                tick={{ fontSize: '0.8rem' }}
+                ticks={this.getXTicks()}
+                allowDataOverflow
+              />
+              {this.getLineChart()}
+              {data.length > 0 && showBrush && (
+                <Brush
+                  dataKey="distance"
+                  onChange={({ startIndex, endIndex }) => {
+                    this.setState({ startIndex, endIndex });
+                  }}
+                  startIndex={
+                    startIndex === null ? this.getStartIndex() : startIndex
+                  }
+                  endIndex={startIndex ? endIndex : data.length - 1}
+                  height={15}
+                  stroke="ccc"
+                />
+              )}
+              <Tooltip />
+              <Legend
+                wrapperStyle={{
+                  fontSize: '0.9rem'
                 }}
-                startIndex={
-                  startIndex === null ? this.getStartIndex() : startIndex
-                }
-                endIndex={startIndex ? endIndex : data.length - 1}
-                height={15}
-                stroke="ccc"
               />
-            )}
-            <Tooltip />
-            <Legend
-              wrapperStyle={{
-                fontSize: '0.9rem'
-              }}
-            />
 
-            {enableZoom && refAreaLeft && refAreaRight ? (
-              <ReferenceArea
-                yAxisId={keyY}
-                x1={refAreaLeft}
-                x2={refAreaRight}
-                strokeOpacity={0.3}
-              />
-            ) : null}
-          </LineChart>
-        </ResponsiveContainer>
-        {showControls && (
-          <div className="chart__icons">
-            {/* <div className="chart__icon">
+              {enableZoom && refAreaLeft && refAreaRight ? (
+                <ReferenceArea
+                  yAxisId={keyY}
+                  x1={refAreaLeft}
+                  x2={refAreaRight}
+                  strokeOpacity={0.3}
+                />
+              ) : null}
+            </LineChart>
+          </ResponsiveContainer>
+          {showControls && (
+            <div className="chart__icons">
+              {/* <div className="chart__icon">
               
               <Icon
                 size="small"
@@ -386,9 +390,10 @@ class Chart extends React.Component<Props, State> {
                 onClick={this.zoomOut}
               />
             </div>*/}
-          </div>
-        )}
-      </>
+            </div>
+          )}
+        </div>
+      </div>
     );
   }
 }

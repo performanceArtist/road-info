@@ -1,0 +1,11 @@
+.chart-footer {
+  &__wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+  }
+
+  &__icon {
+    margin-left: 0.5rem;
+  }
+}

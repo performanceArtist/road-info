@@ -14,6 +14,6 @@ export type ChartLines = { [key: string]: ChartLineInfo };
 
 export interface ChartInfo {
   lines: ChartLines;
-  xAxis: { name: string; units: string };
+  xAxis: { key: string; name: string; units: string };
   maxTicks: number;
 }
