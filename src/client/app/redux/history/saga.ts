@@ -9,18 +9,13 @@ function* getWorker(action: { type: string; payload: any }) {
       params: action.payload
     });
 
-    if (response.status !== 200) {
-      console.error(response);
-      throw new Error(`Failed to get history`);
-    }
-
     yield put({
       type: HISTORY.GET.SUCCESS,
       payload: response.data
     });
-  } catch (error) {
-    console.log(error);
-    yield put({ type: HISTORY.GET.FAILURE, error: error });
+  } catch ({ response }) {
+    console.log(response);
+    yield put({ type: HISTORY.GET.FAILURE, response: response.data });
   }
 }
 

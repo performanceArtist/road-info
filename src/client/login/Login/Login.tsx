@@ -38,31 +38,25 @@ class Login extends React.Component<{}, State> {
 
     try {
       const response = await axios.post('/login', formData);
-      const { token, login, status } = response.data;
+      const { token, login } = response.data;
 
-      if (!token || !login || status === 'error') {
-        const { type, message } = response.data.error;
-        switch (type) {
-          case 'login':
-            this.setState({ loginError: message });
-            break;
-          case 'password':
-            this.setState({ passwordError: message });
-            break;
-          default:
-            console.log(response.data);
-            break;
-        }
-      } else {
-        this.setCookie('token', token, 10);
-        this.setCookie('login', login, 10);
-        window.location.href = '/';
+      this.setCookie('token', token, 10);
+      this.setCookie('login', login, 10);
+      window.location.href = '/';
+    } catch ({ response }) {
+      console.log(response);
+      const { type, message } = response.data.error;
+      switch (type) {
+        case 'login':
+          this.setState({ loginError: message });
+          break;
+        case 'password':
+          this.setState({ passwordError: message });
+          break;
+        default:
+          console.log(response.data);
+          break;
       }
-    } catch (error) {
-      this.setState({
-        networkError: 'Ошибка запроса'
-      });
-      console.log(error);
     }
   }
 

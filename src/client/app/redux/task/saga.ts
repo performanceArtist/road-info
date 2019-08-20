@@ -10,21 +10,13 @@ function postData(url: string, data = {}) {
 
 function* createWorker(action: { type: string; payload: any }) {
   try {
-    const postResult = yield call(postData, '/api/task', action.payload);
-
-    const { status, message } = postResult.data;
-
-    if (status !== 'ok') {
-      console.error(message);
-      throw new Error(`Failed to create a task`);
-    }
-
+    yield call(postData, '/api/task', action.payload);
     yield put({
       type: TASK.POST.SUCCESS
     });
-  } catch (error) {
-    console.log(error);
-    yield put({ type: TASK.POST.FAILURE, error: error });
+  } catch ({ response }) {
+    console.log(response);
+    yield put({ type: TASK.POST.FAILURE, response: response.data });
   }
 }
 

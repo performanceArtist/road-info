@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 
 import axios from 'axios';
 
@@ -30,14 +31,11 @@ const CreateForm: React.FC = () => {
     };
 
     try {
-      const res = await axios.post('/admin/create', formData);
-      if (res.data.status === 'ok') {
-        setStatus({ error: false, message: 'Пользователь создан успешно' });
-      } else {
-        setStatus({ error: true, message: 'Ошибка создания пользователя' });
-      }
-    } catch (error) {
-      console.log(error);
+      await axios.post('/admin/create', formData);
+      setStatus({ error: false, message: 'Пользователь создан успешно' });
+    } catch ({ response }) {
+      console.log(response);
+      setStatus({ error: true, message: 'Ошибка создания пользователя' });
     }
   };
 

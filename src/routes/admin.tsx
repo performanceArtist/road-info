@@ -26,13 +26,12 @@ router.get('/admin/', (req, res) => {
 
 router.post('/admin/create', async (req, res) => {
   const user = new User(req.body);
-  const error = await user.create();
 
-  if (error) {
-    console.log(error);
-    res.json({ status: 'error', error });
-  } else {
-    res.json({ status: 'ok' });
+  try {
+    await user.create();
+    res.status(200).end();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 

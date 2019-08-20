@@ -32,7 +32,7 @@ const TaskHistoryModal: React.FC<Props> = ({ closeModal, instances = [] }) => {
         <div className="task-history">
           {instances.map(
             ({ status, lane, isForward, kondor, date }: TaskInstance) => (
-              <div className="task-history__entry">
+              <div className="task-history__entry" key={date.toString()}>
                 <h3>{`${date.toDateString()} ${date.toTimeString()}`}</h3>
                 <div>{getStatus(status, kondor)}</div>
                 <div>Полоса: {lane}</div>

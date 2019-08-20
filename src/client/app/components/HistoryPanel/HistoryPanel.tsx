@@ -16,7 +16,7 @@ const HistoryPanel: React.FC<Props> = ({
   measurements = [],
   fetchMeasurements
 }) => {
-  const [taskId, setTaskId] = useState(tasks[0] ? tasks[0].id : null);
+  const [taskId, setTaskId] = useState(tasks[0] ? tasks[0].id : '');
 
   const taskSelect = () => {
     if (tasks.length === 0) return null;

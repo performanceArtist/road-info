@@ -10,7 +10,7 @@ const initialState: History = {
   instances: [],
   measurements: [],
   filters: {
-    kondor: null,
+    kondor: '',
     startDate: yesterday,
     endDate: today
   }

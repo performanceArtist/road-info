@@ -42,11 +42,6 @@ function* suggestionWorker(action: { type: string; payload: any }) {
       }
     );
 
-    if (postResult.status !== 200) {
-      console.error(postResult.error);
-      throw new Error(`Failed to get a suggestion`);
-    }
-
     const { suggestions } = postResult.data;
 
     yield put({
@@ -60,9 +55,9 @@ function* suggestionWorker(action: { type: string; payload: any }) {
         }))
       }
     });
-  } catch (error) {
-    console.log(error);
-    yield put({ type: SUGGESTION.GET.FAILURE, error: error });
+  } catch ({ response }) {
+    console.log(response);
+    yield put({ type: SUGGESTION.GET.FAILURE, response: response.data });
   }
 }
 

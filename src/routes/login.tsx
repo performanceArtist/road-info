@@ -42,7 +42,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({ login: user.login }, config.auth.key);
     res.json({ token, login: user.login });
   } catch (error) {
-    res.json({ status: 'error', error });
+    res.status(500).json({ error });
   }
 });
 

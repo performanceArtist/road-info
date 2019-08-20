@@ -14,6 +14,7 @@ import { Filters } from '@redux/history/types';
 type MapState = {
   tasks: Array<object>;
   instances: Array<object>;
+  measurements: any;
   suggestions: Suggestion;
   filters: Filters;
 };

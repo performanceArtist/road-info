@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { Form, Field } from 'react-final-form';
-import FinalInput from '@shared/Input/Input';
+import { Form } from 'react-final-form';
 import Button from '@shared/Button/Button';
 
 import {

@@ -9,18 +9,16 @@ function* getWorker(action: { type: string; payload: any }) {
       params: action.payload
     });
 
-    if (response.status !== 200) {
-      console.error(response);
-      throw new Error(`Failed to get measurements`);
-    }
-
     yield put({
       type: HISTORY.GET_MEASUREMENTS.SUCCESS,
       payload: response.data
     });
-  } catch (error) {
-    console.log(error);
-    yield put({ type: HISTORY.GET_MEASUREMENTS.FAILURE, error: error });
+  } catch ({ response }) {
+    console.log(response);
+    yield put({
+      type: HISTORY.GET_MEASUREMENTS.FAILURE,
+      response: response.data
+    });
   }
 }
 

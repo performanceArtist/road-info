@@ -13,6 +13,7 @@
     "moduleResolution": "node",
     "baseUrl": "./src",
     "paths": {
+      "*" : ["@types/express"],
       "@shared/*": [
         "client/shared/*"
       ],
@@ -30,7 +31,5 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true
     },
-    "include": [
-      "./src"
-    ]
-}
+    "include": ["./src", "./@types"]
+} 

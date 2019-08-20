@@ -14,7 +14,6 @@ import {
 } from 'recharts';
 
 import CustomDot from '@components/CustomDot/CustomDot';
-import { Icon, IconImage } from '@components/Icon/Icon';
 
 type DataType = {
   [key: string]: number;

@@ -8,7 +8,7 @@
     "client:dev": "webpack-dev-server --hot --mode=development --config webpack.config.dev.ts",
     "client:build": "webpack --mode=production --config webpack.config.prod.ts",
     "client:dev-build": "webpack --mode=development --config webpack.config.dev.ts",
-    "server:dev": "ts-node-dev --respawn --transpileOnly --ignore-watch src/client -r tsconfig-paths/register index.ts",
+    "server:dev": "ts-node-dev --respawn --transpileOnly --ignore-watch src/client -r tsconfig-paths/register index.js",
     "server:build": "tsc --project ./",
     "server:start": "node dist/server.js"
   },

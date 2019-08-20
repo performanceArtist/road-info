@@ -152,19 +152,6 @@ class MapComponent extends Component<Props, State> {
   renderLines() {
     const { measurements } = this.props;
 
-    /*
-    const colors = [
-      '#ff8c8c',
-      '#ff7373',
-      '#fc3838',
-      '#ff0000',
-      '#b8b8b8',
-      '#8c8c8c',
-      '#595959',
-      '#000000'
-    ];
-    */
-
     const colors = [
       '#ffb3b3',
       '#fc8888',
@@ -178,7 +165,7 @@ class MapComponent extends Component<Props, State> {
     const length = colors.length;
     type Palette = { [key: number]: string };
 
-    const palette: Palette = colors.reduce((acc, color, index) => {
+    const palette = colors.reduce((acc: Palette, color, index) => {
       acc[index / length] = color;
       return acc;
     }, {});

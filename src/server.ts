@@ -1,4 +1,4 @@
-//import 'module-alias/register';
+import 'module-alias/register';
 import * as express from 'express';
 const morgan = require('morgan');
 const cors = require('cors');
@@ -7,8 +7,9 @@ const cookieParser = require('cookie-parser');
 const socketIO = require('socket.io');
 const path = require('path');
 
-import loginRouter from './routes/public';
-import appRouter from './routes/private';
+import loginRouter from './routes/login';
+import appRouter from './routes/app';
+import apiRouter from './routes/api';
 import adminRouter from './routes/admin';
 
 const app = express();
@@ -24,11 +25,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // public routes
 app.use(loginRouter);
 
-// admin pages - check privilege level
-app.use(adminRouter);
-
 // protected routes - auth check
 app.use(appRouter);
+app.use(apiRouter);
+
+// admin pages - check privilege level
+app.use(adminRouter);
 
 app.get('*', (req, res) => {
   res.status(404).send('<h1>Not Found</h1>');

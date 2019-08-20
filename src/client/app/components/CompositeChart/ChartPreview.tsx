@@ -13,7 +13,7 @@ const ChartPreview: React.FC<Props> = ({ chartInfo, data }) => {
   const { xAxis, lines } = chartInfo;
 
   const getPreview = (keyY: string, data: Array<MeasurementData>) => (
-    <div className="chart-preview__chart">
+    <div className="chart-preview__chart" key={Math.random()}>
       <Chart
         modifier="preview"
         keyX={xAxis.key}
@@ -25,7 +25,6 @@ const ChartPreview: React.FC<Props> = ({ chartInfo, data }) => {
         showBrush={false}
         enableZoom={false}
         {...lines[keyY]}
-        key={Math.random()}
         maxTicks={1000}
       />
     </div>

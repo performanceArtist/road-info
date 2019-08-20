@@ -36,7 +36,7 @@ const ChartHeader: React.FC<Props> = ({
             onChange={event => onSelectChange(event.target.value, taskId)}
           >
             {Object.keys(data).map(id => (
-              <option value={id}>{id}</option>
+              <option value={id} key={id}>{id}</option>
             ))}
           </select>
         }
