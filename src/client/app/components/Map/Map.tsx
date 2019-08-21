@@ -15,7 +15,7 @@ import {
   MeasurementData,
   MeasurementInstances
 } from '@redux/measurements/types';
-import { ChartInfo } from '@redux/chart/types';
+import { ChartInfo, ColorBreakpoint } from '@redux/chart/types';
 import { RootState } from '@redux/reducer';
 
 import Multicolor from './Multicolor';
@@ -23,8 +23,7 @@ import { haversine } from './helpers';
 
 interface PopupProps {
   position: L.LatLng;
-  less: number;
-  more: number;
+  message: string;
 }
 
 interface State {
@@ -82,43 +81,49 @@ class MapComponent extends Component<Props, State> {
   }
 
   getCombined(data: MeasurementInstances) {
-    const keys = Object.keys(data);
-    const lengths = keys.map(key => data[key].length);
+    const instances = Object.keys(data);
+    const lengths = instances.map(key => data[key].length);
     const max = Math.max(...lengths);
     const { chartInfo } = this.props;
 
     const sum = (param: string, index: number) =>
-      keys.reduce(
+      instances.reduce(
         (acc, key) => (data[key][index] ? acc + data[key][index][param] : acc),
         0
       );
-    const outOfBounds = (param: string, index: number) =>
-      keys.reduce((acc, key) => {
-        const measurement = data[key][index];
-        if (!measurement) return acc;
-        const breakpoint = chartInfo.lines[param].breakpoint;
+    const outOfBounds = (index: number) => {
+      const lineKeys = Object.keys(chartInfo.lines);
 
-        if (
-          measurement[param] > breakpoint.start &&
-          measurement[param] < breakpoint.finish
-        ) {
-          return acc;
-        } else {
-          return acc + 1;
-        }
-      }, 0);
+      return instances.map(instance => {
+        return lineKeys.reduce((acc, key) => {
+          const breakpoint = chartInfo.lines[key].breakpoint;
+          if (!breakpoint) return acc;
+          if (!data[instance][index]) return acc;
+
+          if (
+            data[instance][index][key] > breakpoint.start &&
+            data[instance][index][key] < breakpoint.finish
+          ) {
+            return acc;
+          } else {
+            return acc + 1;
+          }
+        }, 0);
+      });
+    };
 
     const getDivider = (index: number) =>
-      keys.reduce((acc, key) => (data[key][index] ? acc + 1 : acc), 0);
+      instances.reduce((acc, key) => (data[key][index] ? acc + 1 : acc), 0);
 
     return [...Array(max)].map((el, index) => {
       const divider = getDivider(index);
       const latitude = sum('latitude', index) / divider;
       const longitude = sum('longitude', index) / divider;
-      const out = outOfBounds('density', index);
-      const z = out === 0 ? divider + 4 : out;
+      const out = outOfBounds(index).filter(el => el);
 
-      return L.latLng(latitude, longitude, z - 0.1);
+      const z = out.length === 0 ? divider + 4 : out.length;
+
+      return L.latLng(latitude, longitude, z);
     });
   }
 
@@ -170,6 +175,8 @@ class MapComponent extends Component<Props, State> {
       return acc;
     }, {});
 
+    let oneClick = false;
+
     return measurements.map(({ data }, index) => {
       return (
         <Multicolor
@@ -185,33 +192,70 @@ class MapComponent extends Component<Props, State> {
             max: 8,
             smoothFactor: 1
           }}
-          onLineClick={(event: React.MouseEvent) => this.addPopup(event, index)}
+          onLineClick={(event: React.MouseEvent) => {
+            oneClick = true;
+            setTimeout(() => {
+              if (oneClick) this.addPopup(event, index);
+            }, 200);
+          }}
+          onDoubleLineClick={() => {
+            oneClick = false;
+            this.props.openModal('Path');
+            this.ref.current.originalEvent.preventDefault();
+          }}
         />
       );
     });
   }
 
   addPopup(event: React.MouseEvent, index: number) {
-    const { measurements, chartInfo } = this.props;
+    const {
+      measurements,
+      chartInfo: { lines }
+    } = this.props;
     const { popupCount } = this.state;
-
     const data = measurements[index].data;
-    const keys = Object.keys(data);
-    const lastData = data[keys[keys.length - 1]];
-
-    const closestIndex = haversine(lastData, {
+    const combined = this.getCombined(data).map(({ lat, lng }) => ({
+      latitude: lat,
+      longitude: lng
+    }));
+    const closestIndex = haversine(combined, {
       latitude: event.latlng.lat,
       longitude: event.latlng.lng
     });
-    const breakpoint = chartInfo.lines.density.breakpoint;
-    const closestDensity = lastData[closestIndex].density;
+    const points = Object.keys(data)
+      .map(key => data[key][closestIndex])
+      .filter(el => el);
+
+    const lineKeys = Object.keys(lines);
+    const isValid = (point: MeasurementData) => {
+      return lineKeys.reduce((acc: Array<any>, key: string) => {
+        const breakpoint = lines[key].breakpoint;
+        if (!breakpoint) return acc;
+
+        if (point[key] < breakpoint.start)
+          acc.push({ key, difference: point[key] - breakpoint.start });
+        if (point[key] > breakpoint.finish)
+          acc.push({ key, difference: point[key] - breakpoint.finish });
+
+        return acc;
+      }, []);
+    };
+
+    const diffs = points.map(isValid);
+    const badTrips = diffs.reduce((acc, diff) => {
+      return diff.length !== 0 ? acc + 1 : acc;
+    }, 0);
+    console.log(points, diffs);
+
+    const message =
+      badTrips === 0 ? 'Параметры в норме' : `Отклонения в ${badTrips} заездах`;
 
     this.setState({
       popupCount: popupCount + 1,
       popup: {
         position: event.latlng,
-        less: closestDensity - breakpoint.start,
-        more: breakpoint.finish - closestDensity
+        message
       }
     });
   }
@@ -221,6 +265,7 @@ class MapComponent extends Component<Props, State> {
 
     if (!popup) return null;
 
+    /*
     let message = '';
     const { less, more } = popup;
 
@@ -234,12 +279,12 @@ class MapComponent extends Component<Props, State> {
       message = `Отклонение от нормы плотности в ближайшей точке: превышает эталон на ${Math.abs(
         more
       ).toFixed(2)} г/см3`;
-    }
+    }*/
 
     return (
       <Popup key={`popup-${popupCount}`} position={popup.position}>
         <div>
-          <div>{message}</div>
+          <div>{popup.message}</div>
         </div>
       </Popup>
     );
@@ -252,7 +297,7 @@ class MapComponent extends Component<Props, State> {
 
     setTimeout(() => {
       this.ref.current.leafletElement.invalidateSize();
-    }, 200);
+    }, 400);
   }
 
   render() {
@@ -267,7 +312,7 @@ class MapComponent extends Component<Props, State> {
           />
           {this.renderLines()}
           {this.renderMarkers()}
-          {/*this.renderPopup()*/}
+          {this.renderPopup()}
         </Map>
         <div className="fullscreen-button">
           <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />

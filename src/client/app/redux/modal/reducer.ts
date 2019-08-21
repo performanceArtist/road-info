@@ -7,6 +7,7 @@ import TaskModal from '@components/TaskModal/TaskModal';
 import KondorModal from '@components/KondorModal/KondorModal';
 import GenerationModal from '@components/GenerationModal/GenerationModal';
 import TaskHistoryModal from '@components/TaskHistoryModal/TaskHistoryModal';
+import PathModal from '@components/PathModal/PathModal';
 
 import { ConnectedComponentClass } from 'react-redux';
 
@@ -20,7 +21,8 @@ export const ModalMap: Record<
   Task: TaskModal,
   Kondor: KondorModal,
   Generation: GenerationModal,
-  TaskHistory: TaskHistoryModal
+  TaskHistory: TaskHistoryModal,
+  Path: PathModal
 };
 
 export interface ModalPayload {
