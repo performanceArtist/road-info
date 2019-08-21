@@ -1,4 +1,4 @@
-import 'module-alias/register';
+//import 'module-alias/register';
 import * as express from 'express';
 const morgan = require('morgan');
 const cors = require('cors');
@@ -31,10 +31,6 @@ app.use(apiRouter);
 
 // admin pages - check privilege level
 app.use(adminRouter);
-
-app.get('/error', (req, res) => {
-  throw new Error('TEst');
-});
 
 app.get('*', (req, res) => {
   res.status(404).send('<h1>Not Found</h1>');

@@ -9,6 +9,7 @@ type Props = {
   measurement: MeasurementItem;
   selectValue: string;
   showArrow?: boolean;
+  startOnEmpty?: boolean;
   onAngleClick: (id: string) => void;
   onArrowClick?: () => void;
   onSelectChange?: (value: string, id: string) => void;
@@ -17,6 +18,7 @@ type Props = {
 const ChartHeader: React.FC<Props> = ({
   measurement,
   selectValue,
+  startOnEmpty = false,
   showArrow = true,
   onAngleClick,
   onArrowClick,
@@ -32,11 +34,14 @@ const ChartHeader: React.FC<Props> = ({
           <select
             className="chart-header__select"
             name="instance"
-            value={selectValue}
+            value={startOnEmpty ? '' : selectValue}
             onChange={event => onSelectChange(event.target.value, taskId)}
           >
+            {startOnEmpty && <option />}
             {Object.keys(data).map(id => (
-              <option value={id} key={id}>{id}</option>
+              <option value={id} key={id}>
+                {id}
+              </option>
             ))}
           </select>
         }

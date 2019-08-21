@@ -30,7 +30,11 @@ router.use('/', async (req, res, next) => {
     next();
   } catch (error) {
     req.user = null;
-    res.redirect('/login');
+    if (/\/api\//.test(req.url)) {
+      res.status(401).json({ error: 'Unauthorized' });
+    } else {
+      res.redirect('/login');
+    }
   }
 });
 

@@ -48,6 +48,7 @@ const HistoryPanel: React.FC<Props> = ({
     <div>
       {current ? (
         <ChartContainer
+          key={taskId}
           tasks={tasks}
           measurements={[current]}
           onSelectChange={fetchMeasurements}

@@ -44,14 +44,14 @@ const CompositeChart: React.FC<Props> = ({
     })
   );
 
-  useEffect(() => {
-    setInstances(
-      measurements.map(({ taskId, data }) => {
-        const keys = Object.keys(data);
-        return { taskId, instanceId: keys[keys.length - 1] };
-      })
-    );
-  }, [measurements]);
+  const hasData = () => {
+    if (!onSelectChange) return true;
+
+    const data = measurements[0].data;
+    const keys = Object.keys(data);
+
+    return keys.some(key => data[key].length !== 0);
+  };
 
   const toggleInfo = (newId: string) => {
     const filtered = info.filter(id => id !== newId);
@@ -225,8 +225,9 @@ const CompositeChart: React.FC<Props> = ({
       ({ taskId: listTaskId }) => listTaskId === taskId
     );
 
-    if (onSelectChange && measurement.data[value].length === 0)
+    if (onSelectChange && measurement.data[value].length === 0) {
       onSelectChange(taskId, value);
+    }
 
     setInstances(newInstances);
   };
@@ -240,6 +241,7 @@ const CompositeChart: React.FC<Props> = ({
       <ChartHeader
         measurement={measurement}
         selectValue={selectValue}
+        startOnEmpty={!hasData()}
         showArrow={showArrow}
         onAngleClick={(id: string) => toggleInfo(id)}
         onArrowClick={() => {
