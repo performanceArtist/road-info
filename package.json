@@ -13,6 +13,7 @@
     "server:start": "node dist/server.js"
   },
   "_moduleAliases": {
+    "@root": "dist",
     "@components": "dist/client/app/components",
     "@redux": "dist/client/app/redux",
     "@shared": "dist/client/shared",

@@ -1,6 +1,6 @@
-import knex from '../connection';
+import knex from '@root/connection';
 
-import { User } from './User';
+import { User } from '@root/models/User';
 
 export async function checkPassword() {
   try {

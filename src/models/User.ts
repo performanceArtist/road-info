@@ -1,4 +1,4 @@
-import knex from '../connection';
+import knex from '@root/connection';
 const bcrypt = require('bcrypt');
 
 interface UserType {

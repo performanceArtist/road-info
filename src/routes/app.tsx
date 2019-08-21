@@ -8,12 +8,12 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-import routes from '../client/app/routes';
-import createStore from '../client/app/store';
-import App from '../client/app/app';
-import html from '../html';
-import config from '../config';
-import knex from '../connection';
+import routes from '@root/client/app/routes';
+import createStore from '@root/client/app/store';
+import App from '@root/client/app/app';
+import render from '@root/utils/render';
+import config from '@root/config';
+import knex from '@root/connection';
 
 router.use('/', async (req, res, next) => {
   try {
@@ -54,7 +54,7 @@ router.get(paths, (req, res, next) => {
   const reduxState = store.getState();
   const helmetData = Helmet.renderStatic();
 
-  res.send(html(reactDom, reduxState, helmetData, 'app'));
+  res.send(render({ reactDom, reduxState, helmetData, bundle: 'app' }));
 });
 
 export default router;

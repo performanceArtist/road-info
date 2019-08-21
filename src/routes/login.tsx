@@ -7,10 +7,10 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const router = express.Router();
 
-import App from '../client/login/app';
-import html from '../html';
-import knex from '../connection';
-import config from '../config';
+import knex from '@root/connection';
+import config from '@root/config';
+import App from '@root/client/login/app';
+import render from '@root/utils/render';
 
 router.get('/login', (req, res) => {
   const { token, login } = req.cookies;
@@ -18,11 +18,10 @@ router.get('/login', (req, res) => {
     res.redirect('/');
   } else {
     const jsx = <App />;
-
     const reactDom = renderToString(jsx);
     const helmetData = Helmet.renderStatic();
 
-    res.send(html(reactDom, null, helmetData, 'login'));
+    res.send(render({ reactDom, helmetData, bundle: 'login' }));
   }
 });
 

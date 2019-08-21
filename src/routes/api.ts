@@ -1,105 +1,59 @@
 import * as express from 'express';
-import knex from '../connection';
 
 const router = express.Router();
 
-import { createTask, generateMeasurements } from '../models/Measurement';
+import createTask from '@root/controllers/api/createTask';
+import generateMeasurements from '@root/controllers/api/generateMeasurements';
+import getOrders from '@root/controllers/api/getOrders';
+import getMeasurements from '@root/controllers/api/getMeasurements';
 
-router.post('/api/task', async (req, res) => {
+router.post('/api/task', async (req, res, next) => {
   try {
     console.log(req.body);
     await createTask(req.body);
     res.status(200).end();
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.get('/api/generate', async (req, res) => {
+router.get('/api/generate', async (req, res, next) => {
   try {
     console.log(req.query);
     await generateMeasurements(req.query);
     res.status(200).end();
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.get('/api/sort', async (req, res) => {
-  const filterObject = (object: { [key: string]: any }) =>
-    Object.keys(object).reduce((acc: { [key: string]: any }, key) => {
-      if (object[key]) acc[key] = object[key];
-      return acc;
-    }, {});
-
-  const filters = filterObject(req.query);
-
+router.get('/api/sort', async (req, res, next) => {
   try {
-    const query = knex('orders')
-      .select('*')
-      .limit(10);
-
-    if (filters.startDate) query.where('date', '>=', filters.startDate);
-    if (filters.endDate) query.where('date', '<', filters.endDate);
-    if (filters.kondor) query.where({ kondor_id: filters.kondor });
-
-    const orders = await query;
-    const ids = orders.map(({ id }) => id);
-    const instances = await knex('measurements')
-      .select('*')
-      .whereIn('order_id', ids);
-
-    res.status(200).json({ orders, instances });
+    const data = await getOrders(req.query);
+    res.status(200).json(data);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 
-router.get('/api/measurements', async (req, res) => {
-  if (!req.query.instanceId || !req.query.taskId) {
-    console.log('No ids');
-    return res.status(500).end({ error: 'No ids' });
-  }
-
+router.get('/api/measurements', async (req, res, next) => {
   try {
-    const measurements = await knex('measurement_sections')
-      .select('*')
-      .where({ measurement_id: req.query.instanceId });
-    const filteredMeasurements = measurements.map(
-      ({ latitude, longitude, distance }) => ({ latitude, longitude, distance })
-    );
+    const { taskId, instanceId } = req.query;
 
-    const ids = measurements.map(({ id }) => id);
+    if (!instanceId || !taskId) {
+      console.log('No ids');
+      return res.status(500).end({ error: 'No ids' });
+    }
 
-    const roadLayers = await knex('road_layers')
-      .select('*')
-      .whereIn('measurement_section_id', ids);
-
-    const filteredLayers = roadLayers.map(
-      ({ depth, density, iri = 0, rutting = 0 }) => ({
-        density,
-        thickness: depth,
-        iri,
-        rutting
-      })
-    );
-
-    const merged = filteredMeasurements.map((measurement, index) => ({
-      ...measurement,
-      ...filteredLayers[index]
-    }));
+    const data = await getMeasurements(instanceId);
 
     res.status(200).json({
-      taskId: req.query.taskId,
-      instanceId: req.query.instanceId,
-      data: merged
+      taskId,
+      instanceId,
+      data
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 });
 

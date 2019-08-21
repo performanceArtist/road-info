@@ -32,11 +32,30 @@ app.use(apiRouter);
 // admin pages - check privilege level
 app.use(adminRouter);
 
+app.get('/error', (req, res) => {
+  throw new Error('TEst');
+});
+
 app.get('*', (req, res) => {
   res.status(404).send('<h1>Not Found</h1>');
 });
 
+app.use(
+  async (
+    error: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.log(error);
+    res
+      .status(error.statusCode || error.status || 500)
+      .json({ error: error.message || {} });
+  }
+);
+
 const server = app.listen(5000, () => console.log('Listening on port 5000!'));
+
 export const io = socketIO(server);
 
 io.on('connection', (socket: any) => {

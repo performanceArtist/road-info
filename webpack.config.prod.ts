@@ -20,6 +20,7 @@ const config = {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@shared': path.resolve(__dirname, 'src/client/shared'),
+      '@root': path.resolve(__dirname, 'src'),
       '@redux': path.resolve(__dirname, 'src/client/app/redux'),
       '@components': path.resolve(__dirname, 'src/client/app/components'),
       '@views': path.resolve(__dirname, 'src/client/app/views')

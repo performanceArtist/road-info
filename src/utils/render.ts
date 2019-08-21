@@ -1,15 +1,19 @@
-const html = (
-  reactDom: any,
-  reduxState: any,
-  helmetData: any,
-  bundle: string
-) => {
-  const reduxScript = `<script>
+type Args = {
+  reactDom: any;
+  bundle: string;
+  reduxState?: any;
+  helmetData?: any;
+};
+
+const render = ({ reactDom, reduxState, helmetData, bundle }: Args) => {
+  const reduxScript = reduxState
+    ? `<script>
   window.__PRELOADED_STATE__ = ${JSON.stringify(reduxState).replace(
     /</g,
     '\\u003c'
   )}
-  </script>`;
+  </script>`
+    : '';
 
   return `
   <!DOCTYPE html>
@@ -25,7 +29,7 @@ const html = (
     </head>
     <body>
       <div class="wrapper">${reactDom}</div>
-      ${reduxState && reduxScript}
+      ${reduxScript}
       <script type="text/javascript" src="commons.js"></script>
       <script type="text/javascript" src="${bundle}.js"></script>
     </body>
@@ -33,4 +37,4 @@ const html = (
   `;
 };
 
-export default html;
+export default render;

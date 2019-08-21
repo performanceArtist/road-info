@@ -13,7 +13,9 @@
     "moduleResolution": "node",
     "baseUrl": "./src",
     "paths": {
-      "*" : ["@types/express"],
+      "@root/*": [
+        "./*"
+      ],
       "@shared/*": [
         "client/shared/*"
       ],

@@ -1,5 +1,5 @@
 import config from './config';
-import postgresEmitter from './PostgresEmitter';
+import postgresEmitter from './controllers/emitter';
 
 const knex = require('knex')({
   client: 'pg',
