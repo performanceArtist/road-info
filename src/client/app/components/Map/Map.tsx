@@ -7,6 +7,7 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 
 import { Icon, IconImage } from '@components/Icon/Icon';
+import MapPopup, { PointData } from './MapPopup';
 
 import { openModal } from '@redux/modal/actions';
 
@@ -21,10 +22,10 @@ import { RootState } from '@redux/reducer';
 import Multicolor from './Multicolor';
 import { haversine } from './helpers';
 
-interface PopupProps {
+type PopupProps = {
   position: L.LatLng;
-  message: string;
-}
+  data: Array<PointData>;
+};
 
 interface State {
   lat: number;
@@ -229,33 +230,36 @@ class MapComponent extends Component<Props, State> {
 
     const lineKeys = Object.keys(lines);
     const isValid = (point: MeasurementData) => {
-      return lineKeys.reduce((acc: Array<any>, key: string) => {
+      return lineKeys.reduce((acc: PointData, key: string) => {
         const breakpoint = lines[key].breakpoint;
         if (!breakpoint) return acc;
 
         if (point[key] < breakpoint.start)
-          acc.push({ key, difference: point[key] - breakpoint.start });
+          acc.push({
+            key,
+            name: lines[key].name,
+            value: point[key],
+            difference: point[key] - breakpoint.start
+          });
         if (point[key] > breakpoint.finish)
-          acc.push({ key, difference: point[key] - breakpoint.finish });
+          acc.push({
+            key,
+            name: lines[key].name,
+            value: point[key],
+            difference: point[key] - breakpoint.finish
+          });
 
         return acc;
       }, []);
     };
 
-    const diffs = points.map(isValid);
-    const badTrips = diffs.reduce((acc, diff) => {
-      return diff.length !== 0 ? acc + 1 : acc;
-    }, 0);
-    console.log(points, diffs);
-
-    const message =
-      badTrips === 0 ? 'Параметры в норме' : `Отклонения в ${badTrips} заездах`;
+    const diffs = points.map(isValid).filter(el => el.length !== 0);
 
     this.setState({
       popupCount: popupCount + 1,
       popup: {
         position: event.latlng,
-        message
+        data: diffs
       }
     });
   }
@@ -265,29 +269,7 @@ class MapComponent extends Component<Props, State> {
 
     if (!popup) return null;
 
-    /*
-    let message = '';
-    const { less, more } = popup;
-
-    if (less > 0 && more > 0) {
-      message = 'Параметры находятся в пределах нормы.';
-    } else if (less < 0) {
-      message = `Отклонение от нормы плотности в ближайшей точке: меньше эталона на ${Math.abs(
-        less
-      ).toFixed(2)} г/см3`;
-    } else if (more < 0) {
-      message = `Отклонение от нормы плотности в ближайшей точке: превышает эталон на ${Math.abs(
-        more
-      ).toFixed(2)} г/см3`;
-    }*/
-
-    return (
-      <Popup key={`popup-${popupCount}`} position={popup.position}>
-        <div>
-          <div>{popup.message}</div>
-        </div>
-      </Popup>
-    );
+    return <MapPopup key={popupCount} {...popup} />;
   }
 
   handleFullscreen() {
