@@ -7,9 +7,9 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 
 import { Icon, IconImage } from '@components/Icon/Icon';
+import DateRange from '@components/DateRange/DateRange';
+import Button from '@shared/Button/Button';
 import MapPopup, { PointData } from './MapPopup';
-
-import { openModal } from '@redux/modal/actions';
 
 import {
   Measurements,
@@ -17,7 +17,15 @@ import {
   MeasurementInstances
 } from '@redux/measurements/types';
 import { ChartInfo, ColorBreakpoint } from '@redux/chart/types';
+import { MapHistory } from '@redux/map/types';
 import { RootState } from '@redux/reducer';
+import { openModal } from '@redux/modal/actions';
+import {
+  setStartDate,
+  setEndDate,
+  setMode,
+  getHistory
+} from '@redux/map/actions';
 
 import Multicolor from './Multicolor';
 import { haversine } from './helpers';
@@ -37,6 +45,7 @@ interface State {
 
 type MapState = {
   measurements: Measurements;
+  history: MapHistory;
   chartInfo: ChartInfo;
 };
 
@@ -281,12 +290,18 @@ class MapComponent extends Component<Props, State> {
 
     setTimeout(() => {
       this.ref.current.leafletElement.invalidateSize();
-    }, 400);
+    }, 200);
   }
 
   render() {
     const { lat, lng, zoom } = this.state;
-
+    const {
+      history: { startDate, endDate },
+      setMode,
+      setStartDate,
+      setEndDate,
+      getHistory
+    } = this.props;
     return (
       <>
         <Map center={[lat, lng]} zoom={zoom} ref={this.ref} maxZoom={19}>
@@ -301,17 +316,53 @@ class MapComponent extends Component<Props, State> {
         <div className="fullscreen-button">
           <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
         </div>
+        <div className="map-history-dates">
+          <DateRange
+            startDate={startDate}
+            endDate={endDate}
+            onStartChange={setStartDate}
+            onEndChange={setEndDate}
+          />
+          <div>
+            <Button
+              onClick={() => {
+                getHistory({
+                  startDate,
+                  endDate
+                });
+                setMode('history');
+              }}
+            >
+              Показать историю
+            </Button>
+          </div>
+
+          <div className="map-real-time">
+            <Button onClick={() => setMode('realTime')}>Реальное время</Button>
+          </div>
+        </div>
       </>
     );
   }
 }
 
-const mapState = ({ measurements, chart }: RootState) => ({
+const mapState = ({
   measurements,
+  chart,
+  map: { mode, history, historyMeasurements }
+}: RootState) => ({
+  measurements: mode === 'realTime' ? measurements : historyMeasurements,
+  history,
   chartInfo: chart
 });
 
-const mapDispatch = { openModal };
+const mapDispatch = {
+  openModal,
+  setStartDate,
+  setEndDate,
+  setMode,
+  getHistory
+};
 
 export default connect(
   mapState,

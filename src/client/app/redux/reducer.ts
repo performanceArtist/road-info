@@ -8,6 +8,7 @@ import chart from './chart/reducer';
 import tasks from './task/reducer';
 import suggestions from './suggestion/reducer';
 import history from './history/reducer';
+import map from './map/reducer';
 
 const rootReducer = combineReducers({
   modals,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   chart,
   tasks,
   suggestions,
-  history
+  history,
+  map
 });
 
 export type RootState = StateType<typeof rootReducer>;

@@ -57,4 +57,35 @@ router.get('/api/measurements', async (req, res, next) => {
   }
 });
 
+router.get('/api/history', async (req, res, next) => {
+  try {
+    const data = await getOrders(req.query);
+    const instancesData = await Promise.all(
+      data.instances.map(({ id }: { id: string }) => getMeasurements(id))
+    );
+    const getIndexes = (id: string) => {
+      return data.instances.reduce((acc, el, index) => {
+        if (el.order_id === id) {
+          acc.push(index);
+        }
+
+        return acc;
+      }, []);
+    };
+    const indexes = data.orders.map(({ id }) => getIndexes(id));
+    const measurements = data.orders.map(({ id }, index) => {
+      const meas = indexes[index].reduce((acc, cur) => {
+        acc[data.instances[cur].id] = instancesData[cur];
+        return acc;
+      }, {});
+
+      return { taskId: id, data: meas };
+    });
+
+    res.json(measurements);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

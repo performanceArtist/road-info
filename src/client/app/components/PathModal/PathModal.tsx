@@ -16,7 +16,7 @@ const PathModal: React.FC<Props> = ({ measurement, closeModal }) => {
 
   return (
     <Modal open={true} onClose={closeModal}>
-      <Modal.Header>Задание №{taskId}</Modal.Header>
+      <Modal.Header>Задание #{taskId}</Modal.Header>
       <Modal.Content>
         <div className="path-modal">Test</div>
       </Modal.Content>

@@ -11,7 +11,7 @@ import {
   setKondor
 } from '@redux/history/actions';
 import AddressInputs from '@components/AddressInputs/AddressInputs';
-import MyDatePicker from '@components/DatePicker/DatePicker';
+import DateRange from '@components/DateRange/DateRange';
 
 import { Suggestion } from '@redux/suggestion/types';
 import { Filters } from '@redux/history/types';
@@ -42,26 +42,12 @@ const History: React.FC<Props> = ({
         initialValues={{ kondor: filters.kondor }}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <div className="history-form__datepickers">
-              <div className="history-form__datepicker">
-                От{' '}
-                <MyDatePicker
-                  startDate={new Date(filters.startDate)}
-                  handleChange={(date: Date) => {
-                    date < new Date(filters.endDate) && setStartDate(date);
-                  }}
-                />
-              </div>
-              <div className="history-form__datepicker">
-                До{' '}
-                <MyDatePicker
-                  startDate={new Date(filters.endDate)}
-                  handleChange={(date: Date) =>
-                    date > new Date(filters.startDate) && setEndDate(date)
-                  }
-                />
-              </div>
-            </div>
+            <DateRange
+              startDate={filters.startDate}
+              endDate={filters.endDate}
+              onStartChange={setStartDate}
+              onEndChange={setEndDate}
+            />
             <div>Кондор</div>
             <input
               name="kondor"
