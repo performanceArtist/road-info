@@ -1,13 +1,10 @@
 import { MODAL } from './actions';
 
-import TestModal from '@components/TestModal/TestModal';
-import InfoModal from '@components/InfoModal/InfoModal';
-import MaterialModal from '@components/MaterialModal/MaterialModal';
-import TaskModal from '@components/TaskModal/TaskModal';
-import KondorModal from '@components/KondorModal/KondorModal';
-import GenerationModal from '@components/GenerationModal/GenerationModal';
-import TaskHistoryModal from '@components/TaskHistoryModal/TaskHistoryModal';
-import PathModal from '@components/PathModal/PathModal';
+import TaskModal from '@features/Task/TaskModal';
+import GenerationModal from '@features/Task/GenerationModal';
+import TaskHistoryModal from '@features/Task/TaskHistoryModal';
+import PathModal from '@features/Map/PathModal';
+import KondorModal from '@features/Diagnostics/KondorModal';
 
 import { ConnectedComponentClass } from 'react-redux';
 
@@ -15,9 +12,6 @@ export const ModalMap: Record<
   string,
   ConnectedComponentClass<any, any> | React.SFC | React.Component
 > = {
-  Test: TestModal,
-  Info: InfoModal,
-  Material: MaterialModal,
   Task: TaskModal,
   Kondor: KondorModal,
   Generation: GenerationModal,

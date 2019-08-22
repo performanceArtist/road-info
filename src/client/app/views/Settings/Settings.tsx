@@ -3,7 +3,7 @@ import * as React from 'react';
 import Materials from './Materials';
 
 import TabContainer from '@components/TabContainer/TabContainer';
-import ChartForm from '@components/ChartForm/ChartForm';
+import ChartForm from './ChartForm';
 
 const Calibration = () => (
   <div className="settings">

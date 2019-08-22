@@ -25,6 +25,9 @@
       "@components/*": [
         "client/app/components/*"
       ],
+      "@features/*": [
+        "client/app/features/*"
+      ],
       "@views/*": [
         "client/app/views/*"
       ],

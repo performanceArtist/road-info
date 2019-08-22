@@ -13,7 +13,7 @@ import {
   ReferenceArea
 } from 'recharts';
 
-import CustomDot from '@components/CustomDot/CustomDot';
+import CustomDot from './CustomDot';
 
 type DataType = {
   [key: string]: number;

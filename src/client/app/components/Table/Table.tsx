@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
-import Pagination from '@components/Pagination/Pagination';
+
+import Pagination from './Pagination';
 
 import { ChartInfo } from '@redux/chart/types';
 

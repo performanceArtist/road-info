@@ -23,6 +23,7 @@ const config = {
       '@root': path.resolve(__dirname, 'src'),
       '@redux': path.resolve(__dirname, 'src/client/app/redux'),
       '@components': path.resolve(__dirname, 'src/client/app/components'),
+      '@features': path.resolve(__dirname, 'src/client/app/features'),
       '@views': path.resolve(__dirname, 'src/client/app/views')
     }
   },

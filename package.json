@@ -15,6 +15,7 @@
   "_moduleAliases": {
     "@root": "dist",
     "@components": "dist/client/app/components",
+    "@features": "dist/client/app/features",
     "@redux": "dist/client/app/redux",
     "@shared": "dist/client/shared",
     "@views": "dist/client/app/views"

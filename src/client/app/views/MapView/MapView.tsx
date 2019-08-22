@@ -5,7 +5,7 @@ import { canUseDOM } from '../../utils';
 let Map = () => <></>;
 
 if (canUseDOM) {
-  Map = require('@components/Map/Map').default;
+  Map = require('@features/Map/Map').default;
 }
 
 const MapView = () => (
