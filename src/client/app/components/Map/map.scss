@@ -1,19 +1,61 @@
-.fullscreen-button {
-  position: absolute;
-  left: 0.6rem;
-  top: 5rem;
-  z-index: 2;
-  background: white;
-  border: 0.1rem solid rgba(0, 0, 0, 0.23);
+.map {
+  &__map {
+    width: 90vw;
+    height: 500px;
+    position: relative;
+
+    .leaflet-container {
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+    }
+  }
+
+  &_fullscreen & {
+    &__map {
+      height: 100vh;
+      width: 100vw;
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
+  }
+
+  &__fullscreen-button {
+    position: absolute;
+    left: 0.6rem;
+    top: 5rem;
+    z-index: 2;
+    background: white;
+    border: 0.1rem solid rgba(0, 0, 0, 0.23);
+  }
+
+  &__date-range {
+    position: absolute;
+    left: 0.6rem;
+    top: 8rem;
+    z-index: 2;
+  }
+
+  &__mode-switch {
+    margin-top: 0.5rem;
+  }
 }
 
-.map-history-dates {
-  position: absolute;
-  left: 0.6rem;
-  top: 8rem;
-  z-index: 2;
+@media screen and (max-width: 1600px) {
+  .map {
+    &__map {
+      width: 86vw;
+      height: 500px;
+    }
+  }
 }
 
-.map-real-time {
-  margin-top: 0.5rem;
+@media screen and (max-width: 1300px) {
+  .map {
+    &__map {
+      width: 82vw;
+      height: 500px;
+    }
+  }
 }

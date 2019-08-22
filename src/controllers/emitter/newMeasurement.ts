@@ -1,7 +1,7 @@
 import knex from '@root/connection';
 import { io } from '@root/server';
 
-let lastSection = null;
+let lastSection: { distance: number } | null = null;
 
 export default async measurement => {
   console.log(measurement);
@@ -23,7 +23,7 @@ export default async measurement => {
 
   if (lastSection && section.distance - lastSection.distance < 0.001) {
     console.log('No distance', section.distance - lastSection.distance);
-    return;
+    //return;
   }
   lastSection = section;
 

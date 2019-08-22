@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter, matchPath } from 'react-router-dom';
+import { StaticRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 import Helmet from 'react-helmet';
 const path = require('path');
@@ -40,10 +40,6 @@ router.use('/', async (req, res, next) => {
 
 const paths = routes.map(({ path }) => path);
 router.get(paths, (req, res, next) => {
-  const activeRoute = routes.find(route => matchPath(req.url, route));
-
-  if (!activeRoute) next();
-
   const store = createStore();
 
   const jsx = (

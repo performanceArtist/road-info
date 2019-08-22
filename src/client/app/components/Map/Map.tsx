@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker } from 'react-leaflet';
 import L from 'leaflet';
 
 import { Icon, IconImage } from '@components/Icon/Icon';
@@ -16,7 +16,7 @@ import {
   MeasurementData,
   MeasurementInstances
 } from '@redux/measurements/types';
-import { ChartInfo, ColorBreakpoint } from '@redux/chart/types';
+import { ChartInfo } from '@redux/chart/types';
 import { MapHistory } from '@redux/map/types';
 import { RootState } from '@redux/reducer';
 import { openModal } from '@redux/modal/actions';
@@ -41,6 +41,7 @@ interface State {
   zoom: number;
   popup: null | PopupProps;
   popupCount: number;
+  fullscreen: boolean;
 }
 
 type MapState = {
@@ -66,7 +67,8 @@ class MapComponent extends Component<Props, State> {
       lng: 84.950367,
       zoom: 14,
       popup: null,
-      popupCount: 0
+      popupCount: 0,
+      fullscreen: false
     };
 
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
@@ -166,7 +168,6 @@ class MapComponent extends Component<Props, State> {
 
   renderLines() {
     const { measurements } = this.props;
-
     const colors = [
       '#ffb3b3',
       '#fc8888',
@@ -178,12 +179,13 @@ class MapComponent extends Component<Props, State> {
       '#00A000'
     ];
     const length = colors.length;
-    type Palette = { [key: number]: string };
-
-    const palette = colors.reduce((acc: Palette, color, index) => {
-      acc[index / length] = color;
-      return acc;
-    }, {});
+    const palette = colors.reduce(
+      (acc: { [key: number]: string }, color, index) => {
+        acc[index / length] = color;
+        return acc;
+      },
+      {}
+    );
 
     let oneClick = false;
 
@@ -284,9 +286,7 @@ class MapComponent extends Component<Props, State> {
   }
 
   handleFullscreen() {
-    const { toggleFullscreen } = this.props;
-
-    toggleFullscreen();
+    this.setState({ fullscreen: !this.state.fullscreen });
 
     setTimeout(() => {
       this.ref.current.leafletElement.invalidateSize();
@@ -303,45 +303,50 @@ class MapComponent extends Component<Props, State> {
       getHistory
     } = this.props;
     return (
-      <>
-        <Map center={[lat, lng]} zoom={zoom} ref={this.ref} maxZoom={19}>
-          <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {this.renderLines()}
-          {this.renderMarkers()}
-          {this.renderPopup()}
-        </Map>
-        <div className="fullscreen-button">
-          <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
-        </div>
-        <div className="map-history-dates">
-          <DateRange
-            startDate={startDate}
-            endDate={endDate}
-            onStartChange={setStartDate}
-            onEndChange={setEndDate}
-          />
-          <div>
-            <Button
-              onClick={() => {
-                getHistory({
-                  startDate,
-                  endDate
-                });
-                setMode('history');
-              }}
-            >
-              Показать историю
-            </Button>
-          </div>
+      <div className={this.state.fullscreen ? 'map map_fullscreen' : 'map'}>
+        <div className="map__map">
+          <Map center={[lat, lng]} zoom={zoom} ref={this.ref} maxZoom={19}>
+            <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {this.renderLines()}
+            {this.renderMarkers()}
+            {this.renderPopup()}
+          </Map>
 
-          <div className="map-real-time">
-            <Button onClick={() => setMode('realTime')}>Реальное время</Button>
+          <div className="map__fullscreen-button">
+            <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
+          </div>
+          <div className="map__date-range">
+            <DateRange
+              startDate={startDate}
+              endDate={endDate}
+              onStartChange={setStartDate}
+              onEndChange={setEndDate}
+            />
+            <div>
+              <Button
+                onClick={() => {
+                  getHistory({
+                    startDate,
+                    endDate
+                  });
+                  setMode('history');
+                }}
+              >
+                Показать историю
+              </Button>
+            </div>
+
+            <div className="map__mode-switch">
+              <Button onClick={() => setMode('realTime')}>
+                Реальное время
+              </Button>
+            </div>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }
