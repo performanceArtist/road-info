@@ -16,6 +16,7 @@ type MapState = {
   instances: Array<object>;
   measurements: any;
   suggestions: Suggestion;
+  fetching: boolean;
   filters: Filters;
 };
 
@@ -26,6 +27,7 @@ const History: React.FC<Props> = ({
   tasks,
   instances,
   measurements,
+  fetching,
   suggestions,
   getMeasurements
 }) => {
@@ -40,6 +42,7 @@ const History: React.FC<Props> = ({
           tasks={tasks}
           instances={instances}
           measurements={measurements}
+          fetching={fetching}
           fetchMeasurements={getMeasurements}
         />
       </div>
@@ -48,12 +51,13 @@ const History: React.FC<Props> = ({
 };
 
 const mapState = ({
-  history: { filters, tasks, instances, measurements },
+  history: { filters, tasks, instances, measurements, fetching },
   suggestions
 }: RootState) => ({
   tasks,
   instances,
   measurements,
+  fetching,
   filters,
   suggestions: suggestions.history
 });

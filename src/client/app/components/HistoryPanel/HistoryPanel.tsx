@@ -8,12 +8,14 @@ type Props = {
   tasks: Array<any>;
   instances: Array<any>;
   measurements: Array<any>;
+  fetching: boolean;
   fetchMeasurements: (taskId: string, instanceId: string) => void;
 };
 
 const HistoryPanel: React.FC<Props> = ({
   tasks = [],
   measurements = [],
+  fetching = false,
   fetchMeasurements
 }) => {
   const [taskId, setTaskId] = useState(tasks[0] ? tasks[0].id : '');
@@ -51,6 +53,7 @@ const HistoryPanel: React.FC<Props> = ({
           key={taskId}
           tasks={tasks}
           measurements={[current]}
+          showSpinner={fetching}
           onSelectChange={fetchMeasurements}
         />
       ) : (

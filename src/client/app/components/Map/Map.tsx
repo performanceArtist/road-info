@@ -164,9 +164,9 @@ class MapComponent extends Component<Props, State> {
       '#ff5252',
       '#ff1f1f',
       '#ffffff',
-      '#cccccc',
-      '#919191',
-      '#363636'
+      '#7BD47B',
+      '#5CBD5C',
+      '#00A000'
     ];
     const length = colors.length;
     type Palette = { [key: number]: string };
@@ -178,7 +178,9 @@ class MapComponent extends Component<Props, State> {
 
     let oneClick = false;
 
-    return measurements.map(({ data }, index) => {
+    return measurements.map((measurement, index) => {
+      const { data } = measurement;
+
       return (
         <Multicolor
           map={this.ref}
@@ -201,7 +203,7 @@ class MapComponent extends Component<Props, State> {
           }}
           onDoubleLineClick={() => {
             oneClick = false;
-            this.props.openModal('Path');
+            this.props.openModal('Path', { measurement });
             this.ref.current.originalEvent.preventDefault();
           }}
         />

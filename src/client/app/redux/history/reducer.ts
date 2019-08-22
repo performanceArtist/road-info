@@ -9,6 +9,7 @@ const initialState: History = {
   tasks: [],
   instances: [],
   measurements: [],
+  fetching: true,
   filters: {
     kondor: '',
     startDate: yesterday,
@@ -36,6 +37,11 @@ export default function reducer(
             }, {})
         }))
       };
+    case HISTORY.GET_MEASUREMENTS.REQUEST:
+      return {
+        ...state,
+        fetching: true
+      };
     case HISTORY.GET_MEASUREMENTS.SUCCESS: {
       const newMeasurements = JSON.parse(JSON.stringify(state.measurements));
 
@@ -46,6 +52,7 @@ export default function reducer(
 
       return {
         ...state,
+        fetching: false,
         measurements: newMeasurements
       };
     }

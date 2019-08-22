@@ -3,13 +3,20 @@ import { connect } from 'react-redux';
 
 import Modal from '@components/Modal/Modal';
 import { closeModal } from '@redux/modal/actions';
+import { MeasurementItem } from '@redux/measurements/types';
 
-type Props = typeof mapDispatch;
+type MapState = {
+  measurement: MeasurementItem;
+};
 
-const PathModal: React.FC<Props> = ({ closeModal }) => {
+type Props = MapState & typeof mapDispatch;
+
+const PathModal: React.FC<Props> = ({ measurement, closeModal }) => {
+  const { taskId, data } = measurement;
+
   return (
     <Modal open={true} onClose={closeModal}>
-      <Modal.Header>Путь</Modal.Header>
+      <Modal.Header>Задание №{taskId}</Modal.Header>
       <Modal.Content>
         <div className="path-modal">Test</div>
       </Modal.Content>

@@ -47,9 +47,9 @@ const History: React.FC<Props> = ({
                 От{' '}
                 <MyDatePicker
                   startDate={new Date(filters.startDate)}
-                  handleChange={(date: Date) =>
-                    date < filters.endDate && setStartDate(date)
-                  }
+                  handleChange={(date: Date) => {
+                    date < new Date(filters.endDate) && setStartDate(date);
+                  }}
                 />
               </div>
               <div className="history-form__datepicker">
@@ -57,7 +57,7 @@ const History: React.FC<Props> = ({
                 <MyDatePicker
                   startDate={new Date(filters.endDate)}
                   handleChange={(date: Date) =>
-                    date > filters.startDate && setEndDate(date)
+                    date > new Date(filters.startDate) && setEndDate(date)
                   }
                 />
               </div>

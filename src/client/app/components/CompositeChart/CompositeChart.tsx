@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Chart from '@components/Chart/Chart';
 import Table from '@components/Table/Table';
 import MeasurementInfo from '@components/MeasurementInfo/MeasurementInfo';
+import Spinner from '@components/Spinner/Spinner';
 
 import { Tasks } from '@redux/task/types';
 import {
@@ -23,6 +24,7 @@ type OwnProps = {
   tasks: Tasks;
   chartInfo: ChartInfo;
   onSelectChange?: (taskId: string, instanceId: string) => void;
+  showSpinner?: boolean;
 };
 
 type Props = OwnProps;
@@ -31,7 +33,8 @@ const CompositeChart: React.FC<Props> = ({
   measurements,
   tasks,
   chartInfo,
-  onSelectChange
+  onSelectChange,
+  showSpinner = false
 }) => {
   const [currentTask, setcurrentTask] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
@@ -154,25 +157,29 @@ const CompositeChart: React.FC<Props> = ({
   };
 
   const getPreviews = () => {
-    return measurements.map(measurement => (
-      <div key={measurement.taskId}>
-        {getHeader(
-          measurement,
-          instances.find(({ taskId }) => taskId === measurement.taskId)
-            .instanceId,
-          false
-        )}
-        {renderInfo(measurement.taskId)}
-        <div
-          className="composite-chart__chart-container"
-          onDoubleClick={() => setcurrentTask(measurement.taskId)}
-        >
-          {tables.indexOf(measurement.taskId) !== -1
-            ? getTable(measurement)
-            : getPreview(measurement)}
+    return measurements.map(measurement => {
+      const instance = instances.find(
+        ({ taskId }) => taskId === measurement.taskId
+      );
+
+      const previews =
+        tables.indexOf(measurement.taskId) !== -1
+          ? getTable(measurement)
+          : getPreview(measurement);
+
+      return (
+        <div key={measurement.taskId}>
+          {getHeader(measurement, instance ? instance.instanceId : '', false)}
+          {renderInfo(measurement.taskId)}
+          <div
+            className="composite-chart__chart-container"
+            onDoubleClick={() => setcurrentTask(measurement.taskId)}
+          >
+            {showSpinner ? <Spinner /> : previews}
+          </div>
         </div>
-      </div>
-    ));
+      );
+    });
   };
 
   const fullChart = (

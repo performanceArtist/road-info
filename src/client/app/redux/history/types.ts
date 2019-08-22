@@ -11,5 +11,6 @@ export type History = {
   tasks: Array<Tasks>;
   instances: { [key: string]: any };
   measurements: Array<Measurements>;
+  fetching: boolean;
   filters: Filters;
 };
