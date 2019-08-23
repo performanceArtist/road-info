@@ -54,7 +54,7 @@ const config = {
     publicPath: '/',
     historyApiFallback: true,
     proxy: {
-      '/': 'http://localhost:5000'
+      '/': 'http://localhost:8000'
     }
   },
 

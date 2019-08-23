@@ -74,6 +74,7 @@ class MapComponent extends Component<Props, State> {
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.renderMarkers = this.renderMarkers.bind(this);
     this.getCombined = this.getCombined.bind(this);
+    this.getClosestIndex = this.getClosestIndex.bind(this);
     this.renderLines = this.renderLines.bind(this);
     this.addPopup = this.addPopup.bind(this);
     this.renderPopup = this.renderPopup.bind(this);
@@ -212,13 +213,28 @@ class MapComponent extends Component<Props, State> {
               if (oneClick) this.addPopup(event, index);
             }, 200);
           }}
-          onDoubleLineClick={() => {
+          onDoubleLineClick={(event: React.MouseEvent) => {
             oneClick = false;
-            this.props.openModal('Path', { measurement });
+            this.props.openModal('Path', {
+              measurement,
+              closestIndex: this.getClosestIndex(event, measurement.data)
+            });
             this.ref.current.originalEvent.preventDefault();
           }}
         />
       );
+    });
+  }
+
+  getClosestIndex(event, data) {
+    const combined = this.getCombined(data).map(({ lat, lng }) => ({
+      latitude: lat,
+      longitude: lng
+    }));
+
+    return haversine(combined, {
+      latitude: event.latlng.lat,
+      longitude: event.latlng.lng
     });
   }
 
@@ -229,14 +245,7 @@ class MapComponent extends Component<Props, State> {
     } = this.props;
     const { popupCount } = this.state;
     const data = measurements[index].data;
-    const combined = this.getCombined(data).map(({ lat, lng }) => ({
-      latitude: lat,
-      longitude: lng
-    }));
-    const closestIndex = haversine(combined, {
-      latitude: event.latlng.lat,
-      longitude: event.latlng.lng
-    });
+    const closestIndex = this.getClosestIndex(event, data);
     const points = Object.keys(data)
       .map(key => data[key][closestIndex])
       .filter(el => el);
@@ -286,11 +295,9 @@ class MapComponent extends Component<Props, State> {
   }
 
   handleFullscreen() {
-    this.setState({ fullscreen: !this.state.fullscreen });
-
-    setTimeout(() => {
-      this.ref.current.leafletElement.invalidateSize();
-    }, 200);
+    this.setState({ fullscreen: !this.state.fullscreen }, () =>
+      this.ref.current.leafletElement.invalidateSize()
+    );
   }
 
   render() {

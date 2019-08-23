@@ -16,6 +16,7 @@ export type MeasurementInstances = {
 export interface MeasurementItem {
   taskId: string;
   data: MeasurementInstances;
+  [key: string]: string | MeasurementInstances;
 }
 
 export type Measurements = Array<MeasurementItem>;

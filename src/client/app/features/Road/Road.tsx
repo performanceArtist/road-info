@@ -16,23 +16,14 @@ type Props = MapState;
 
 const Road: React.FC<Props> = ({ measurements, chartInfo }) => {
   const graphs = measurements.map(({ taskId, data }) => {
-    const chartData = data.map(
-      ({ distance, density, iri, rutting, thickness }) => ({
-        distance,
-        density,
-        iri,
-        rutting,
-        thickness
-      })
-    );
     return (
       <RoadChart
         title={`Задание #${taskId}`}
         keyX="distance"
-        data={chartData}
-        info={chartInfo.lines}
+        data={data}
+        chartInfo={chartInfo}
         xUnits={chartInfo.xAxis.units}
-        config={{}}
+        userConfig={{}}
       />
     );
   });
