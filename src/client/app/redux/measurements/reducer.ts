@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import { MEASUREMENTS } from './actions';
 import { Measurements, MeasurementItem } from './types';
 
@@ -16,25 +18,23 @@ export default function reducer(
 ) {
   switch (type) {
     case MEASUREMENTS.ADD: {
-      const newState = JSON.parse(JSON.stringify(state));
-      const currentTask = newState.find(
-        ({ taskId }) => taskId === payload.taskId
+      const index = R.findIndex(R.propEq('taskId', payload.taskId), state);
+
+      if (index === -1) {
+        return R.append(
+          {
+            taskId: payload.taskId,
+            data: { [payload.instanceId]: [payload.data] }
+          },
+          state
+        );
+      }
+
+      return R.adjust(
+        index,
+        R.evolve({ data: { [payload.instanceId]: R.append(payload.data) } }),
+        state
       );
-
-      if (!currentTask) {
-        return newState.concat({
-          taskId: payload.taskId,
-          data: { [payload.instanceId]: [payload.data] }
-        });
-      }
-
-      if (!currentTask.data[payload.instanceId]) {
-        currentTask.data[payload.instanceId] = [];
-      } else {
-        currentTask.data[payload.instanceId].push(payload.data);
-      }
-
-      return newState;
     }
     default:
       return state;

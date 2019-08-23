@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import { TASK } from './actions';
 import { Task } from './types';
 
@@ -15,8 +17,8 @@ const initialTask = {
   roadPartName: 'Тест',
   street: 'пр-кт Фрунзе',
   streetId: 'ba3c2344-f2c5-41e5-8a15-52b4ad9d95bd',
-  settlement: null,
-  settlementId: null,
+  settlement: '',
+  settlementId: '',
   city: 'г Томск',
   cityId: 'e3b0eae8-a4ce-4779-ae04-5c0797de66be',
   region: 'Томская обл',
@@ -36,38 +38,36 @@ export default function reducer(
 ) {
   switch (type) {
     case TASK.ADD:
-      return {
-        tasks: state.tasks.concat(payload),
-        instances: { [payload.id]: [], ...state.instances }
-      };
+      return R.evolve(
+        {
+          tasks: R.append(payload),
+          instances: R.assoc(payload.id, [])
+        },
+        state
+      );
     case TASK.UPDATE: {
-      const newTasks = JSON.parse(JSON.stringify(state.tasks));
-      const task = newTasks.find(({ id }) => id == payload.id);
-      task.status = payload.status;
-      task.kondor = payload.kondor;
-
-      if (payload.status !== 'ready') {
-        task.lane = payload.lane;
-        task.isForward = payload.isForward;
-      }
+      const updates = R.pick(
+        ['status', 'kondor', 'lane', 'isForward'],
+        payload
+      );
+      const tasks = R.map(
+        R.when(R.propEq('id', payload.id), R.merge(R.__, updates)),
+        state.tasks
+      );
 
       return {
-        ...state,
-        tasks: newTasks,
-        instances: {
-          ...state.instances,
-          [payload.id]: state.instances[payload.id].concat({
-            date: new Date(),
-            ...payload
-          })
-        }
+        tasks,
+        instances: R.assoc(
+          payload.id,
+          { date: new Date(), ...payload },
+          state.instances
+        )
       };
     }
-    case TASK.REMOVE:
-      return {
-        ...state,
-        tasks: state.tasks.filter(({ id }) => id !== payload.id)
-      };
+    case TASK.REMOVE: {
+      const filter = R.reject(R.propEq('id', payload.id));
+      return R.evolve({ tasks: filter }, state);
+    }
     default:
       return state;
   }

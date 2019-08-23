@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import { MAP } from './actions';
 
 import { MapData } from './types';
@@ -23,21 +25,9 @@ export default function reducer(
     case MAP.SET_MODE:
       return { ...state, mode: payload };
     case MAP.SET_START_DATE:
-      return {
-        ...state,
-        history: {
-          ...state.history,
-          startDate: payload
-        }
-      };
+      return R.assocPath(['history', 'startDate'], payload, state);
     case MAP.SET_END_DATE:
-      return {
-        ...state,
-        history: {
-          ...state.history,
-          endDate: payload
-        }
-      };
+      return R.assocPath(['history', 'endDate'], payload, state);
     case MAP.GET_HISTORY.SUCCESS:
       return {
         ...state,

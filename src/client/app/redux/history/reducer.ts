@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import { HISTORY } from './actions';
 
 import { History } from './types';
@@ -22,64 +24,47 @@ export default function reducer(
   { type, payload }: { type: string; payload: any }
 ) {
   switch (type) {
-    case HISTORY.GET.SUCCESS:
-      return {
-        ...state,
-        tasks: payload.orders,
-        instances: payload.instances,
-        measurements: payload.orders.map(({ id }) => ({
-          taskId: id,
-          data: payload.instances
-            .filter(({ order_id }) => order_id === id)
-            .reduce((acc, { id }) => {
-              acc[id] = [];
-              return acc;
-            }, {})
-        }))
-      };
-    case HISTORY.GET_MEASUREMENTS.REQUEST:
-      return {
-        ...state,
-        fetching: true
-      };
-    case HISTORY.GET_MEASUREMENTS.SUCCESS: {
-      const newMeasurements = JSON.parse(JSON.stringify(state.measurements));
+    case HISTORY.GET.SUCCESS: {
+      const { orders, instances } = payload;
 
-      const current = newMeasurements.find(
-        ({ taskId }) => taskId === payload.taskId
+      const transform = R.pipe(
+        R.prop('id'),
+        (id: string) => ({ taskId: id, data: getData(id) })
       );
-      current.data[payload.instanceId] = payload.data;
+      const getData = R.pipe(
+        (id: string) => R.filter(R.propEq('order_id', id), instances),
+        R.map(R.prop('id')),
+        R.reduce((acc, cur: any) => ({ ...acc, [cur]: [] }), {})
+      );
+
+      return {
+        ...state,
+        tasks: orders,
+        instances,
+        measurements: R.map(transform, orders)
+      };
+    }
+    case HISTORY.GET_MEASUREMENTS.REQUEST:
+      return R.assoc('fetching', true, state);
+    case HISTORY.GET_MEASUREMENTS.SUCCESS: {
+      const transform = R.assocPath(['data', payload.instanceId], payload.data);
+      const measurements = R.map(
+        R.when(R.propEq('taskId', payload.taskId), transform),
+        state.measurements
+      );
 
       return {
         ...state,
         fetching: false,
-        measurements: newMeasurements
+        measurements
       };
     }
     case HISTORY.SET_START_DATE:
-      return {
-        ...state,
-        filters: {
-          ...state.filters,
-          startDate: payload
-        }
-      };
+      return R.assocPath(['filters', 'startDate'], payload, state);
     case HISTORY.SET_END_DATE:
-      return {
-        ...state,
-        filters: {
-          ...state.filters,
-          endDate: payload
-        }
-      };
+      return R.assocPath(['filters', 'endDate'], payload, state);
     case HISTORY.SET_KONDOR:
-      return {
-        ...state,
-        filters: {
-          ...state.filters,
-          kondor: payload
-        }
-      };
+      return R.assocPath(['filters', 'kondor'], payload, state);
     default:
       return state;
   }

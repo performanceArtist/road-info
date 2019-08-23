@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import { CHART } from './actions';
 
 const chartSettings = {
@@ -35,9 +37,10 @@ export default function reducer(
 ) {
   switch (type) {
     case CHART.CHANGE_VISIBILITY: {
-      const newLines = JSON.parse(JSON.stringify(state.lines));
-      newLines.lines[payload.name].show = payload.show;
-      return { ...state, lines: newLines };
+      return R.evolve(
+        { lines: R.assocPath([payload.name, 'show'], payload.show) },
+        state
+      );
     }
     case CHART.SAVE_SETTINGS: {
       const { lines, maxTicks } = payload;

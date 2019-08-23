@@ -1,4 +1,4 @@
-import { TaskFormType } from '@components/TaskModal/TaskModal';
+import { TaskFormType } from '@features/Task/TaskModal';
 
 export const TASK = {
   SAVE: 'TASK.SAVE',

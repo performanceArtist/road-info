@@ -1,6 +1,6 @@
 export type Task = {
   id: number;
-  order: number;
+  order: string;
   status: 'ready' | 'taken' | 'done';
   start: number;
   finish: number;

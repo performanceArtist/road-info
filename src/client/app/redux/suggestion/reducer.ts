@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import { SUGGESTION, addConstraint } from './actions';
 import { Suggestions } from './types';
 
@@ -13,54 +15,28 @@ export default function reducer(
   switch (type) {
     case SUGGESTION.GET.SUCCESS: {
       const { form, name, suggestions } = payload;
-      return {
-        ...state,
-        [form]: {
-          ...state[form],
-          [name]: { ...state[form][name], items: suggestions.slice(0, 5) }
-        }
-      };
+      return R.assocPath([form, name, 'items'], suggestions.slice(0, 5), state);
     }
     case SUGGESTION.ADD_CONSTRAINT: {
       const { form, id, target, name } = payload;
       const fullName = `${name}_fias_id`;
 
-      if (!state[name])
-        return {
-          ...state,
-          [form]: {
-            ...state[form],
-            [target]: {
-              items: [],
-              constraint: { [fullName]: id }
-            }
-          }
-        };
-
-      return {
-        ...state,
-        [form]: {
-          ...state[form],
-          [target]: {
-            items: state[target].items,
+      const update = state[name]
+        ? {
+            items: R.path([target, 'items'], state),
             constraint: { [fullName]: id }
           }
-        }
-      };
+        : {
+            items: [],
+            constraint: { [fullName]: id }
+          };
+
+      return R.assocPath([form, target], update, state);
     }
     case SUGGESTION.ADD_LAST: {
       const { form, value, id, name } = payload;
 
-      return {
-        ...state,
-        [form]: {
-          ...state[form],
-          [name]: {
-            ...state[form][name],
-            last: { value, id }
-          }
-        }
-      };
+      return R.assocPath([form, name, 'last'], { value, id }, state);
     }
     default:
       return state;
