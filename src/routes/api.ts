@@ -1,10 +1,12 @@
 import * as express from 'express';
+import * as R from 'ramda';
 
 const router = express.Router();
 
 import createTask from '@root/controllers/api/createTask';
 import generateMeasurements from '@root/controllers/api/generateMeasurements';
 import getOrders from '@root/controllers/api/getOrders';
+import getInstances from '@root/controllers/api/getInstances';
 import getMeasurements from '@root/controllers/api/getMeasurements';
 
 router.post('/api/task', async (req, res, next) => {
@@ -38,20 +40,11 @@ router.get('/api/sort', async (req, res, next) => {
 
 router.get('/api/measurements', async (req, res, next) => {
   try {
-    const { taskId, instanceId } = req.query;
+    const { taskId } = req.query;
+    if (!taskId) throw new Error('No task id');
+    const instances = getInstances(taskId);
 
-    if (!instanceId || !taskId) {
-      console.log('No ids');
-      return res.status(500).end({ error: 'No ids' });
-    }
-
-    const data = await getMeasurements(instanceId);
-
-    res.status(200).json({
-      taskId,
-      instanceId,
-      data
-    });
+    res.send({ taskId, instances });
   } catch (error) {
     next(error);
   }
@@ -59,27 +52,26 @@ router.get('/api/measurements', async (req, res, next) => {
 
 router.get('/api/history', async (req, res, next) => {
   try {
-    const { orders, instances } = await getOrders(req.query);
-    const instancesData = await Promise.all(
-      instances.map(({ id }: { id: string }) => getMeasurements(id))
+    const orders = await getOrders(req.query);
+    const instances = await Promise.all(
+      orders.map(order => getInstances(order.id))
     );
-    const getIndexes = (id: string) => {
-      return instances.reduce((acc, el, index) => {
-        if (el.order_id === id) {
-          acc.push(index);
-        }
+    console.log(instances);
 
-        return acc;
-      }, []);
-    };
-    const indexes = orders.map(order => getIndexes(order.id));
-    const measurements = orders.map(({ id }, index: number) => {
-      const data = indexes[index].reduce((acc, cur: number) => {
-        acc[instances[cur].id] = instancesData[cur];
+    const instanceData = await Promise.all(
+      instances.map(groups =>
+        Promise.all(groups.map(instance => getMeasurements(instance.id)))
+      )
+    );
+
+    const measurements = orders.map((order, index) => {
+      const allData = instanceData[index];
+      const data = instances[index].reduce((acc, cur, instanceIndex) => {
+        acc[cur.id] = allData[instanceIndex];
         return acc;
       }, {});
 
-      return { taskId: id, data };
+      return { taskId: order.id, data };
     });
 
     res.json(measurements);

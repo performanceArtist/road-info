@@ -9,7 +9,6 @@ const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
 const initialState: History = {
   tasks: [],
-  instances: [],
   measurements: [],
   fetching: true,
   filters: {
@@ -24,25 +23,18 @@ export default function reducer(
   { type, payload }: { type: string; payload: any }
 ) {
   switch (type) {
-    case HISTORY.GET.SUCCESS: {
-      const { orders, instances } = payload;
+    case HISTORY.GET_ORDERS.SUCCESS: {
+      const { orders } = payload;
 
-      const transform = R.pipe(
-        R.prop('id'),
-        (id: string) => ({ taskId: id, data: getData(id) })
-      );
-      const getData = R.pipe(
-        (id: string) => R.filter(R.propEq('order_id', id), instances),
-        R.map(R.prop('id')),
-        R.reduce((acc, cur: any) => ({ ...acc, [cur]: [] }), {})
-      );
-
+      console.log(orders);
+      /*
       return {
         ...state,
         tasks: orders,
         instances,
         measurements: R.map(transform, orders)
-      };
+      };*/
+      return state;
     }
     case HISTORY.GET_MEASUREMENTS.REQUEST:
       return R.assoc('fetching', true, state);

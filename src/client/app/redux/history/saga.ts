@@ -10,15 +10,15 @@ function* getWorker(action: { type: string; payload: any }) {
     });
 
     yield put({
-      type: HISTORY.GET.SUCCESS,
+      type: HISTORY.GET_ORDERS.SUCCESS,
       payload: response.data
     });
   } catch ({ response }) {
     console.log(response);
-    yield put({ type: HISTORY.GET.FAILURE, response: response.data });
+    yield put({ type: HISTORY.GET_ORDERS.FAILURE, response: response.data });
   }
 }
 
 export default function* getWatcher() {
-  yield takeLatest(HISTORY.GET.REQUEST, getWorker);
+  yield takeLatest(HISTORY.GET_ORDERS.REQUEST, getWorker);
 }

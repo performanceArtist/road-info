@@ -49,13 +49,7 @@ const HistoryPanel: React.FC<Props> = ({
   const chart = (
     <div>
       {current ? (
-        <ChartContainer
-          key={taskId}
-          tasks={tasks}
-          measurements={[current]}
-          showSpinner={fetching}
-          onSelectChange={fetchMeasurements}
-        />
+        <ChartContainer key={taskId} measurements={current} />
       ) : (
         <Spinner />
       )}

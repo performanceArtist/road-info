@@ -2,10 +2,10 @@ export const HISTORY = {
   SET_KONDOR: 'HISTORY.SET_KONDOR',
   SET_START_DATE: 'HISTORY.SET_START_DATE',
   SET_END_DATE: 'HISTORY.SET_END_DATE',
-  GET: {
-    REQUEST: 'HISTORY.GET.REQUEST',
-    SUCCESS: 'HISTORY.GET.SUCCESS',
-    FAILURE: 'HISTORY.GET.FAILURE'
+  GET_ORDERS: {
+    REQUEST: 'HISTORY.GET_ORDERS.REQUEST',
+    SUCCESS: 'HISTORY.GET_ORDERS.SUCCESS',
+    FAILURE: 'HISTORY.GET_ORDERS.FAILURE'
   },
   GET_MEASUREMENTS: {
     REQUEST: 'HISTORY.GET_MEASUREMENTS.REQUEST',
@@ -14,14 +14,14 @@ export const HISTORY = {
   }
 };
 
-export const getHistory = (formData: { [key: string]: string | number }) => ({
-  type: HISTORY.GET.REQUEST,
+export const getOrders = (formData: { [key: string]: string | number }) => ({
+  type: HISTORY.GET_ORDERS.REQUEST,
   payload: formData
 });
 
-export const getMeasurements = (taskId: string, instanceId: string) => ({
+export const getMeasurements = (taskId: string) => ({
   type: HISTORY.GET_MEASUREMENTS.REQUEST,
-  payload: { taskId, instanceId }
+  payload: { taskId }
 });
 
 export const setStartDate = (date: Date) => ({

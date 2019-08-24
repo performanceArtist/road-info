@@ -200,7 +200,7 @@ const RoadChart: React.FC<Props> = ({
         <div
           className="road-chart__chart"
           ref={containerRef}
-          style={{ maxWidth: config.maxWidth }}
+          style={{ width: config.maxWidth }}
           onScroll={() => setPopup(null)}
         >
           {popup && <RoadPopup {...popup} />}

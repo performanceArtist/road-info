@@ -47,7 +47,6 @@ export default function reducer(
 
       const transform = R.pipe(
         R.findIndex(R.propEq('taskId', payload.taskId)),
-        R.tap(console.log),
         R.ifElse(R.equals(-1), addTask, transformInstance)
       );
 

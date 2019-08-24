@@ -16,10 +16,5 @@ export default async ({ startDate, endDate, kondor }: Filters) => {
   kondor && query.where({ kondor_id: kondor });
 
   const orders = await query;
-  const ids = orders.map(({ id }: { id: string }) => id);
-  const instances = await knex('measurements')
-    .select('*')
-    .whereIn('order_id', ids);
-
-  return { orders, instances };
+  return orders;
 };

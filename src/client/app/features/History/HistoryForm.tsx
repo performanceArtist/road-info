@@ -5,7 +5,7 @@ import { Form } from 'react-final-form';
 import Button from '@shared/Button/Button';
 
 import {
-  getHistory,
+  getOrders,
   setStartDate,
   setEndDate,
   setKondor
@@ -25,13 +25,13 @@ type Props = typeof mapDispatch & OwnProps;
 const History: React.FC<Props> = ({
   suggestions,
   filters,
-  getHistory,
+  getOrders,
   setStartDate,
   setEndDate,
   setKondor
 }) => {
   const handleSubmit = async (addressValues: any) => {
-    getHistory({ ...filters, ...addressValues });
+    getOrders({ ...filters, ...addressValues });
   };
 
   return (
@@ -71,7 +71,7 @@ const History: React.FC<Props> = ({
   );
 };
 
-const mapDispatch = { getHistory, setStartDate, setEndDate, setKondor };
+const mapDispatch = { getOrders, setStartDate, setEndDate, setKondor };
 
 export default connect(
   null,
