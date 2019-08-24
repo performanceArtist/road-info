@@ -1,0 +1,19 @@
+.mini-table {
+  &__row {
+    padding: 0.1rem;
+    display: flex;
+  }
+
+  &__row-name {
+    display: inline-block;
+    min-width: 4.25rem;
+  }
+
+  &__numbers {
+    display: inline-block;
+  }
+
+  &__difference {
+    color: red;
+  }
+}

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import * as R from 'ramda';
 
-import Popup from '@components/Popup/Popup';
+import RoadPopup from './RoadPopup';
 
 import {
   MeasurementInstances,
@@ -69,12 +69,15 @@ const RoadChart: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
     containerRef.current.scrollTo(
       (positionIndex / maxLength) * config.maxWidth,
       0
     );
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
 
     ctx.fillStyle = config.background;
     ctx.fillRect(0, 0, config.width, config.height);
@@ -88,19 +91,7 @@ const RoadChart: React.FC<Props> = ({
     data: Array<MeasurementData>,
     laneIndex: number
   ) => {
-    const {
-      width,
-      height,
-      fragmentWidth,
-      rectGap,
-      rectHeight,
-      lineWidth,
-      lineColor,
-      textColor,
-      textSize,
-      textFont,
-      remainderColor
-    } = config;
+    const { width, height, fragmentWidth, rectGap, rectHeight } = config;
 
     const isValid = (
       breakpoint: { start: number; finish: number } | null,
@@ -120,14 +111,85 @@ const RoadChart: React.FC<Props> = ({
     filtered.forEach((item, itemIndex) => {
       const diffIndex = diff(item);
 
-      ctx.fillStyle = diffIndex > 0 ? config.dangerColor : '#00ff00';
+      const getColor = R.cond([
+        [R.equals(0), R.always('#5CBD5C')],
+        [R.equals(1), R.always('#E3E349')],
+        [R.gte(2), R.always('#fc8888')]
+      ]);
+
+      ctx.fillStyle = getColor(diffIndex);
 
       ctx.fillRect(
         itemIndex * fragmentWidth,
-        height / 25 + laneIndex * (rectGap + rectHeight),
+        rectGap + laneIndex * (rectGap + rectHeight),
         fragmentWidth,
         rectHeight
       );
+    });
+  };
+
+  const createPopup = (event: React.MouseEvent) => {
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+    const target = event.target as HTMLElement;
+    const { left, top } = target.getBoundingClientRect();
+
+    const x = mouseX - left;
+    const y = mouseY - top;
+
+    const { fragmentWidth, rectGap, rectHeight } = config;
+
+    const inHeight = (index: number) => {
+      const ry = rectGap + index * (rectGap + rectHeight);
+      const ryh = ry + rectHeight;
+
+      return y > ry && y < ryh;
+    };
+    const lane = Object.keys(data).find((key, index) => inHeight(index));
+    if (!lane) return setPopup(null);
+
+    const laneData = data[lane];
+    const dataLength = laneData.length;
+    const rxw = dataLength * fragmentWidth;
+    const relative = x / rxw;
+    if (relative > 1) return setPopup(null);
+
+    const closestIndex = Math.floor(relative * dataLength);
+    const measurement = laneData[closestIndex];
+    const filtered = R.pick(
+      ['density', 'thickness', 'iri', 'rutting'],
+      measurement
+    );
+
+    const { lines } = chartInfo;
+
+    const isValid = (point: MeasurementData) => {
+      return Object.keys(lines).reduce((acc: PointData, key: string) => {
+        const breakpoint = lines[key].breakpoint;
+        if (!breakpoint) return acc;
+
+        if (point[key] < breakpoint.start)
+          acc.push({
+            key,
+            name: lines[key].name,
+            value: point[key],
+            difference: point[key] - breakpoint.start
+          });
+        if (point[key] > breakpoint.finish)
+          acc.push({
+            key,
+            name: lines[key].name,
+            value: point[key],
+            difference: point[key] - breakpoint.finish
+          });
+
+        return acc;
+      }, []);
+    };
+
+    setPopup({
+      coordinates: { x: mouseX - 80, y: mouseY - 75 + window.scrollY },
+      diffs: isValid(measurement)
     });
   };
 
@@ -139,17 +201,15 @@ const RoadChart: React.FC<Props> = ({
           className="road-chart__chart"
           ref={containerRef}
           style={{ maxWidth: config.maxWidth }}
+          onScroll={() => setPopup(null)}
         >
-          {popup && (
-            <Popup coordinates={popup.coordinates} error={popup.error}>
-              {popup.message}
-            </Popup>
-          )}
+          {popup && <RoadPopup {...popup} />}
           <canvas
             className="road-chart"
             ref={canvasRef}
             width={config.width}
             height={config.height}
+            onClick={createPopup}
           />
         </div>
         <div />

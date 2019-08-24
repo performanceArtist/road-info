@@ -3,6 +3,8 @@ import { useState } from 'react';
 import L from 'leaflet';
 import { Popup } from 'react-leaflet';
 
+import MiniTable from '@components/MiniTable/MiniTable';
+
 export type PointData = Array<{
   key: string;
   value: number;
@@ -42,28 +44,11 @@ const MapPopup: React.FC<Props> = ({ position, data }) => {
     );
   };
 
-  const renderTable = () => {
-    return data[tripIndex].map(({ name, value, difference }) => {
-      const diffString =
-        difference > 0 ? '+' + difference.toFixed(2) : difference.toFixed(2);
-
-      return (
-        <div className="map-popup__row">
-          <span className="map-popup__row-name">{name}:</span>
-          <span className="map-popup__numbers">
-            {value.toFixed(2)}(
-            <span className="map-popup__difference">{diffString}</span>)
-          </span>
-        </div>
-      );
-    });
-  };
-
   return (
     <Popup className="map-popup" position={position}>
       <div className="map-popup__wrapper">
         {data.length === 0 ? 'Параметры в норме' : renderSelect()}
-        {data.length !== 0 && renderTable()}
+        {data.length !== 0 && <MiniTable diffs={data[tripIndex]} />}
       </div>
     </Popup>
   );

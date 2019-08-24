@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import Modal from '@components/Modal/Modal';
 import RoadChart from '@features/Road/RoadChart';
 
-import { closeModal } from '@redux/modal/actions';
 import { MeasurementItem } from '@redux/measurements/types';
 import { ChartInfo } from '../../redux/chart/types';
 
 type OwnProps = {
   measurement: MeasurementItem;
   closestIndex: number;
+  onClose: () => void;
 };
 
 type MapState = {
@@ -23,13 +23,13 @@ const PathModal: React.FC<Props> = ({
   measurement,
   closestIndex,
   chartInfo,
-  closeModal
+  onClose
 }) => {
   const { taskId, data } = measurement;
 
   return (
-    <Modal open={true} onClose={closeModal}>
-      <Modal.Header>Задание #{taskId}</Modal.Header>
+    <Modal open={true} onClose={onClose}>
+      <Modal.Header>Просмотр</Modal.Header>
       <Modal.Content>
         <div className="path-modal">
           <RoadChart
@@ -51,9 +51,4 @@ const mapState = ({ chart }) => ({
   chartInfo: chart
 });
 
-const mapDispatch = { closeModal };
-
-export default connect(
-  mapState,
-  mapDispatch
-)(PathModal);
+export default connect(mapState)(PathModal);

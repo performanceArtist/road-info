@@ -10,6 +10,7 @@ import { Icon, IconImage } from '@components/Icon/Icon';
 import DateRange from '@components/DateRange/DateRange';
 import Button from '@shared/Button/Button';
 import MapPopup, { PointData } from './MapPopup';
+import PathModal from './PathModal';
 
 import {
   Measurements,
@@ -42,6 +43,10 @@ interface State {
   popup: null | PopupProps;
   popupCount: number;
   fullscreen: boolean;
+  pathModal: null | {
+    taskId: string;
+    closestIndex: any;
+  };
 }
 
 type MapState = {
@@ -68,7 +73,8 @@ class MapComponent extends Component<Props, State> {
       zoom: 14,
       popup: null,
       popupCount: 0,
-      fullscreen: false
+      fullscreen: false,
+      pathModal: null
     };
 
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
@@ -215,9 +221,11 @@ class MapComponent extends Component<Props, State> {
           }}
           onDoubleLineClick={(event: React.MouseEvent) => {
             oneClick = false;
-            this.props.openModal('Path', {
-              measurement,
-              closestIndex: this.getClosestIndex(event, measurement.data)
+            this.setState({
+              pathModal: {
+                taskId: measurement.taskId,
+                closestIndex: this.getClosestIndex(event, measurement.data)
+              }
             });
             this.ref.current.originalEvent.preventDefault();
           }}
@@ -321,7 +329,15 @@ class MapComponent extends Component<Props, State> {
             {this.renderMarkers()}
             {this.renderPopup()}
           </Map>
-
+          {this.state.pathModal && (
+            <PathModal
+              onClose={() => this.setState({ pathModal: null })}
+              closestIndex={this.state.pathModal.closestIndex}
+              measurement={this.props.measurements.find(
+                ({ taskId }) => taskId === this.state.pathModal.taskId
+              )}
+            />
+          )}
           <div className="map__fullscreen-button">
             <Icon image={IconImage.EXPAND} onClick={this.handleFullscreen} />
           </div>
