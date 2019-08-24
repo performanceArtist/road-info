@@ -42,9 +42,17 @@ router.get('/api/measurements', async (req, res, next) => {
   try {
     const { taskId } = req.query;
     if (!taskId) throw new Error('No task id');
-    const instances = getInstances(taskId);
+    const instances = await getInstances(taskId);
+    const instancesData = await Promise.all(
+      instances.map(instance => getMeasurements(instance.id))
+    );
 
-    res.send({ taskId, instances });
+    const measurements = instances.reduce((acc, cur, index) => {
+      acc[cur.id] = instancesData[index];
+      return acc;
+    }, {});
+
+    res.send({ taskId, data: measurements });
   } catch (error) {
     next(error);
   }
@@ -58,14 +66,14 @@ router.get('/api/history', async (req, res, next) => {
     );
     console.log(instances);
 
-    const instanceData = await Promise.all(
+    const instancesData = await Promise.all(
       instances.map(groups =>
         Promise.all(groups.map(instance => getMeasurements(instance.id)))
       )
     );
 
     const measurements = orders.map((order, index) => {
-      const allData = instanceData[index];
+      const allData = instancesData[index];
       const data = instances[index].reduce((acc, cur, instanceIndex) => {
         acc[cur.id] = allData[instanceIndex];
         return acc;

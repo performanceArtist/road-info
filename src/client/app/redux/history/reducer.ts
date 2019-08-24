@@ -24,32 +24,24 @@ export default function reducer(
 ) {
   switch (type) {
     case HISTORY.GET_ORDERS.SUCCESS: {
-      const { orders } = payload;
-
-      console.log(orders);
-      /*
-      return {
-        ...state,
-        tasks: orders,
-        instances,
-        measurements: R.map(transform, orders)
-      };*/
-      return state;
+      const tasks = payload.map(({ id }) => ({ taskId: id, data: {} }));
+      return R.merge(state, { measurements: tasks, tasks: payload });
     }
     case HISTORY.GET_MEASUREMENTS.REQUEST:
       return R.assoc('fetching', true, state);
     case HISTORY.GET_MEASUREMENTS.SUCCESS: {
-      const transform = R.assocPath(['data', payload.instanceId], payload.data);
-      const measurements = R.map(
-        R.when(R.propEq('taskId', payload.taskId), transform),
-        state.measurements
+      const transform = R.when(
+        measurement => measurement.taskId === payload.taskId,
+        R.always(payload)
       );
 
-      return {
-        ...state,
-        fetching: false,
-        measurements
-      };
+      return R.evolve(
+        {
+          measurements: R.map(transform),
+          fetching: R.F
+        },
+        state
+      );
     }
     case HISTORY.SET_START_DATE:
       return R.assocPath(['filters', 'startDate'], payload, state);

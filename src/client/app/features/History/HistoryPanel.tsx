@@ -18,7 +18,7 @@ const HistoryPanel: React.FC<Props> = ({
   fetching = false,
   fetchMeasurements
 }) => {
-  const [taskId, setTaskId] = useState(tasks[0] ? tasks[0].id : '');
+  const [taskId, setTaskId] = useState('');
 
   const taskSelect = () => {
     if (tasks.length === 0) return null;
@@ -29,7 +29,14 @@ const HistoryPanel: React.FC<Props> = ({
         <select
           name="task"
           value={taskId}
-          onChange={event => setTaskId(event.target.value)}
+          onChange={event => {
+            setTaskId(event.target.value);
+            const task = measurements.find(
+              measurement => measurement.taskId === event.target.value
+            );
+            if (Object.keys(task.data).length === 0)
+              fetchMeasurements(event.target.value);
+          }}
         >
           <option />
           {tasks.map(({ id }) => (
@@ -49,7 +56,11 @@ const HistoryPanel: React.FC<Props> = ({
   const chart = (
     <div>
       {current ? (
-        <ChartContainer key={taskId} measurements={current} />
+        <ChartContainer
+          key={taskId}
+          measurements={current}
+          fetching={fetching}
+        />
       ) : (
         <Spinner />
       )}

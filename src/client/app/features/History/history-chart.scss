@@ -1,0 +1,12 @@
+.history-chart {
+  &__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-width: 1100px;
+  }
+
+  &__chart {
+    margin: 1rem;
+  }
+}
