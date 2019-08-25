@@ -9,6 +9,7 @@ type Props = {
   options: {};
   onLineClick: Function;
   onDoubleLineClick: Function;
+  onContextMenu: Function;
 };
 
 class Multicolor extends MapLayer {
@@ -22,13 +23,14 @@ class Multicolor extends MapLayer {
       data,
       options = {},
       onLineClick,
-      onDoubleLineClick
+      onDoubleLineClick,
+      onContextMenu = () => {}
     } = this.props;
 
     const el = L.hotline(data, options).addTo(map.current.leafletElement);
     el.on('click', onLineClick);
     el.on('dblclick', onDoubleLineClick);
-
+    el.on('contextmenu', onContextMenu);
     return el;
   }
 }

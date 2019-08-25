@@ -10,6 +10,7 @@ import { Icon, IconImage } from '@components/Icon/Icon';
 import DateRange from '@components/DateRange/DateRange';
 import Button from '@shared/Button/Button';
 import MapPopup, { PointData } from './MapPopup';
+import InfoPopup from './InfoPopup';
 import PathModal from './PathModal';
 
 import {
@@ -30,6 +31,7 @@ import {
 
 import Multicolor from './Multicolor';
 import { haversine } from './helpers';
+import { Task, Tasks } from '@redux/task/types';
 
 type PopupProps = {
   position: L.LatLng;
@@ -47,10 +49,16 @@ interface State {
     taskId: string;
     closestIndex: any;
   };
+  infoPopup: null | {
+    position: L.LatLng;
+    taskId: string;
+    task: Task;
+  };
 }
 
 type MapState = {
   measurements: Measurements;
+  tasks: Tasks;
   history: MapHistory;
   chartInfo: ChartInfo;
 };
@@ -74,7 +82,8 @@ class MapComponent extends Component<Props, State> {
       popup: null,
       popupCount: 0,
       fullscreen: false,
-      pathModal: null
+      pathModal: null,
+      infoPopup: null
     };
 
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
@@ -84,6 +93,7 @@ class MapComponent extends Component<Props, State> {
     this.renderLines = this.renderLines.bind(this);
     this.addPopup = this.addPopup.bind(this);
     this.renderPopup = this.renderPopup.bind(this);
+    this.renderInfoPopup = this.renderInfoPopup.bind(this);
     this.handleFullscreen = this.handleFullscreen.bind(this);
   }
 
@@ -174,7 +184,7 @@ class MapComponent extends Component<Props, State> {
   }
 
   renderLines() {
-    const { measurements } = this.props;
+    const { measurements, tasks } = this.props;
     const colors = [
       '#ffb3b3',
       '#fc8888',
@@ -228,6 +238,15 @@ class MapComponent extends Component<Props, State> {
               }
             });
             this.ref.current.originalEvent.preventDefault();
+          }}
+          onContextMenu={(event: React.MouseEvent) => {
+            this.setState({
+              infoPopup: {
+                position: event.latlng,
+                taskId: measurement.taskId,
+                task: tasks.find(task => task.id === measurement.taskId)
+              }
+            });
           }}
         />
       );
@@ -302,6 +321,14 @@ class MapComponent extends Component<Props, State> {
     return <MapPopup key={popupCount} {...popup} />;
   }
 
+  renderInfoPopup() {
+    const { infoPopup, popupCount } = this.state;
+
+    if (!infoPopup) return null;
+
+    return <InfoPopup key={infoPopup.position.lat} {...infoPopup} />;
+  }
+
   handleFullscreen() {
     this.setState({ fullscreen: !this.state.fullscreen }, () =>
       this.ref.current.leafletElement.invalidateSize()
@@ -328,6 +355,7 @@ class MapComponent extends Component<Props, State> {
             {this.renderLines()}
             {this.renderMarkers()}
             {this.renderPopup()}
+            {this.renderInfoPopup()}
           </Map>
           {this.state.pathModal && (
             <PathModal
@@ -376,10 +404,12 @@ class MapComponent extends Component<Props, State> {
 
 const mapState = ({
   measurements,
+  tasks,
   chart,
   map: { mode, history, historyMeasurements }
 }: RootState) => ({
   measurements: mode === 'realTime' ? measurements : historyMeasurements,
+  tasks: tasks.tasks,
   history,
   chartInfo: chart
 });
