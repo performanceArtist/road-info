@@ -43,7 +43,6 @@ interface State {
   lng: number;
   zoom: number;
   popup: null | PopupProps;
-  popupCount: number;
   fullscreen: boolean;
   pathModal: null | {
     taskId: string;
@@ -80,7 +79,6 @@ class MapComponent extends Component<Props, State> {
       lng: 84.950367,
       zoom: 14,
       popup: null,
-      popupCount: 0,
       fullscreen: false,
       pathModal: null,
       infoPopup: null
@@ -270,7 +268,6 @@ class MapComponent extends Component<Props, State> {
       measurements,
       chartInfo: { lines }
     } = this.props;
-    const { popupCount } = this.state;
     const data = measurements[index].data;
     const closestIndex = this.getClosestIndex(event, data);
     const points = Object.keys(data)
@@ -305,7 +302,6 @@ class MapComponent extends Component<Props, State> {
     const diffs = points.map(isValid).filter(el => el.length !== 0);
 
     this.setState({
-      popupCount: popupCount + 1,
       popup: {
         position: event.latlng,
         data: diffs
@@ -314,15 +310,15 @@ class MapComponent extends Component<Props, State> {
   }
 
   renderPopup() {
-    const { popup, popupCount } = this.state;
+    const { popup } = this.state;
 
     if (!popup) return null;
 
-    return <MapPopup key={popupCount} {...popup} />;
+    return <MapPopup key={popup.position.lat} {...popup} />;
   }
 
   renderInfoPopup() {
-    const { infoPopup, popupCount } = this.state;
+    const { infoPopup } = this.state;
 
     if (!infoPopup) return null;
 

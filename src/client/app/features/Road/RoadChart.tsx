@@ -82,7 +82,7 @@ const RoadChart: React.FC<Props> = ({
     ctx.fillStyle = config.background;
     ctx.fillRect(0, 0, config.width, config.height);
     Object.keys(data).forEach((key, index) => draw(ctx, data[key], index));
-  });
+  }, [data]);
 
   const [popup, setPopup] = useState(null);
 

@@ -12,7 +12,7 @@ const MiniTable: React.FC<Props> = ({ diffs }) => {
       difference > 0 ? '+' + difference.toFixed(2) : difference.toFixed(2);
 
     return (
-      <div className="mini-table__row">
+      <div className="mini-table__row" key={name}>
         <span className="mini-table__row-name">{name}:</span>
         <span className="mini-table__numbers">
           {value.toFixed(2)}(
