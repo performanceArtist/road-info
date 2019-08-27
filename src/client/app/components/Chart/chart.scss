@@ -24,6 +24,13 @@
     padding: 0;
   }
 
+  &_big-preview &__wrapper {
+    resize: none;
+    width: 85vw;
+    height: 180px;
+    padding: 0;
+  }
+
   &_big &__wrapper {
     min-width: 80vw;
     min-height: 600px;

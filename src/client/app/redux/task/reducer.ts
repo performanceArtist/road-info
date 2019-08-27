@@ -57,9 +57,10 @@ export default function reducer(
 
       return {
         tasks,
-        instances: R.assoc(
-          payload.id,
-          { date: new Date(), ...payload },
+        instances: R.evolve(
+          {
+            [payload.id]: R.append({ date: new Date(), ...payload })
+          },
           state.instances
         )
       };

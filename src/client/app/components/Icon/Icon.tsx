@@ -13,6 +13,7 @@ export enum IconImage {
   TABLE = 'table.png',
   GRAPH = 'graph.png',
   EXPAND = 'expand.png',
+  EXPAND_HOR = 'expand-hor.png',
   COMPASS = 'compass.png',
   WIFI = 'wifi.png',
   ARROWS = 'arrows.png',

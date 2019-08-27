@@ -38,6 +38,7 @@ const CompositeChart: React.FC<Props> = ({
 }) => {
   const [currentTask, setcurrentTask] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
+  const [bigPreviews, setBigPreviews] = useState([]);
   const [tables, setTables] = useState([]);
   const [info, setInfo] = useState([]);
   const [instances, setInstances] = useState(
@@ -54,6 +55,14 @@ const CompositeChart: React.FC<Props> = ({
     const keys = Object.keys(data);
 
     return keys.some(key => data[key].length !== 0);
+  };
+
+  const toggleExpand = (id: string) => {
+    if (bigPreviews.indexOf(id) !== -1) {
+      setBigPreviews(bigPreviews.filter(listId => id !== listId));
+    } else {
+      setBigPreviews(bigPreviews.concat(id));
+    }
   };
 
   const toggleInfo = (newId: string) => {
@@ -110,6 +119,7 @@ const CompositeChart: React.FC<Props> = ({
         onExpandIconClick={() => setcurrentTask(id)}
         onGraphIconClick={() => setTables(tables.filter(el => el !== id))}
         onTableIconClick={() => setTables(tables.concat(id))}
+        onHorExpandClick={() => toggleExpand(id)}
       />
     );
   };
@@ -124,7 +134,11 @@ const CompositeChart: React.FC<Props> = ({
 
     return (
       <div className="composite-chart__preview-container">
-        <ChartPreview chartInfo={chartInfo} data={lastData} />
+        <ChartPreview
+          chartInfo={chartInfo}
+          data={lastData}
+          expand={bigPreviews.indexOf(taskId) !== -1}
+        />
         {getFooter('preview', taskId)}
       </div>
     );

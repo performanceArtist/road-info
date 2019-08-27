@@ -23,7 +23,7 @@ type OwnProps = {
   keyX: string;
   keyY: string;
   data: Array<DataType>;
-  modifier?: 'default' | 'preview' | 'big';
+  modifier?: 'default' | 'big-preview' | 'preview' | 'big';
   maxTicks?: number;
   name?: string;
   units?: string;
