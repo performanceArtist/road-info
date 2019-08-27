@@ -113,6 +113,8 @@ class MapComponent extends Component<Props, State> {
     const max = Math.max(...lengths);
     const { chartInfo } = this.props;
 
+    if (instances.length === 0) return [];
+
     const sum = (param: string, index: number) =>
       instances.reduce(
         (acc, key) => (data[key][index] ? acc + data[key][index][param] : acc),

@@ -1,5 +1,4 @@
 import * as express from 'express';
-import * as R from 'ramda';
 
 const router = express.Router();
 
@@ -46,13 +45,15 @@ router.get('/api/measurements', async (req, res, next) => {
     const instancesData = await Promise.all(
       instances.map(instance => getMeasurements(instance.id))
     );
-
-    const measurements = instances.reduce((acc, cur, index) => {
-      acc[cur.id] = instancesData[index];
+    const sorted = instancesData.map(instance =>
+      instance.sort((a, b) => a.distance - b.distance)
+    );
+    const data = instances.reduce((acc, cur, index) => {
+      acc[cur.id] = sorted[index];
       return acc;
     }, {});
 
-    res.send({ taskId, data: measurements });
+    res.send({ taskId, data });
   } catch (error) {
     next(error);
   }

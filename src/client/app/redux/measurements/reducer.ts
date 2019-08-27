@@ -47,7 +47,7 @@ export default function reducer(
 
       const transform = R.pipe(
         R.findIndex(R.propEq('taskId', payload.taskId)),
-        R.ifElse(R.equals(-1), addTask, transformInstance)
+        R.ifElse(R.equals(-1), R.always(addTask(state)), transformInstance)
       );
 
       return transform(state);
