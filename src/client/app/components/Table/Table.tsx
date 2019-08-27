@@ -5,19 +5,39 @@ import Pagination from './Pagination';
 
 import { ChartInfo } from '@redux/chart/types';
 
+type Alias = {
+  [key: string]: Array<string>;
+};
+
 type Props = {
   data: Array<{ [key: string]: number }>;
   chartInfo: ChartInfo;
+  alias?: Alias;
   maxRows?: number;
 };
 
-const Table: React.FC<Props> = ({ data = [], maxRows = 10, chartInfo }) => {
+const Table: React.FC<Props> = ({
+  data = [],
+  chartInfo,
+  maxRows = 10,
+  alias = {}
+}) => {
   const [bounds, setBounds] = useState({ start: 0, finish: maxRows });
 
   if (data.length === 0) return null;
 
   const handlePaginationClick = (index: number) => {
     setBounds({ start: index * maxRows, finish: (index + 1) * maxRows });
+  };
+
+  const resolveAlias = (key: string) => {
+    if (chartInfo.lines.hasOwnProperty(key)) return key;
+
+    console.log(key);
+    return Object.keys(alias).reduce((acc, cur) => {
+      if (alias[cur].indexOf(key) !== -1) return cur;
+      return acc;
+    }, '');
   };
 
   const isValid = (
@@ -27,28 +47,36 @@ const Table: React.FC<Props> = ({ data = [], maxRows = 10, chartInfo }) => {
     breakpoint ? value > breakpoint.start && value < breakpoint.finish : true;
 
   const cells = (item: { [key: string]: number }) =>
-    Object.keys(item).map(key => (
-      <td
-        className={
-          isValid(
-            chartInfo.lines[key] ? chartInfo.lines[key].breakpoint : null,
-            item[key]
-          )
-            ? 'table__cell'
-            : 'table__cell table__cell_invalid'
-        }
-      >
-        {item[key]}
-      </td>
-    ));
+    Object.keys(item).map(rawKey => {
+      const key = resolveAlias(rawKey);
 
-  const titles = Object.keys(data[0]).map(key => (
-    <th className="table__head-cell">
-      {chartInfo.lines[key]
-        ? `${chartInfo.lines[key].name}, ${chartInfo.lines[key].units}`
-        : `${chartInfo.xAxis.name}, ${chartInfo.xAxis.units}`}
-    </th>
-  ));
+      return (
+        <td
+          className={
+            isValid(
+              chartInfo.lines[key] ? chartInfo.lines[key].breakpoint : null,
+              item[rawKey]
+            )
+              ? 'table__cell'
+              : 'table__cell table__cell_invalid'
+          }
+        >
+          {item[rawKey]}
+        </td>
+      );
+    });
+
+  const titles = Object.keys(data[0]).map(rawKey => {
+    const key = resolveAlias(rawKey);
+
+    return (
+      <th className="table__head-cell">
+        {chartInfo.lines[key]
+          ? `${chartInfo.lines[key].name}, ${chartInfo.lines[key].units}`
+          : `${chartInfo.xAxis.name}, ${chartInfo.xAxis.units}`}
+      </th>
+    );
+  });
 
   const rows = data
     .filter((item, index) => index >= bounds.start && index < bounds.finish)
