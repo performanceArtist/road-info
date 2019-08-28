@@ -1,6 +1,13 @@
 .history-form {
+  &__form {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 37rem;
+  }
+
   &__date-container {
-    margin-top: 0.5rem;
+    margin-right: 1rem;
   }
 
   &__submit {

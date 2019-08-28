@@ -23,6 +23,7 @@ const HistoryChart: React.FC<Props> = ({
   fetching
 }) => {
   const [tables, setTables] = useState([]);
+  const [bigPreviews, setBigPreviews] = useState([]);
 
   const keys = ['iri', 'rutting', 'thickness', 'density', 'distance'];
   const dataKeys = Object.keys(data);
@@ -42,7 +43,7 @@ const HistoryChart: React.FC<Props> = ({
   const getPreview = (keyY: string, data: Array<MeasurementData>) => (
     <div className="chart-preview__chart" key={Math.random()}>
       <Chart
-        modifier="preview"
+        modifier={bigPreviews.indexOf(keyY) !== -1 ? 'big-preview' : 'preview'}
         keyX={chartInfo.xAxis.key}
         keyY={keyY}
         data={data}
@@ -65,6 +66,14 @@ const HistoryChart: React.FC<Props> = ({
       }));
       return getPreview(key, data);
     });
+
+  const toggleExpand = (key: string) => {
+    if (bigPreviews.indexOf(key) !== -1) {
+      setBigPreviews(bigPreviews.filter(listKey => listKey !== key));
+    } else {
+      setBigPreviews(bigPreviews.concat(key));
+    }
+  };
 
   const getTable = (key: string) => {
     const distance = R.reduce(
@@ -107,6 +116,7 @@ const HistoryChart: React.FC<Props> = ({
             setTables(tables.filter(listKey => listKey !== key))
           }
           onTableIconClick={() => setTables(tables.concat(key))}
+          onHorExpandClick={() => toggleExpand(key)}
         />
       </div>
     </div>

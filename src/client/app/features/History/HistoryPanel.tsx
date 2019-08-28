@@ -24,7 +24,7 @@ const HistoryPanel: React.FC<Props> = ({
     if (tasks.length === 0) return null;
 
     return (
-      <>
+      <div className="history-panel__select">
         Задание #
         <select
           name="task"
@@ -45,7 +45,7 @@ const HistoryPanel: React.FC<Props> = ({
             </option>
           ))}
         </select>
-      </>
+      </div>
     );
   };
 

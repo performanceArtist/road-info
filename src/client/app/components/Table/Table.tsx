@@ -33,7 +33,6 @@ const Table: React.FC<Props> = ({
   const resolveAlias = (key: string) => {
     if (chartInfo.lines.hasOwnProperty(key)) return key;
 
-    console.log(key);
     return Object.keys(alias).reduce((acc, cur) => {
       if (alias[cur].indexOf(key) !== -1) return cur;
       return acc;
@@ -43,9 +42,12 @@ const Table: React.FC<Props> = ({
   const isValid = (
     breakpoint: { start: number; finish: number } | null,
     value: number
-  ) =>
-    breakpoint ? value > breakpoint.start && value < breakpoint.finish : true;
-
+  ) => {
+    if (value === '') return true;
+    return breakpoint
+      ? value > breakpoint.start && value < breakpoint.finish
+      : true;
+  };
   const cells = (item: { [key: string]: number }) =>
     Object.keys(item).map(rawKey => {
       const key = resolveAlias(rawKey);

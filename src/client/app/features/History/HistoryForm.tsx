@@ -2,6 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { Form } from 'react-final-form';
+
+import Input from '@shared/Input/Input';
 import Button from '@shared/Button/Button';
 
 import {
@@ -40,20 +42,22 @@ const History: React.FC<Props> = ({
         onSubmit={handleSubmit}
         initialValues={{ kondor: filters.kondor }}
         render={({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
+          <form className="history-form__form" onSubmit={handleSubmit}>
             <DateRange
               startDate={filters.startDate}
               endDate={filters.endDate}
               onStartChange={setStartDate}
               onEndChange={setEndDate}
             />
-            <div>Кондор</div>
-            <input
-              name="kondor"
-              type="number"
-              value={filters.kondor}
-              onChange={event => setKondor(event.target.value)}
-              step={1}
+            <Input
+              label="Кондор"
+              props={{
+                name: 'kondor',
+                type: 'number',
+                value: filters.kondor,
+                onChange: event => setKondor(event.target.value),
+                step: 1
+              }}
             />
             {/*
             <AddressInputs
