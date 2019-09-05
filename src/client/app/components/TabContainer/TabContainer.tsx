@@ -51,4 +51,22 @@ const TabContainer: React.FC<Props> = ({
   );
 };
 
+/*
+export const Tab = ({ children }) => (
+  <div
+    className={'tab-container__tab'}
+    style={
+      tab === currentTab
+        ? {
+            background: contentBackground,
+            boxShadow: `0 2px 1px -1px ${contentBackground}`
+          }
+        : null
+    }
+    onClick={() => handleClick(tab)}
+  >
+    {children}
+  </div>
+);*/
+
 export default TabContainer;

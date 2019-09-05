@@ -22,8 +22,8 @@ class Multicolor extends MapLayer {
       map,
       data,
       options = {},
-      onLineClick,
-      onDoubleLineClick,
+      onLineClick = () => {},
+      onDoubleLineClick = () => {},
       onContextMenu = () => {}
     } = this.props;
 

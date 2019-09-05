@@ -82,9 +82,20 @@ const RoadChart: React.FC<Props> = ({
     ctx.fillStyle = config.background;
     ctx.fillRect(0, 0, config.width, config.height);
     Object.keys(data).forEach((key, index) => draw(ctx, data[key], index));
+    addDistance(ctx);
   }, [data]);
 
   const [popup, setPopup] = useState(null);
+
+  const addDistance = (ctx: CanvasRenderingContext2D) => {
+    const getMax = R.pipe(
+      R.values,
+      R.reduce((acc, cur) => (cur.length > acc.length ? cur : acc), [])
+    );
+    const distance = getMax(data);
+    const range = distance[distance.length - 1].distance - distance[0].distance;
+
+  };
 
   const draw = (
     ctx: CanvasRenderingContext2D,

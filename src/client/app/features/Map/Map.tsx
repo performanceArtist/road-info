@@ -12,6 +12,8 @@ import Button from '@shared/Button/Button';
 import MapPopup, { PointData } from './MapPopup';
 import InfoPopup from './InfoPopup';
 import PathModal from './PathModal';
+import track from './track';
+import minTrack from './minTrack';
 
 import {
   Measurements,
@@ -253,6 +255,46 @@ class MapComponent extends Component<Props, State> {
     });
   }
 
+  renderLineTest() {
+    const colors = [
+      '#ffb3b3',
+      '#fc8888',
+      '#ff5252',
+      '#ff1f1f',
+      '#ffffff',
+      '#7BD47B',
+      '#5CBD5C',
+      '#00A000'
+    ];
+    const length = colors.length;
+    const palette = colors.reduce(
+      (acc: { [key: number]: string }, color, index) => {
+        acc[index / length] = color;
+        return acc;
+      },
+      {}
+    );
+    const data = track.map(({ latitude, longitude }) =>
+      L.latLng(latitude, longitude, 0)
+    );
+
+    return (
+      <Multicolor
+        map={this.ref}
+        key={Math.random()}
+        data={data}
+        options={{
+          outlineColor: 'black',
+          weight: 7,
+          outlineWidth: 1,
+          min: 1,
+          max: 8,
+          smoothFactor: 1
+        }}
+      />
+    );
+  }
+
   getClosestIndex(event, data) {
     const combined = this.getCombined(data).map(({ lat, lng }) => ({
       latitude: lat,
@@ -351,6 +393,7 @@ class MapComponent extends Component<Props, State> {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {this.renderLines()}
+            {this.renderLineTest()}
             {this.renderMarkers()}
             {this.renderPopup()}
             {this.renderInfoPopup()}

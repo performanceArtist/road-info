@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 type Props = {
   coordinates: { x: number; y: number };
@@ -15,16 +15,6 @@ const Popup: React.FC<Props> = ({
   const [coords, setCoords] = useState(coordinates);
   const ref = React.createRef();
 
-  /*  
-  useEffect(() => {
-    const { x, y } = coords;
-    const element = ref.current as HTMLElement;
-    setCoords({
-      x: x,
-      y: y - 56
-    });
-  }, []);
-*/
   return (
     <div
       ref={ref}
