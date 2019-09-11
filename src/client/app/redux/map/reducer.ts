@@ -14,7 +14,8 @@ const initialState: MapData = {
     startDate: yesterday,
     endDate: today
   },
-  historyMeasurements: []
+  historyMeasurements: [],
+  testTrack: []
 };
 
 export default function reducer(
@@ -32,6 +33,11 @@ export default function reducer(
       return {
         ...state,
         historyMeasurements: payload
+      };
+    case MAP.GET_TRACK.SUCCESS:
+      return {
+        ...state,
+        testTrack: payload
       };
     default:
       return state;

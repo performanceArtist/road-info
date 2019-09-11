@@ -10,4 +10,5 @@ export type MapData = {
   mode: 'history' | 'realTime';
   history: MapHistory;
   historyMeasurements: Measurements;
+  testTrack: Array<{ latitude: number; longitude: number }>;
 };

@@ -6,6 +6,11 @@ export const MAP = {
     REQUEST: 'MAP.GET_HISTORY.REQUEST',
     SUCCESS: 'MAP.GET_HISTORY.SUCCESS',
     FAILURE: 'MAP.GET_HISTORY.FAILURE'
+  },
+  GET_TRACK: {
+    REQUEST: 'MAP.GET_TRACK.REQUEST',
+    SUCCESS: 'MAP.GET_TRACK.SUCCESS',
+    FAILURE: 'MAP.GET_TRACK.FAILURE'
   }
 };
 
@@ -28,3 +33,5 @@ export const getHistory = (formData: { [key: string]: string | number }) => ({
   type: MAP.GET_HISTORY.REQUEST,
   payload: formData
 });
+
+export const getTrack = () => ({ type: MAP.GET_TRACK.REQUEST });

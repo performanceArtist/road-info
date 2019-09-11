@@ -12,8 +12,6 @@ import Button from '@shared/Button/Button';
 import MapPopup, { PointData } from './MapPopup';
 import InfoPopup from './InfoPopup';
 import PathModal from './PathModal';
-import track from './track';
-import minTrack from './minTrack';
 
 import {
   Measurements,
@@ -28,7 +26,8 @@ import {
   setStartDate,
   setEndDate,
   setMode,
-  getHistory
+  getHistory,
+  getTrack
 } from '@redux/map/actions';
 
 import Multicolor from './Multicolor';
@@ -61,6 +60,7 @@ type MapState = {
   measurements: Measurements;
   tasks: Tasks;
   history: MapHistory;
+  testTrack: Array<{ latitude: number; longitude: number }>;
   chartInfo: ChartInfo;
 };
 
@@ -256,25 +256,12 @@ class MapComponent extends Component<Props, State> {
   }
 
   renderLineTest() {
-    const colors = [
-      '#ffb3b3',
-      '#fc8888',
-      '#ff5252',
-      '#ff1f1f',
-      '#ffffff',
-      '#7BD47B',
-      '#5CBD5C',
-      '#00A000'
-    ];
-    const length = colors.length;
-    const palette = colors.reduce(
-      (acc: { [key: number]: string }, color, index) => {
-        acc[index / length] = color;
-        return acc;
-      },
-      {}
-    );
-    const data = track.map(({ latitude, longitude }) =>
+    if (this.props.testTrack.length === 0) {
+      this.props.getTrack();
+      return null;
+    }
+
+    const data = this.props.testTrack.map(({ latitude, longitude }) =>
       L.latLng(latitude, longitude, 0)
     );
 
@@ -447,11 +434,12 @@ const mapState = ({
   measurements,
   tasks,
   chart,
-  map: { mode, history, historyMeasurements }
+  map: { mode, history, historyMeasurements, testTrack }
 }: RootState) => ({
   measurements: mode === 'realTime' ? measurements : historyMeasurements,
   tasks: tasks.tasks,
   history,
+  testTrack,
   chartInfo: chart
 });
 
@@ -460,7 +448,8 @@ const mapDispatch = {
   setStartDate,
   setEndDate,
   setMode,
-  getHistory
+  getHistory,
+  getTrack
 };
 
 export default connect(

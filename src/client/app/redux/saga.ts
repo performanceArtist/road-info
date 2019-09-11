@@ -7,6 +7,7 @@ import socket from './io/socket';
 import history from './history/saga';
 import getMeasurements from './history/getMeasurements';
 import map from './map/saga';
+import mapTrack from './map/track';
 
 export default function* rootSaga() {
   yield all([
@@ -16,6 +17,7 @@ export default function* rootSaga() {
     generate(),
     history(),
     getMeasurements(),
-    map()
+    map(),
+    mapTrack()
   ]);
 }

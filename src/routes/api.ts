@@ -1,4 +1,5 @@
 import * as express from 'express';
+const path = require('path');
 
 const router = express.Router();
 
@@ -87,6 +88,10 @@ router.get('/api/history', async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+});
+
+router.get('/api/track', (req, res) => {
+  res.sendFile(path.resolve('src/track/result.json'));
 });
 
 export default router;
