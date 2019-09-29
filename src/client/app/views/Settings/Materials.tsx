@@ -2,8 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import uuid from 'short-uuid';
 
-import Button from '@shared/Button/Button';
-import { openModal } from '@redux/modal/actions';
+import { Button } from '@shared/view';
+import { openModal } from '@features/Modal/redux/actions';
 
 type OwnProps = {
   materials: Array<{ name: string; density: number }>;

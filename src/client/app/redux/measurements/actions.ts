@@ -1,4 +1,4 @@
-import { DataItem } from './types';
+import { MeasurementData } from '@shared/types';
 
 export const MEASUREMENTS = {
   ADD: 'MEASUREMENTS.ADD',
@@ -12,7 +12,7 @@ export const MEASUREMENTS = {
 export const addMeasurement = (payload: {
   taskId: string;
   instanceId: string;
-  data: DataItem;
+  data: MeasurementData;
 }) => ({
   type: MEASUREMENTS.ADD,
   payload

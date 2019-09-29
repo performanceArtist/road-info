@@ -9,7 +9,7 @@ const router = express.Router();
 
 import knex from '@root/connection';
 import config from '@root/config';
-import App from '@root/client/login/app';
+import App from '@root/client/login/App';
 import render from '@root/utils/render';
 
 router.get('/login', (req, res) => {

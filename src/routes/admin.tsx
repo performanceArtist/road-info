@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 const path = require('path');
 const router = express.Router();
 
-import App from '@root/client/admin/app';
+import App from '@root/client/admin/App';
 import render from '@root/utils/render';
 import { User } from '@root/models/User';
 

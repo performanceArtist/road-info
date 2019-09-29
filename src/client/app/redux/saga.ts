@@ -1,13 +1,11 @@
 import { all } from 'redux-saga/effects';
 
-import task from './task/saga';
+import { saga as task } from '@features/Task/redux';
+import { getMeasurementsSaga, getOrdersSaga } from '@features/History/redux';
+import { mapSaga, mapTrackSaga } from '@features/Map/redux';
 import suggest from './suggestion/saga';
 import generate from './measurements/saga';
 import socket from './io/socket';
-import history from './history/saga';
-import getMeasurements from './history/getMeasurements';
-import map from './map/saga';
-import mapTrack from './map/track';
 
 export default function* rootSaga() {
   yield all([
@@ -15,9 +13,9 @@ export default function* rootSaga() {
     task(),
     suggest(),
     generate(),
-    history(),
-    getMeasurements(),
-    map(),
-    mapTrack()
+    getMeasurementsSaga(),
+    getOrdersSaga(),
+    mapSaga(),
+    mapTrackSaga()
   ]);
 }

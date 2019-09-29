@@ -3,13 +3,10 @@ import { useState } from 'react';
 
 import { connect } from 'react-redux';
 
-import Form from '@shared/Form/Form';
-import Input from '@shared/Input/Input';
-import Button from '@shared/Button/Button';
+import { Form, Input, Button } from '@shared/view';
 import Dropdown from '@components/Dropdown/Dropdown';
-
-import { saveChartSettings } from '@redux/chart/actions';
-import { ChartInfo } from '@redux/chart/types';
+import { saveChartSettings } from '@features/CompositeChart/redux/actions';
+import { ChartInfo } from '@shared/types';
 import { RootState } from '@redux/reducer';
 
 type MapState = {

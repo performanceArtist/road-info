@@ -12,7 +12,7 @@ import {
 
 import { IO } from './actions';
 import { addMeasurement } from '../measurements/actions';
-import { addTask, updateTask } from '../task/actions';
+import { addTask, updateTask } from '@features/Task/redux/actions';
 
 class Socket {
   private _url: string;

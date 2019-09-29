@@ -2,8 +2,9 @@ import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { hot } from 'react-hot-loader/root';
 
+import { ModalManager } from '@features/Modal';
+
 import Header from './layout/Header/Header';
-import ModalManager from './layout/ModalManager/ModalManager';
 import StatusBar from './layout/StatusBar/StatusBar';
 import Footer from './layout/Footer/Footer';
 import StartChannel from './layout/StartChannel/StartChannel';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import History from '@features/History/History';
+import { History } from '@features/History';
 
 const HistoryView = () => (
   <div className="history-view">

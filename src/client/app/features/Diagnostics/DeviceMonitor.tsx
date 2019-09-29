@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Button from '@shared/Button/Button';
+import { Button } from '@shared/view';
 import { Icon, IconImage } from '@components/Icon/Icon';
 
 export type DeviceMonitorProps = {

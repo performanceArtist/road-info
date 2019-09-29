@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { Field } from 'react-final-form';
-import FinalInput from '@shared/FinalInput/FinalInput';
+import { FinalInput } from '@shared/view';
 
 type Suggestion = {
   value: string;

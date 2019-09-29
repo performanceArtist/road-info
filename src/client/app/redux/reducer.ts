@@ -1,14 +1,15 @@
 import { combineReducers } from 'redux';
 import { StateType } from 'typesafe-actions';
 
-import modals from './modal/reducer';
+import { reducer as modals } from '@features/Modal/redux';
+import { reducer as chart } from '@features/CompositeChart/redux';
+import { reducer as tasks } from '@features/Task/redux';
+import { reducer as history } from '@features/History/redux';
+import { reducer as map } from '@features/Map/redux';
+
 import io from './io/reducer';
 import measurements from './measurements/reducer';
-import chart from './chart/reducer';
-import tasks from './task/reducer';
 import suggestions from './suggestion/reducer';
-import history from './history/reducer';
-import map from './map/reducer';
 
 const rootReducer = combineReducers({
   modals,

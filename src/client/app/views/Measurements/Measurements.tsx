@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import CompositeChart from '@features/CompositeChart/containers/container';
+import { ChartContainer } from '@features/CompositeChart';
 
 const Measurements: React.FC = () => {
   return (
     <div className="measurements-view">
-      <CompositeChart />
+      <ChartContainer />
     </div>
   );
 };

@@ -3,9 +3,7 @@ import { useState } from 'react';
 
 import axios from 'axios';
 
-import Form from '@shared/Form/Form';
-import Input from '@shared/Input/Input';
-import Button from '@shared/Button/Button';
+import { Form, Input, Button } from '@shared/view';
 
 interface UserType {
   login: string;

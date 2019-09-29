@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import Modal from '@components/Modal/Modal';
+import { Modal } from '@features/Modal';
 import { IconImage } from '@components/Icon/Icon';
 import DeviceInfo from './DeviceInfo';
 import DeviceMonitor, { DeviceMonitorProps } from './DeviceMonitor';
 
-import { closeModal } from '@redux/modal/actions';
+import { closeModal } from '@features/Modal/redux/actions';
 
 type OwnProps = {
   id: string;

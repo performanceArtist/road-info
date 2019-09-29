@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 
 import { MEASUREMENTS } from './actions';
-import { Measurements, MeasurementItem } from './types';
+import { MeasurementData, MeasurementItem } from '@shared/types';
 
 import testData from './testData';
 
