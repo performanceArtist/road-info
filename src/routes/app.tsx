@@ -10,7 +10,7 @@ const router = express.Router();
 
 import routes from '@root/client/app/routes';
 import createStore from '@root/client/app/store';
-import App from '@root/client/app/app';
+import App from '@root/client/app/App';
 import render from '@root/utils/render';
 import config from '@root/config';
 import knex from '@root/connection';
