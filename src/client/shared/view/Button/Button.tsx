@@ -1,12 +1,13 @@
 import * as React from 'react';
 
-type Props = {
-  type?: 'button' | 'submit';
-  onClick?: (event?: React.MouseEvent) => void;
-  disabled?: boolean;
-};
+type Props = {};
 
-const Button: React.FC<Props> = ({
+type RawButtonProps = React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+>;
+
+const Button: React.FC<Props & RawButtonProps> = ({
   onClick = () => {},
   disabled = false,
   type = 'button',

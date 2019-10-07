@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import Pagination from './Pagination';
 
-import { ChartInfo } from '@redux/chart/types';
+import { ChartInfo } from '@shared/types';
 
 type Alias = {
   [key: string]: Array<string>;
@@ -43,7 +43,7 @@ const Table: React.FC<Props> = ({
     breakpoint: { start: number; finish: number } | null,
     value: number
   ) => {
-    if (value === '') return true;
+    if (!value) return true;
     return breakpoint
       ? value > breakpoint.start && value < breakpoint.finish
       : true;

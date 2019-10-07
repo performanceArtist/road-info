@@ -1,12 +1,11 @@
 .input {
   display: block;
-  text-align: left;
+  margin-bottom: 0.5rem;
 
   &__label {
     font-size: 1rem;
-    padding: 0.7rem;
-    padding-left: 0;
-    padding-top: 0;
+    display: block;
+    margin: 0.5rem;
   }
 
   &__input {
@@ -14,7 +13,6 @@
     padding: 0.5rem 0.5rem;
     border-radius: 0.3rem;
     font-size: 1rem;
-    width: 100%;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;

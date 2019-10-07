@@ -60,7 +60,14 @@ const AddressInputs: React.FC<Props> = ({
     }
   };
 
-  const inputs = [
+  type InputData = {
+    name: string;
+    label: string;
+    value?: any;
+    required?: boolean;
+  }
+
+  const inputs: InputData[] = [
     { name: 'region', label: 'Область' },
     {
       name: 'city',
@@ -97,7 +104,7 @@ const AddressInputs: React.FC<Props> = ({
     getSuggestion({ form, name, value });
   };
 
-  const handleSuggestionClick = ({ name, value, id }) => {
+  const handleSuggestionClick = ({ name, value, id }: HTMLInputElement) => {
     addLast({ form, name, value, id });
     addConstraints(name);
   };

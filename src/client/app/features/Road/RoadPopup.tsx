@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import MiniTable from '@components/MiniTable/MiniTable';
-import { PointData } from '@features/Map/MapPopup';
+import MiniTable from '@shared/view/MiniTable/MiniTable';
+import { PointData } from '@shared/types';
 
 type Props = {
   coordinates: { x: number; y: number };
-  diffs: PointData;
+  diffs: PointData[];
 };
 
 const RoadPopup: React.FC<Props> = ({ coordinates: { x, y }, diffs }) => {

@@ -9,16 +9,17 @@ import L from 'leaflet';
 import { Icon, IconImage } from '@components/Icon/Icon';
 import DateRange from '@components/DateRange/DateRange';
 import { Button } from '@shared/view';
-import MapPopup, { PointData } from './MapPopup';
+import {
+  MeasurementData,
+  MeasurementInstances,
+  ChartInfo,
+  PointData
+} from '@shared/types';
+
+import MapPopup from './MapPopup';
 import InfoPopup from './InfoPopup';
 import PathModal from './PathModal';
 
-import {
-  Measurements,
-  MeasurementData,
-  MeasurementInstances
-} from '@redux/measurements/types';
-import { ChartInfo } from '@redux/chart/types';
 import { MapHistory } from '../redux/types';
 import { RootState } from '@redux/reducer';
 import { openModal } from '@features/Modal/redux/actions';
@@ -36,7 +37,7 @@ import { Task } from '@shared/types';
 
 type PopupProps = {
   position: L.LatLng;
-  data: Array<PointData>;
+  data: PointData[];
 };
 
 interface State {
@@ -57,7 +58,7 @@ interface State {
 }
 
 type MapState = {
-  measurements: Measurements;
+  measurements: MeasurementData[];
   tasks: Task[];
   history: MapHistory;
   testTrack: Array<{ latitude: number; longitude: number }>;
@@ -307,7 +308,7 @@ class MapComponent extends Component<Props, State> {
 
     const lineKeys = Object.keys(lines);
     const isValid = (point: MeasurementData) => {
-      return lineKeys.reduce((acc: PointData, key: string) => {
+      return lineKeys.reduce((acc: PointData[], key: string) => {
         const breakpoint = lines[key].breakpoint;
         if (!breakpoint) return acc;
 

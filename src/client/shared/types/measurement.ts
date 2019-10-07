@@ -18,3 +18,10 @@ export interface MeasurementItem {
   data: MeasurementInstances;
   [key: string]: string | MeasurementInstances;
 }
+
+export type PointData = {
+  key: string;
+  value: number;
+  name: string;
+  difference: number;
+};

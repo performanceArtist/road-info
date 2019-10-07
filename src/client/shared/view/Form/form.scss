@@ -8,7 +8,16 @@
     }
   }
 
+  &__header {
+    font-size: 1.25rem;
+    text-align: center;
+    padding: 1rem;
+    font-weight: bold;
+  }
+
   &__footer {
+    padding: 0.5rem;
+    padding-right: 0;
     text-align: right;
   }
 }

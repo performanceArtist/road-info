@@ -3,18 +3,12 @@ import { useState } from 'react';
 import L from 'leaflet';
 import { Popup } from 'react-leaflet';
 
-import MiniTable from '@components/MiniTable/MiniTable';
-
-export type PointData = Array<{
-  key: string;
-  value: number;
-  name: string;
-  difference: number;
-}>;
+import { PointData } from '@shared/types';
+import MiniTable from '@shared/view/MiniTable/MiniTable';
 
 type Props = {
   position: L.LatLng;
-  data: Array<PointData>;
+  data: PointData[];
 };
 
 const MapPopup: React.FC<Props> = ({ position, data }) => {

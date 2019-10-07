@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 
 import RoadChart from './RoadChart';
 
-import { Measurements } from '@redux/measurements/types';
-import { ChartInfo } from '@redux/chart/types';
+import { MeasurementData, ChartInfo } from '@shared/types';
 import { RootState } from '@redux/reducer';
 
 type MapState = {
-  measurements: Measurements;
+  measurements: MeasurementData[];
   chartInfo: ChartInfo;
 };
 

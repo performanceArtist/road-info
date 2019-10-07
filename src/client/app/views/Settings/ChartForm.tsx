@@ -38,7 +38,7 @@ const ChartForm: React.FC<Props> = ({ chartInfo, saveChartSettings }) => {
   };
 
   return (
-    <Form props={{ onSubmit: handleSubmit }}>
+    <Form onSubmit={handleSubmit}>
       <div className="chart-form">
         <div className="chart-form__wrapper">
           <div className="chart-form__input-group">
@@ -64,17 +64,16 @@ const ChartForm: React.FC<Props> = ({ chartInfo, saveChartSettings }) => {
                 <Input
                   label="От"
                   remWidth={4}
-                  modifier="inline"
-                  props={{
-                    name: 'start',
-                    type: 'number',
-                    step: 0.1,
-                    value: lineInfo[key].breakpoint
+                  name="start"
+                  type="number"
+                  step={0.1}
+                  value={
+                    lineInfo[key].breakpoint
                       ? lineInfo[key].breakpoint.start
-                      : 0,
-                    onChange: handleInputChange,
-                    autoFocus: true
-                  }}
+                      : 0
+                  }
+                  onChange={handleInputChange}
+                  autoFocus={true}
                 />
               </div>
               <div className="chart-form__input">
@@ -82,15 +81,15 @@ const ChartForm: React.FC<Props> = ({ chartInfo, saveChartSettings }) => {
                   label="До"
                   remWidth={4}
                   modifier="inline"
-                  props={{
-                    name: 'finish',
-                    type: 'number',
-                    step: 0.1,
-                    value: lineInfo[key].breakpoint
+                  name="finish"
+                  type="number"
+                  step={0.1}
+                  value={
+                    lineInfo[key].breakpoint
                       ? lineInfo[key].breakpoint.finish
-                      : 0,
-                    onChange: handleInputChange
-                  }}
+                      : 0
+                  }
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -101,16 +100,14 @@ const ChartForm: React.FC<Props> = ({ chartInfo, saveChartSettings }) => {
               <Input
                 label="Количество измерений:"
                 remWidth={4}
-                props={{
-                  name: 'max',
-                  type: 'number',
-                  step: 1,
-                  min: 1,
-                  value: max,
-                  onChange: (event: React.SyntheticEvent) => {
-                    const target = event.target as HTMLInputElement;
-                    setMax(parseInt(target.value, 10));
-                  }
+                name="max"
+                type="number"
+                step={1}
+                min={1}
+                value={max}
+                onChange={(event: React.SyntheticEvent) => {
+                  const target = event.target as HTMLInputElement;
+                  setMax(parseInt(target.value, 10));
                 }}
               />
             </div>

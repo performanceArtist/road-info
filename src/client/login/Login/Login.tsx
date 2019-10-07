@@ -67,7 +67,7 @@ class Login extends React.Component<{}, State> {
           <Form
             status={networkError}
             error={networkError ? true : false}
-            props={{ onSubmit: this.handleSubmit }}
+            onSubmit={this.handleSubmit}
           >
             <Form.Header>
               <div className="login__title">Вход</div>
@@ -77,26 +77,21 @@ class Login extends React.Component<{}, State> {
                 <Input
                   status={loginError}
                   error={loginError ? true : false}
-                  props={{
-                    type: 'text',
-                    name: 'username',
-                    placeholder: 'Логин',
-                    required: true,
-                    onChange: () => this.setState({ loginError: null })
-                  }}
+                  name="username"
+                  placeholder="Логин"
+                  onChange={() => this.setState({ loginError: null })}
+                  required
                 />
               </div>
               <div className="login__input">
                 <Input
                   status={passwordError}
                   error={passwordError ? true : false}
-                  props={{
-                    type: 'password',
-                    name: 'password',
-                    placeholder: 'Пароль',
-                    required: true,
-                    onChange: () => this.setState({ passwordError: null })
-                  }}
+                  type="password"
+                  name="password"
+                  placeholder="Пароль"
+                  required={true}
+                  onChange={() => this.setState({ passwordError: null })}
                 />
               </div>
             </Form.Content>

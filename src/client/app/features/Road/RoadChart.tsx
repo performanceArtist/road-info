@@ -6,9 +6,10 @@ import RoadPopup from './RoadPopup';
 
 import {
   MeasurementInstances,
-  MeasurementData
-} from '@redux/measurements/types';
-import { ChartInfo } from '@redux/chart/types';
+  MeasurementData,
+  ChartInfo,
+  PointData
+} from '@shared/types';
 
 type Config = {
   width?: number;
@@ -175,7 +176,7 @@ const RoadChart: React.FC<Props> = ({
     const { lines } = chartInfo;
 
     const isValid = (point: MeasurementData) => {
-      return Object.keys(lines).reduce((acc: PointData, key: string) => {
+      return Object.keys(lines).reduce((acc: PointData[], key: string) => {
         const breakpoint = lines[key].breakpoint;
         if (!breakpoint) return acc;
 

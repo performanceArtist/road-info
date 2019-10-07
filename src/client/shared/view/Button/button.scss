@@ -4,7 +4,9 @@
   min-width: 4.5rem;
   padding: 0.35rem;
   border: 0.15rem solid $dark-grey;
+  border: 1px solid #ccc;
   outline: none;
+  border-radius: 0.15rem;
 
   &:hover {
     background: $light-grey;

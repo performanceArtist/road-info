@@ -30,11 +30,11 @@
       ],
       "@views/*": [
         "client/app/views/*"
-      ],
+      ]
     },
     "jsx": "react",
     "allowJs": true,
     "allowSyntheticDefaultImports": true
     },
     "include": ["./src", "./@types"]
-} 
+}

@@ -50,13 +50,11 @@ const History: React.FC<Props> = ({
             />
             <Input
               label="Кондор"
-              props={{
-                name: 'kondor',
-                type: 'number',
-                value: filters.kondor,
-                onChange: event => setKondor(event.target.value),
-                step: 1
-              }}
+              name="kondor"
+              type="number"
+              value={filters.kondor}
+              onChange={event => setKondor(event.target.value)}
+              step={1}
             />
             {/*
             <AddressInputs

@@ -16,7 +16,7 @@ const App = () => {
   return (
     <>
       <div className="container">
-        <Header title="Кондор 2.0" />
+        <Header />
         <ModalManager />
         <StartChannel />
         <StatusBar />

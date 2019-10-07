@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { PointData } from '@features/Map/MapPopup';
+import { PointData } from '@shared/types';
 
 type Props = {
-  diffs: PointData;
+  diffs: PointData[];
 };
 
 const MiniTable: React.FC<Props> = ({ diffs }) => {

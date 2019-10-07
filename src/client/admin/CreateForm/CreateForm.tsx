@@ -42,36 +42,15 @@ const CreateForm: React.FC = () => {
       <Form
         status={status.message}
         error={status.error}
-        props={{ onSubmit: handleSubmit }}
+        onSubmit={handleSubmit}
       >
         <Form.Header>
           <h2>Создание пользователя</h2>
         </Form.Header>
         <Form.Content>
-          <Input
-            label="Логин"
-            props={{
-              type: 'text',
-              name: 'login',
-              required: true
-            }}
-          />
-          <Input
-            label="Имя"
-            props={{
-              type: 'text',
-              name: 'username',
-              required: true
-            }}
-          />
-          <Input
-            label="Пароль"
-            props={{
-              type: 'password',
-              name: 'password',
-              required: true
-            }}
-          />
+          <Input label="Логин" name="login" required />
+          <Input label="Имя" name="username" required />
+          <Input label="Пароль" type="password" name="password" required />
         </Form.Content>
         <Form.Footer>
           <Button type="submit">Submit</Button>
