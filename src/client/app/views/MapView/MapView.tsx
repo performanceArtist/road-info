@@ -1,16 +1,10 @@
 import * as React from 'react';
 
-import { canUseDOM } from '../../utils';
-
-let Map = () => <></>;
-
-if (canUseDOM) {
-  Map = require('@features/Map').Map;
-}
+import { Map } from '@features/Map';
 
 const MapView = () => (
   <div>
-    <Map />
+  <Map toggleFullscreen={() => {}}/>
   </div>
 );
 

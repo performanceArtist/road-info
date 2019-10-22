@@ -1,23 +1,9 @@
 import knex from '@root/connection';
+const jwt = require('jsonwebtoken');
 
-import { User } from '@root/models/User';
-
-export async function checkPassword() {
-  try {
-    const user = new User({
-      login: 'user',
-      name: 'test',
-      group_id: 1,
-      password: 'test'
-    });
-
-    await user.create();
-    const isMatch = await user.verifyPassword('test');
-    console.log(isMatch);
-  } catch (err) {
-    console.log(err);
-  }
-}
+import config from '@root/config';
+import { DatabaseUser } from '@shared/types';
+import { User, UserType } from '@root/models/User';
 
 export async function showUsers() {
   try {
@@ -33,11 +19,33 @@ export async function createAdmin() {
     const admin = new User({
       login: 'admin',
       name: 'admin',
-      password: 'admin',
+      password: '123',
       group_id: 2
     });
     await admin.create();
   } catch (err) {
     console.log(err);
   }
+}
+
+export async function createUser(user: UserType) {
+  try {
+    const newUser = new User(user);
+    await newUser.create();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function login(password?: string) {
+  if (!password) throw new Error('No password');
+
+  const hash = User.hash(password);
+  const user: DatabaseUser = await knex('users')
+    .where({ password: hash })
+    .first();
+
+  if (!user) throw { type: 'login', message: 'Неверный логин или пароль' };
+
+  return jwt.sign({ id: user.id }, config.auth.key);
 }

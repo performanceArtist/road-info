@@ -21,7 +21,7 @@ const GenerationModal: React.FC<Props> = ({
 }) => {
   const handleSubmit = (formData: {
     lane: number;
-    kondorId: number;
+    condorId: number;
     isForward: boolean;
   }) => {
     generateMeasurements({ id, ...formData });
@@ -46,7 +46,7 @@ const GenerationModal: React.FC<Props> = ({
                 />
 
                 <FinalInput
-                  name="kondorId"
+                  name="condorId"
                   label="Кондор:"
                   type="number"
                   remWidth={4}

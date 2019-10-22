@@ -11,7 +11,7 @@ export interface MeasurementType {
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export default async ({ id, lane, kondorId, isForward }) => {
+export default async ({ id, lane, condorId, isForward }) => {
   const baseId = await knex('measurements')
     .insert({
       order_id: id,
@@ -22,7 +22,7 @@ export default async ({ id, lane, kondorId, isForward }) => {
 
   await knex('orders')
     .where({ id })
-    .update({ status: 'taken', kondor_id: kondorId });
+    .update({ status: 'taken', condor_id: condorId });
 
   const distance = 100 * (Math.round(Math.random() * 30) + 10);
   let counter = 0;

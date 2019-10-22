@@ -1,4 +1,3 @@
-import 'module-alias/register';
 import * as express from 'express';
 const morgan = require('morgan');
 const cors = require('cors');
@@ -6,6 +5,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const socketIO = require('socket.io');
 const path = require('path');
+// bigint type workaround, otherwise it returns as a string
+const pg = require('pg');
+pg.types.setTypeParser(20, parseInt);
 
 import loginRouter from './routes/login';
 import appRouter from './routes/app';
@@ -37,7 +39,7 @@ app.get('*', (req, res) => {
 });
 
 app.use(
-  async (
+  (
     error: any,
     req: express.Request,
     res: express.Response,

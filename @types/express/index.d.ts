@@ -1,10 +1,15 @@
-interface User {
-  login: string;
-  role: number;
+import { UserGroup } from '@shared/types';
+
+interface RequestUser {
+  id: number;
+  group: UserGroup;
+  login?: string;
 }
 
-declare namespace Express {
-  export interface Request {
-    user: User;
+declare global {
+  namespace Express {
+    export interface Request {
+      user?: RequestUser;
+    }
   }
 }

@@ -1,7 +1,7 @@
 import knex from '@root/connection';
 import { io } from '@root/server';
 
-export default async ({ id, status, kondor_id }) => {
+export default async ({ id, status, condor_id }) => {
   try {
     if (status !== 'ready') {
       const { lane_number, is_direction_forward } = await knex('measurements')
@@ -14,7 +14,7 @@ export default async ({ id, status, kondor_id }) => {
         payload: {
           id,
           status,
-          kondor: kondor_id,
+          condor: condor_id,
           lane: lane_number,
           isForward: is_direction_forward
         }

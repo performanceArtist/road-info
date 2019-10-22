@@ -2,15 +2,11 @@ import * as express from 'express';
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const path = require('path');
 const router = express.Router();
 
-import knex from '@root/connection';
-import config from '@root/config';
 import App from '@root/client/login/App';
 import render from '@root/utils/render';
+import { login } from '@root/controllers/login/user';
 
 router.get('/login', (req, res) => {
   const { token, login } = req.cookies;
@@ -26,20 +22,11 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { password } = req.body;
 
   try {
-    const user = await knex('users')
-      .where({ login: username })
-      .first();
-
-    if (!user) throw { type: 'login', message: 'Неверный логин' };
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) throw { type: 'password', message: 'Неверный пароль' };
-
-    const token = jwt.sign({ login: user.login }, config.auth.key);
-    res.json({ token, login: user.login });
+    const token = await login(password);
+    res.json({ token });
   } catch (error) {
     res.status(500).json({ error });
   }

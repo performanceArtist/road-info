@@ -12,7 +12,7 @@ const initialState: History = {
   measurements: [],
   fetching: true,
   filters: {
-    kondor: '',
+    condor: '',
     startDate: yesterday,
     endDate: today
   }
@@ -48,7 +48,7 @@ export default function reducer(
     case HISTORY.SET_END_DATE:
       return R.assocPath(['filters', 'endDate'], payload, state);
     case HISTORY.SET_KONDOR:
-      return R.assocPath(['filters', 'kondor'], payload, state);
+      return R.assocPath(['filters', 'condor'], payload, state);
     default:
       return state;
   }

@@ -34,7 +34,7 @@ export const setEndDate = (date: Date) => ({
   payload: date
 });
 
-export const setKondor = (id: string | number) => ({
+export const setCondor = (id: string | number) => ({
   type: HISTORY.SET_KONDOR,
   payload: id
 });

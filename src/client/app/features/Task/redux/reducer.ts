@@ -1,7 +1,8 @@
 import * as R from 'ramda';
 
-import { TASK } from './actions';
 import { Task } from '@shared/types';
+
+import { TASK } from './actions';
 
 const initialTask = {
   id: 23,
@@ -13,7 +14,7 @@ const initialTask = {
   backward: false,
   lanesCount: 3,
   description: 'test',
-  kondor: 3,
+  condor: 3,
   roadPartName: 'Тест',
   street: 'пр-кт Фрунзе',
   streetId: 'ba3c2344-f2c5-41e5-8a15-52b4ad9d95bd',
@@ -47,7 +48,7 @@ export default function reducer(
       );
     case TASK.UPDATE: {
       const updates = R.pick(
-        ['status', 'kondor', 'lane', 'isForward'],
+        ['status', 'condor', 'lane', 'isForward'],
         payload
       );
       const tasks = R.map(

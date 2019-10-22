@@ -1,5 +1,5 @@
 export type HistoryFilters = {
-  kondor: number | string;
+  condor: number | string;
   startDate: Date;
   endDate: Date;
 };

@@ -1,4 +1,4 @@
-import { TaskFormType } from '@features/Task/TaskModal';
+import { TaskFormType, ApiRequest } from '@shared/types';
 
 export const TASK = {
   SAVE: 'TASK.SAVE',
@@ -13,11 +13,6 @@ export const TASK = {
   }
 };
 
-export const saveTask = (formData: TaskFormType) => ({
-  type: TASK.POST.REQUEST,
-  payload: formData
-});
-
 export const addTask = (payload: any) => ({
   type: TASK.ADD,
   payload
@@ -25,7 +20,7 @@ export const addTask = (payload: any) => ({
 
 export const updateTask = (payload: {
   status: 'ready' | 'taken' | 'done';
-  kondor: null | string;
+  condor: null | string;
   id: string;
 }) => ({
   type: TASK.UPDATE,
@@ -41,7 +36,15 @@ export const removeTask = (id: string | null = null) => {
   return { type: TASK.REMOVE, payload: { taskId: id } };
 };
 
-export const postTask = (formData: TaskFormType, id: string | null = null) => ({
+export const saveTask = (formData: TaskFormType): ApiRequest => ({
+  type: TASK.POST.REQUEST,
+  payload: formData
+});
+
+export const postTask = (
+  formData: TaskFormType,
+  id: string | null = null
+): ApiRequest => ({
   type: TASK.POST.REQUEST,
   payload: { formData, taskId: id }
 });

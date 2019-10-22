@@ -27,13 +27,7 @@ class Login extends React.Component<{}, State> {
     document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
   }
 
-  async handleSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-
-    const target = event.target as HTMLFormElement;
-    const { username, password } = target;
-    const formData = { username: username.value, password: password.value };
-
+  async handleSubmit(formData: { username: string; password: string }) {
     try {
       const response = await axios.post('/login', formData);
       const { token, login } = response.data;

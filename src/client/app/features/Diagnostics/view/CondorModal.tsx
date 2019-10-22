@@ -13,7 +13,7 @@ type OwnProps = {
 };
 type Props = OwnProps & typeof mapDispatch;
 
-class KondorModal extends React.Component<Props, {}> {
+class CondorModal extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props);
   }
@@ -23,18 +23,18 @@ class KondorModal extends React.Component<Props, {}> {
 
     const getDevices = (devices: Array<DeviceMonitorProps>) =>
       devices.map(device => (
-        <div className="kondor-modal__device">
+        <div className="condor-modal__device">
           <DeviceMonitor {...device} />
         </div>
       ));
 
     return (
       <Modal open={true} onClose={closeModal} maxWidthPercentage={70}>
-        <Modal.Header>Kondor #{id}</Modal.Header>
+        <Modal.Header>Condor #{id}</Modal.Header>
         <Modal.Content>
-          <div className="kondor-modal">
-            <div className="kondor-modal__column">
-              <div className="kondor-modal__device-info">
+          <div className="condor-modal">
+            <div className="condor-modal__column">
+              <div className="condor-modal__device-info">
                 <DeviceInfo
                   title="Плотнометр"
                   hasError={false}
@@ -74,7 +74,7 @@ class KondorModal extends React.Component<Props, {}> {
                   ]}
                 />
               </div>
-              <div className="kondor-modal__device-info">
+              <div className="condor-modal__device-info">
                 <DeviceInfo
                   title="Система электропитания"
                   hasError={false}
@@ -91,8 +91,8 @@ class KondorModal extends React.Component<Props, {}> {
                 />
               </div>
             </div>
-            <div className="kondor-modal__column">
-              <div className="kondor-modal__devices">
+            <div className="condor-modal__column">
+              <div className="condor-modal__devices">
                 {getDevices([
                   {
                     title: 'Георадар',
@@ -136,7 +136,7 @@ class KondorModal extends React.Component<Props, {}> {
                   }
                 ])}
               </div>
-              <div className="kondor-modal__device-info">
+              <div className="condor-modal__device-info">
                 <DeviceInfo
                   title="Система жизнеобеспечения"
                   hasError={true}
@@ -166,4 +166,4 @@ const mapDispatch = { closeModal };
 export default connect(
   null,
   mapDispatch
-)(KondorModal);
+)(CondorModal);

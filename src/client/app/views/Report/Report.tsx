@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Road from '@features/Road/Road';
+import { Road } from '@features/Road';
 
 const Report = () => (
   <div className="report">

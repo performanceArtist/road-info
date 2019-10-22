@@ -7,19 +7,19 @@ type Info = {
 
 type Props = {
   status: 'ready' | 'taken' | 'done';
-  kondor: null | string;
+  condor: null | string;
   items: Array<Info>;
 };
 
-const MeasurementInfo: React.FC<Props> = ({ items, kondor, status }) => {
+const MeasurementInfo: React.FC<Props> = ({ items, condor, status }) => {
   const getStatus = (status: 'ready' | 'taken' | 'done') => {
     switch (status) {
       case 'ready':
         return 'Ожидает выполнения';
       case 'taken':
-        return `Выполняется кондором #${kondor}`;
+        return `Выполняется кондором #${condor}`;
       case 'done':
-        return `Выполнено кондором #${kondor}`;
+        return `Выполнено кондором #${condor}`;
       default:
         return 'Статус неизвестен';
     }

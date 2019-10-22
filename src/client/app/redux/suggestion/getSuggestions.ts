@@ -1,16 +1,17 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import axios from 'axios';
 
+import config from '@root/config';
+
 import { SUGGESTION } from './actions';
 
 function postData(url: string, data = {}) {
-  const API_KEY = '6dace7b27b05977b00a0bfbe8169678713e06db7';
-  const config = {
+  const axiosConfig = {
     headers: {
-      Authorization: `Token ${API_KEY}`
+      Authorization: `Token ${config.suggestions.API_KEY}`
     }
   };
-  return axios.post(url, data, config);
+  return axios.post(url, data, axiosConfig);
 }
 
 const getConstraint = (form: string, name: string) => ({ suggestions }) => {

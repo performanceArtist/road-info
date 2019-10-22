@@ -1,21 +1,21 @@
 import { all } from 'redux-saga/effects';
 
-import { saga as task } from '@features/Task/redux';
-import { getMeasurementsSaga, getOrdersSaga } from '@features/History/redux';
-import { mapSaga, mapTrackSaga } from '@features/Map/redux';
-import suggest from './suggestion/saga';
-import generate from './measurements/saga';
+import { postTask } from '@features/Task/redux/sagas';
+import { getMeasurements, getOrders } from '@features/History/redux/sagas';
+import { getHistory, getTrack } from '@features/Map/redux/sagas';
+import getSuggestions from './suggestion/getSuggestions';
+import getGenerate from './measurements/getGenerate';
 import socket from './io/socket';
 
 export default function* rootSaga() {
   yield all([
     socket.startStopChannel(),
-    task(),
-    suggest(),
-    generate(),
-    getMeasurementsSaga(),
-    getOrdersSaga(),
-    mapSaga(),
-    mapTrackSaga()
+    postTask(),
+    getSuggestions(),
+    getGenerate(),
+    getMeasurements(),
+    getOrders(),
+    getHistory(),
+    getTrack()
   ]);
 }

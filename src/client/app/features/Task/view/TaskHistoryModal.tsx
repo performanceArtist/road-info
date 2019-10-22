@@ -12,14 +12,14 @@ type OwnProps = {
 type Props = OwnProps & typeof mapDispatch;
 
 const TaskHistoryModal: React.FC<Props> = ({ closeModal, instances = [] }) => {
-  const getStatus = (status: string, kondor: string) => {
+  const getStatus = (status: string, condor: string) => {
     switch (status) {
       case 'ready':
         return 'Ожидает выполнения';
       case 'taken':
-        return `Выполняется кондором #${kondor}`;
+        return `Выполняется кондором #${condor}`;
       case 'done':
-        return `Выполнено кондором #${kondor}`;
+        return `Выполнено кондором #${condor}`;
       default:
         return 'Статус неизвестен';
     }
@@ -31,10 +31,10 @@ const TaskHistoryModal: React.FC<Props> = ({ closeModal, instances = [] }) => {
       <Modal.Content>
         <div className="task-history">
           {instances.map(
-            ({ status, lane, isForward, kondor, date }: TaskInstance) => (
+            ({ status, lane, isForward, condor, date }: TaskInstance) => (
               <div className="task-history__entry" key={date.toString()}>
                 <h3>{`${date.toDateString()} ${date.toTimeString()}`}</h3>
-                <div>{getStatus(status, kondor)}</div>
+                <div>{getStatus(status, condor)}</div>
                 <div>Полоса: {lane}</div>
                 <div>Направление: {isForward ? 'Прямое' : 'Обратное'}</div>
               </div>

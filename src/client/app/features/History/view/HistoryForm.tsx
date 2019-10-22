@@ -9,7 +9,7 @@ import {
   getOrders,
   setStartDate,
   setEndDate,
-  setKondor
+  setCondor
 } from '@features/History/redux/actions';
 import DateRange from '@components/DateRange/DateRange';
 
@@ -29,7 +29,7 @@ const History: React.FC<Props> = ({
   getOrders,
   setStartDate,
   setEndDate,
-  setKondor
+  setCondor
 }) => {
   const handleSubmit = async (addressValues: any) => {
     getOrders({ ...filters, ...addressValues });
@@ -39,7 +39,7 @@ const History: React.FC<Props> = ({
     <div className="history-form">
       <Form
         onSubmit={handleSubmit}
-        initialValues={{ kondor: filters.kondor }}
+        initialValues={{ condor: filters.condor }}
         render={({ handleSubmit }) => (
           <form className="history-form__form" onSubmit={handleSubmit}>
             <DateRange
@@ -50,10 +50,10 @@ const History: React.FC<Props> = ({
             />
             <Input
               label="Кондор"
-              name="kondor"
+              name="condor"
               type="number"
-              value={filters.kondor}
-              onChange={event => setKondor(event.target.value)}
+              value={filters.condor}
+              onChange={event => setCondor(event.target.value)}
               step={1}
             />
             {/*
@@ -72,7 +72,7 @@ const History: React.FC<Props> = ({
   );
 };
 
-const mapDispatch = { getOrders, setStartDate, setEndDate, setKondor };
+const mapDispatch = { getOrders, setStartDate, setEndDate, setCondor };
 
 export default connect(
   null,

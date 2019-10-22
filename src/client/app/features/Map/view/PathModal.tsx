@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { Modal } from '@features/Modal';
-import RoadChart from '@features/Road/RoadChart';
+import { RoadChart } from '@features/Road';
 
 import { MeasurementItem } from '@redux/measurements/types';
 import { ChartInfo } from '../../redux/chart/types';

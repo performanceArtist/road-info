@@ -21,7 +21,7 @@ export const addMeasurement = (payload: {
 export const generateMeasurements = (payload: {
   id: number;
   lane: number;
-  kondorId: number;
+  condorId: number;
   isForward: boolean;
 }) => ({
   type: MEASUREMENTS.GENERATE.REQUEST,

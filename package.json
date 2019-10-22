@@ -8,9 +8,9 @@
     "client:dev": "webpack-dev-server --hot --mode=development --config webpack.config.dev.ts",
     "client:build": "webpack --mode=production --config webpack.config.prod.ts",
     "client:dev-build": "webpack --mode=development --config webpack.config.dev.ts",
-    "server:dev": "ts-node-dev --respawn --transpileOnly --ignore-watch src/client -r tsconfig-paths/register index.js",
+    "server:dev": "ts-node-dev --respawn --transpileOnly --ignore-watch src/client -r tsconfig-paths/register index.ts",
     "server:build": "tsc --project ./",
-    "server:start": "node dist/server.js",
+    "server:start": "node dist/main.js",
     "tsc": "tsc"
   },
   "_moduleAliases": {
@@ -26,6 +26,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
@@ -89,8 +90,9 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "@loadable/component": "^5.10.3",
+    "@types/loadable__component": "^5.10.0",
     "axios": "^0.19.0",
-    "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
@@ -115,6 +117,7 @@
     "recharts": "^1.7.1",
     "redux": "^4.0.4",
     "redux-saga": "^1.0.5",
+    "save-dev": "0.0.1-security",
     "short-uuid": "^3.1.1",
     "socket.io": "^2.2.0"
   }

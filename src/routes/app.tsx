@@ -14,22 +14,39 @@ import App from '@root/client/app/App';
 import render from '@root/utils/render';
 import config from '@root/config';
 import knex from '@root/connection';
+import { DatabaseUser, DatabaseUserGroup } from '@root/client/shared/types';
 
 router.use('/', async (req, res, next) => {
   try {
-    const { token, login } = req.cookies;
-    if (!token || !login) throw new Error('No auth');
+    const { token } = req.cookies;
+    if (!token) throw new Error('No auth');
 
     const payload = jwt.verify(token, config.auth.key);
-    const user = await knex('users')
-      .where({ login: payload.login })
+    if (!payload) throw new Error('Invalid access token');
+
+    const user: DatabaseUser = await knex('users')
+      .select('*')
+      .where({ id: payload.id })
+      .first();
+    if (!user) throw new Error('User not found');
+    const group: DatabaseUserGroup = await knex('user_group')
+      .select('*')
+      .where({
+        id: user.group_id
+      })
       .first();
 
-    if (!user) throw new Error('User not found');
-    req.user = { login, role: user.group_id };
+    if (!group) throw new Error('No user group');
+
+    req.user = {
+      id: user.id,
+      group: group.name,
+      login: user.login
+    };
+
     next();
   } catch (error) {
-    req.user = null;
+    req.user = undefined;
     if (/\/api\//.test(req.url)) {
       res.status(401).json({ error: 'Unauthorized' });
     } else {

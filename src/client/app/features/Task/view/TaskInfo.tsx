@@ -26,7 +26,7 @@ const TaskInfo: React.FC<Props> = ({ task, instances, openModal }) => {
     { title: 'Старт', value: task.start },
     { title: 'Финиш', value: task.finish },
     { title: 'Текущая полоса', value: task.lane },
-    { title: 'Кондор', value: task.kondor }
+    { title: 'Кондор', value: task.condor }
   ];
 
   return (
@@ -58,7 +58,7 @@ const TaskInfo: React.FC<Props> = ({ task, instances, openModal }) => {
       <div className="task-info__content">
         <MeasurementInfo
           status={task.status}
-          kondor={task.kondor}
+          condor={task.condor}
           items={items.filter(({ value }) => value)}
         />
       </div>

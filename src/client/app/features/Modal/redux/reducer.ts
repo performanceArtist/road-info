@@ -2,7 +2,7 @@ import { MODAL } from './actions';
 
 import { TaskModal, GenerationModal, TaskHistoryModal } from '@features/Task';
 import { PathModal } from '@features/Map';
-import KondorModal from '@features/Diagnostics/KondorModal';
+import { CondorModal } from '@features/Diagnostics';
 
 import { ConnectedComponentClass } from 'react-redux';
 
@@ -11,7 +11,7 @@ export const ModalMap: Record<
   ConnectedComponentClass<any, any> | React.SFC | React.Component
 > = {
   Task: TaskModal,
-  Kondor: KondorModal,
+  Condor: CondorModal,
   Generation: GenerationModal,
   TaskHistory: TaskHistoryModal,
   Path: PathModal

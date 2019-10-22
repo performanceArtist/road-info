@@ -10,7 +10,7 @@ export type Task = {
   lanesCount: number;
   description: string | null;
   lane?: number;
-  kondor: string | null;
+  condor: string | null;
   roadPartName: string;
   street: string;
   streetId: string;
@@ -26,6 +26,6 @@ export type TaskInstance = {
   status: 'ready' | 'taken' | 'done';
   isForward: boolean;
   lane: number;
-  kondor: string;
+  condor: string;
   date: Date;
 };

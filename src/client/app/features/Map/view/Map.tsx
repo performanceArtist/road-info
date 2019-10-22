@@ -103,7 +103,7 @@ class MapComponent extends Component<Props, State> {
     const task = measurements.find(({ taskId }) => taskId === currentId);
 
     if (task)
-      openModal('Kondor', {
+      openModal('Condor', {
         id: currentId,
         counter: 1,
         coordinates: { x: event.clientX, y: event.clientY }
