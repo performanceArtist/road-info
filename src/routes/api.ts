@@ -3,16 +3,14 @@ const path = require('path');
 
 const router = express.Router();
 
-import createTask from '@root/controllers/api/createTask';
-import generateMeasurements from '@root/controllers/api/generateMeasurements';
-import getOrders from '@root/controllers/api/getOrders';
-import getInstances from '@root/controllers/api/getInstances';
-import getMeasurements from '@root/controllers/api/getMeasurements';
+import { TaskFormData } from '@root/client/shared/types';
+
+import { createTask } from '../controllers/task';
+import { simulateMeasurement } from '../controllers/simulation';
 
 router.post('/api/task', async (req, res, next) => {
   try {
-    console.log(req.body);
-    await createTask(req.body);
+    await createTask(req.body as TaskFormData);
     res.status(200).end();
   } catch (error) {
     next(error);
@@ -21,8 +19,7 @@ router.post('/api/task', async (req, res, next) => {
 
 router.get('/api/generate', async (req, res, next) => {
   try {
-    console.log(req.query);
-    await generateMeasurements(req.query);
+    await simulateMeasurement([], 0);
     res.status(200).end();
   } catch (error) {
     next(error);
@@ -31,7 +28,7 @@ router.get('/api/generate', async (req, res, next) => {
 
 router.get('/api/sort', async (req, res, next) => {
   try {
-    const data = await getOrders(req.query);
+    const data = {};
     res.status(200).json(data);
   } catch (error) {
     next(error);

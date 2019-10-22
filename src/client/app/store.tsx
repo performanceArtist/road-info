@@ -10,7 +10,7 @@ export default ({ initialState = {}, browser = false } = {}) => {
 
   if (browser) {
     const composeEnhancer =
-      (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     comp = composeEnhancer(applyMiddleware(sagaMiddleware));
   } else {
     comp = applyMiddleware(sagaMiddleware);

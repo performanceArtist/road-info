@@ -6,7 +6,7 @@ const router = express.Router();
 
 import App from '@root/client/login/App';
 import render from '@root/utils/render';
-import { login } from '@root/controllers/login/user';
+import { login } from '@root/controllers/user';
 
 router.get('/login', (req, res) => {
   const { token, login } = req.cookies;
@@ -28,7 +28,17 @@ router.post('/login', async (req, res) => {
     const token = await login(password);
     res.json({ token });
   } catch (error) {
+    console.log(error);
+    req.user = undefined;
     res.status(500).json({ error });
+  }
+});
+
+router.use('/', (req, res, next) => {
+  if (req.cookies.token) {
+    next();
+  } else {
+    res.redirect('/login');
   }
 });
 

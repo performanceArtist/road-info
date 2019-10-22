@@ -47,11 +47,7 @@ router.use('/', async (req, res, next) => {
     next();
   } catch (error) {
     req.user = undefined;
-    if (/\/api\//.test(req.url)) {
-      res.status(401).json({ error: 'Unauthorized' });
-    } else {
-      res.redirect('/login');
-    }
+    next();
   }
 });
 
