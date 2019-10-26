@@ -1,13 +1,10 @@
 import { MeasurementData } from '@shared/types';
+import { a, actionTree } from '@shared/utils';
 
-export const MEASUREMENTS = {
-  ADD: 'MEASUREMENTS.ADD',
-  GENERATE: {
-    REQUEST: 'MEASUREMENTS.GENERATE.REQUEST',
-    SUCCESS: 'MEASUREMENTS.GENERATE.SUCCESS',
-    FAILURE: 'MEASUREMENTS.GENERATE.FAILURE'
-  }
-};
+export const MEASUREMENTS = actionTree('MEASUREMENTS')({
+  ADD: a.plain,
+  GENERATE: a.api
+});
 
 export const addMeasurement = (payload: {
   taskId: string;

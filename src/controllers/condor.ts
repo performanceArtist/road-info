@@ -1,18 +1,24 @@
 import knex from '@root/connection';
 
 import {
-  CondorInfo,
-  DatabaseCondorInfo,
+  ServerCondor,
   CondorValue,
-  GPSCoordinates
+  GPSCoordinates,
+  DatabaseCondorInfo
 } from '@shared/types';
 
-export async function getCondorInfo(id: number): Promise<CondorInfo> {
+export async function getServerCondor(id: number): Promise<ServerCondor> {
   const info: DatabaseCondorInfo[] = await knex('condor_diagnostics')
     .select('*')
     .where({ condor_id: id });
 
-  return toCondorInfo(info);
+  return toServerCondor(info, id);
+}
+
+export async function getCondors(): Promise<ServerCondor[]> {
+  const condors: DatabaseCondorInfo[] = await knex('condors').select('*');
+  const ids = condors.map(condor => condor.id);
+  return await Promise.all(ids.map(getServerCondor));
 }
 
 export function getInfoValue<T>(info: DatabaseCondorInfo | undefined, def: T) {
@@ -34,11 +40,15 @@ export function inferInfoValue(info: DatabaseCondorInfo): CondorValue {
   }
 }
 
-export function toCondorInfo(info: DatabaseCondorInfo[]): CondorInfo {
+export function toServerCondor(
+  info: DatabaseCondorInfo[],
+  id: number
+): ServerCondor {
   const speed = info.find(({ node_id }) => node_id === 'speed');
   const coordinates = info.find(({ node_id }) => node_id === 'coordinates');
 
   return {
+    id,
     speed: getInfoValue<number>(speed, 0),
     coordinates: getInfoValue<GPSCoordinates>(coordinates, [0, 0])
   };

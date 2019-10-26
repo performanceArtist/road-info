@@ -95,7 +95,6 @@ const RoadChart: React.FC<Props> = ({
     );
     const distance = getMax(data);
     const range = distance[distance.length - 1].distance - distance[0].distance;
-
   };
 
   const draw = (

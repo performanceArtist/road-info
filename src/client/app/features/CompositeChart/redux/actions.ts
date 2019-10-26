@@ -1,9 +1,10 @@
-import { ChartLines } from './types';
+import { ChartLines } from '@shared/types';
+import { a, actionTree } from '@shared/utils';
 
-export const CHART = {
-  CHANGE_VISIBILITY: 'CHART.CHANGE_VISIBILITY',
-  SAVE_SETTINGS: 'CHART.SAVE_SETTINGS'
-};
+export const CHART = actionTree('CHART')({
+  CHANGE_VISIBILITY: a.plain,
+  SAVE_SETTINGS: a.plain
+});
 
 export const changeVisibility = (line: string, show: boolean) => ({
   type: CHART.CHANGE_VISIBILITY,

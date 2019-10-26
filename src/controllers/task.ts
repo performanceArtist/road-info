@@ -114,8 +114,6 @@ const getServerTask = async (dbTask: DatabaseTask) => {
     road_class
   };
 
-  console.log('task', serverTask);
-
   return serverTask;
 };
 

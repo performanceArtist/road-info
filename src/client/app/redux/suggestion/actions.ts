@@ -1,12 +1,10 @@
-export const SUGGESTION = {
-  GET: {
-    REQUEST: 'SUGGESTION.GET.REQUEST',
-    SUCCESS: 'SUGGESTION.GET.SUCCESS',
-    FAILURE: 'SUGGESTION.GET.FAILURE'
-  },
-  ADD_CONSTRAINT: 'SUGGESTION.ADD_CONSTRAINT',
-  ADD_LAST: 'SUGGESTION.ADD_LAST'
-};
+import { a, actionTree } from '@shared/utils';
+
+export const SUGGESTION = actionTree('SUGGESTION')({
+  ADD_CONSTRAINT: a.plain,
+  ADD_LAST: a.plain,
+  GET: a.api
+});
 
 export const getSuggestion = ({
   form,

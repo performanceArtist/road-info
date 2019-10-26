@@ -1,17 +1,14 @@
 import { TaskFormType, ApiRequest } from '@shared/types';
+import { a, actionTree } from '@shared/utils';
 
-export const TASK = {
-  SAVE: 'TASK.SAVE',
-  REMOVE: 'TASK.REMOVE',
-  SET_CURRENT: 'TASK.SET_CURRENT',
-  ADD: 'TASK.ADD',
-  UPDATE: 'TASK.UPDATE',
-  POST: {
-    REQUEST: 'TASK.POST.REQUEST',
-    SUCCESS: 'TASK.POST.SUCCESS',
-    FAILURE: 'TASK.POST.FAILURE'
-  }
-};
+export const TASK = actionTree('TASK')({
+  SAVE: a.plain,
+  REMOVE: a.plain,
+  SET_CURRENT: a.plain,
+  ADD: a.plain,
+  UPDATE: a.plain,
+  POST: a.api
+});
 
 export const addTask = (payload: any) => ({
   type: TASK.ADD,

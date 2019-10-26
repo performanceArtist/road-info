@@ -65,7 +65,7 @@ const AddressInputs: React.FC<Props> = ({
     label: string;
     value?: any;
     required?: boolean;
-  }
+  };
 
   const inputs: InputData[] = [
     { name: 'region', label: 'Область' },

@@ -47,7 +47,7 @@ router.use('/', async (req, res, next) => {
     next();
   } catch (error) {
     req.user = undefined;
-    next();
+    next(error);
   }
 });
 

@@ -5,6 +5,7 @@
   "main": "server/server.ts",
   "scripts": {
     "test": "jest",
+    "prettify": "prettier --write src/**/*.{ts,tsx,js,jsx,css,scss,json}",
     "client:dev": "webpack-dev-server --hot --mode=development --config webpack.config.dev.ts",
     "server:dev": "ts-node-dev --respawn --transpileOnly -r tsconfig-paths/register index.ts",
     "dev": "NODE_ENV=development concurrently -n \"CLIENT,SERVER\" -c \"green,red\" \"npm run client:dev\" \"npm run server:dev\"",

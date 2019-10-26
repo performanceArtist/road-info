@@ -4,7 +4,7 @@ import { Map } from '@features/Map';
 
 const MapView = () => (
   <div>
-  <Map toggleFullscreen={() => {}}/>
+    <Map toggleFullscreen={() => {}} />
   </div>
 );
 

@@ -47,7 +47,7 @@ export default function reducer(
       return R.assocPath(['filters', 'startDate'], payload, state);
     case HISTORY.SET_END_DATE:
       return R.assocPath(['filters', 'endDate'], payload, state);
-    case HISTORY.SET_KONDOR:
+    case HISTORY.SET_CONDOR:
       return R.assocPath(['filters', 'condor'], payload, state);
     default:
       return state;

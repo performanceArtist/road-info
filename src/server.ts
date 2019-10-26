@@ -46,9 +46,13 @@ app.use(
     next: express.NextFunction
   ) => {
     console.log(error);
-    res
-      .status(error.statusCode || error.status || 500)
-      .json({ error: error.message || {} });
+    if (process.env.NODE_ENV === 'development') {
+      res.send(error.stack || error.toString());
+    } else {
+      res
+        .status(error.statusCode || error.status || 500)
+        .send('<h1>Something went wrong</h1>');
+    }
   }
 );
 

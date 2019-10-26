@@ -1,8 +1,10 @@
-export const IO = {
-  START_CHANNEL: 'IO.START_CHANNEL',
-  STOP_CHANNEL: 'IO.STOP_CHANNEL',
-  CHANNEL_ON: 'IO.CHANNEL_ON',
-  CHANNEL_OFF: 'IO.CHANNEL_OFF',
-  SERVER_ON: 'IO.SERVER_ON',
-  SERVER_OFF: 'IO.SERVER_OFF'
-};
+import { a, actionTree } from '@shared/utils';
+
+export const IO = actionTree('IO')({
+  START_CHANNEL: a.plain,
+  STOP_CHANNEL: a.plain,
+  CHANNEL_ON: a.plain,
+  CHANNEL_OFF: a.plain,
+  SERVER_ON: a.plain,
+  SERVER_OFF: a.plain
+});

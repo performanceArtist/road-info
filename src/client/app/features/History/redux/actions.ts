@@ -1,17 +1,11 @@
+import { apiAction } from '@shared/utils';
+
 export const HISTORY = {
-  SET_KONDOR: 'HISTORY.SET_KONDOR',
+  SET_CONDOR: 'HISTORY.SET_CONDOR',
   SET_START_DATE: 'HISTORY.SET_START_DATE',
   SET_END_DATE: 'HISTORY.SET_END_DATE',
-  GET_ORDERS: {
-    REQUEST: 'HISTORY.GET_ORDERS.REQUEST',
-    SUCCESS: 'HISTORY.GET_ORDERS.SUCCESS',
-    FAILURE: 'HISTORY.GET_ORDERS.FAILURE'
-  },
-  GET_MEASUREMENTS: {
-    REQUEST: 'HISTORY.GET_MEASUREMENTS.REQUEST',
-    SUCCESS: 'HISTORY.GET_MEASUREMENTS.SUCCESS',
-    FAILURE: 'HISTORY.GET_MEASUREMENTS.FAILURE'
-  }
+  GET_ORDERS: apiAction('HISTORY', 'GET_ORDERS'),
+  GET_MEASUREMENTS: apiAction('HISTORY', 'GET_MEASUREMENTS')
 };
 
 export const getOrders = (formData: { [key: string]: string | number }) => ({
@@ -35,6 +29,6 @@ export const setEndDate = (date: Date) => ({
 });
 
 export const setCondor = (id: string | number) => ({
-  type: HISTORY.SET_KONDOR,
+  type: HISTORY.SET_CONDOR,
   payload: id
 });

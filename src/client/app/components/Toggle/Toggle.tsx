@@ -11,7 +11,7 @@ type Props = {
   checked?: boolean;
   label?: string;
   name?: string;
-}
+};
 
 const Toggle: React.FC<Props> = ({
   onChange = () => {},

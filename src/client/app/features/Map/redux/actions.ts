@@ -1,18 +1,12 @@
-export const MAP = {
-  SET_MODE: 'MAP.SET_MODE',
-  SET_START_DATE: 'MAP.SET_START_DATE',
-  SET_END_DATE: 'MAP.SET_END_DATE',
-  GET_HISTORY: {
-    REQUEST: 'MAP.GET_HISTORY.REQUEST',
-    SUCCESS: 'MAP.GET_HISTORY.SUCCESS',
-    FAILURE: 'MAP.GET_HISTORY.FAILURE'
-  },
-  GET_TRACK: {
-    REQUEST: 'MAP.GET_TRACK.REQUEST',
-    SUCCESS: 'MAP.GET_TRACK.SUCCESS',
-    FAILURE: 'MAP.GET_TRACK.FAILURE'
-  }
-};
+import { a, actionTree } from '@shared/utils';
+
+export const MAP = actionTree('MAP')({
+  SET_MODE: a.plain,
+  SET_START_DATE: a.plain,
+  SET_END_DATE: a.plain,
+  GET_HISTORY: a.api,
+  GET_TRACK: a.api
+});
 
 export const setMode = (mode: 'history' | 'realTime') => ({
   type: MAP.SET_MODE,

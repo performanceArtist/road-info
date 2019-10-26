@@ -1,6 +1,5 @@
 import { takeLatest, takeEvery, call, put } from 'redux-saga/effects';
 import axios from 'axios';
-
 import { ApiAction, ApiRequest } from '@shared/types';
 
 type Args = {
