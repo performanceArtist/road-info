@@ -1,18 +1,10 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+import { makeEntries, makeFolderAlias } from './webpack.utils';
+
 const config = {
-  entry: {
-    app: ['@babel/polyfill', path.join(__dirname, 'src/client/app/main.tsx')],
-    login: [
-      '@babel/polyfill',
-      path.join(__dirname, 'src/client/login/main.tsx')
-    ],
-    admin: [
-      '@babel/polyfill',
-      path.join(__dirname, 'src/client/admin/main.tsx')
-    ]
-  },
+  entry: makeEntries(['app', 'login', 'admin'], 'src/client'),
   node: {
     fs: 'empty'
   },
@@ -22,10 +14,7 @@ const config = {
     alias: {
       '@root': path.resolve(__dirname, 'src'),
       '@shared': path.resolve(__dirname, 'src/client/shared'),
-      '@redux': path.resolve(__dirname, 'src/client/app/redux'),
-      '@components': path.resolve(__dirname, 'src/client/app/components'),
-      '@features': path.resolve(__dirname, 'src/client/app/features'),
-      '@views': path.resolve(__dirname, 'src/client/app/views')
+      ...makeFolderAlias('src/client/app')
     }
   },
   optimization: {
@@ -44,17 +33,6 @@ const config = {
     path: path.resolve(__dirname, 'dist/public'),
     filename: '[name].js'
   },
-
-  devServer: {
-    port: 3000,
-    open: true,
-    publicPath: '/',
-    historyApiFallback: true,
-    proxy: {
-      '/': 'http://localhost:5000'
-    }
-  },
-
   module: {
     rules: [
       {

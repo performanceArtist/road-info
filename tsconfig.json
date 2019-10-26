@@ -13,6 +13,7 @@
     "target": "es6",
     "moduleResolution": "node",
     "baseUrl": "./src",
+    "pretty": true,
     "paths": {
       "@root/*": [
         "./*"
@@ -35,7 +36,8 @@
     },
     "jsx": "react",
     "allowJs": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
     },
     "include": ["./src", "./@types"]
 }
