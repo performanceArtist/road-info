@@ -7,8 +7,8 @@ import { ModalManager } from '@features/Modal';
 import Header from './layout/Header/Header';
 import StatusBar from './layout/StatusBar/StatusBar';
 import Footer from './layout/Footer/Footer';
-import StartChannel from './layout/StartChannel/StartChannel';
 import { Navigation } from './layout/Navigation/Navigation';
+import Bootstrapper from './layout/Bootstrapper/Bootstrapper';
 
 import routes from './routes';
 
@@ -18,7 +18,7 @@ const App = () => {
       <div className="container">
         <Header />
         <ModalManager />
-        <StartChannel />
+        <Bootstrapper />
         <StatusBar />
         <main className="app">
           <div className="app__navigation">

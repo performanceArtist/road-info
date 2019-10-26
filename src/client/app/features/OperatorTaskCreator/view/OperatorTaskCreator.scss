@@ -1,0 +1,15 @@
+.operator-task-creator {
+  padding: 1rem;
+
+  &__row {
+    display: flex;
+  }
+
+  &__map {
+    margin-right: 2rem;
+  }
+
+  &__location-search {
+    margin-bottom: 1rem;
+  }
+}

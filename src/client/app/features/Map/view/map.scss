@@ -1,13 +1,25 @@
 .map {
   &__map {
-    width: 90vw;
-    height: 500px;
     position: relative;
 
     .leaflet-container {
       height: 100%;
       width: 100%;
       z-index: 1;
+    }
+  }
+
+  &_compact & {
+    &__map {
+      width: 52vw;
+      height: 450px;
+    }
+  }
+
+  &_large & {
+    &__map {
+      width: 90vw;
+      height: 500px;
     }
   }
 

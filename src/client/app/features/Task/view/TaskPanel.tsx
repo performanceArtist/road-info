@@ -34,9 +34,6 @@ const TaskPanel: React.FC<Props> = ({ tasks = [], instances, openModal }) => {
   return (
     <div className="task-panel">
       {elements}
-      <div className="task-info__create-button">
-        <Button onClick={() => openModal('Task')}>Новое задание</Button>
-      </div>
       <div style={{ float: 'left', clear: 'both' }} ref={ref} />
     </div>
   );

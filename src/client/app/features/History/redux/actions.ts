@@ -1,12 +1,12 @@
-import { apiAction } from '@shared/utils';
+import { a, actionTree } from '@shared/utils';
 
-export const HISTORY = {
-  SET_CONDOR: 'HISTORY.SET_CONDOR',
-  SET_START_DATE: 'HISTORY.SET_START_DATE',
-  SET_END_DATE: 'HISTORY.SET_END_DATE',
-  GET_ORDERS: apiAction('HISTORY', 'GET_ORDERS'),
-  GET_MEASUREMENTS: apiAction('HISTORY', 'GET_MEASUREMENTS')
-};
+export const HISTORY = actionTree('HISTORY')({
+  SET_CONDOR: a.plain,
+  SET_START_DATE: a.plain,
+  SET_END_DATE: a.plain,
+  GET_ORDERS: a.api,
+  GET_MEASUREMENTS: a.api
+});
 
 export const getOrders = (formData: { [key: string]: string | number }) => ({
   type: HISTORY.GET_ORDERS.REQUEST,

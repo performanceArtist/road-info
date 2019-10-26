@@ -1,6 +1,7 @@
 import { takeLatest, takeEvery, call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { ApiAction, ApiRequest } from '@shared/types';
+import { ApiAction } from '@shared/utils';
+import { ApiRequest } from '@shared/types';
 
 type Args = {
   url: string;

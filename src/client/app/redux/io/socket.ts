@@ -13,6 +13,7 @@ import {
 import { IO } from './actions';
 import { addMeasurement } from '../measurements/actions';
 import { addTask, updateTask } from '@features/Task/redux/actions';
+import { updateCondor } from '../condors/actions';
 
 class Socket {
   private _url: string;
@@ -58,15 +59,17 @@ class Socket {
     eventChannel(emit => {
       const handler = ({ type, payload }: { type: string; payload: any }) => {
         switch (type) {
-          case 'newMeasurement':
+          case 'new_measurement':
             emit(addMeasurement(payload));
             break;
-          case 'newOrder':
+          case 'new_order':
             emit(addTask(payload));
             break;
-          case 'orderUpdate':
+          case 'order_update':
             emit(updateTask(payload));
             break;
+          case 'condor_update':
+            emit(updateCondor(payload));
           default:
             break;
         }

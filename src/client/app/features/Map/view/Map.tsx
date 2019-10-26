@@ -13,7 +13,8 @@ import {
   MeasurementData,
   MeasurementInstances,
   ChartInfo,
-  PointData
+  PointData,
+  ServerCondor
 } from '@shared/types';
 
 import MapPopup from './MapPopup';
@@ -63,13 +64,39 @@ type MapState = {
   history: MapHistory;
   testTrack: Array<{ latitude: number; longitude: number }>;
   chartInfo: ChartInfo;
+  condors: ServerCondor[];
 };
 
 type OwnProps = {
   toggleFullscreen: () => void;
+  size?: 'large' | 'compact';
 };
 
 type Props = OwnProps & typeof mapDispatch & MapState;
+
+const mapState = ({
+  measurements,
+  tasks,
+  chart,
+  map: { mode, history, historyMeasurements, testTrack },
+  condors
+}: RootState) => ({
+  measurements: mode === 'realTime' ? measurements : historyMeasurements,
+  tasks: tasks.tasks,
+  history,
+  testTrack,
+  chartInfo: chart,
+  condors
+});
+
+const mapDispatch = {
+  openModal,
+  setStartDate,
+  setEndDate,
+  setMode,
+  getHistory,
+  getTrack
+};
 
 class MapComponent extends Component<Props, State> {
   private ref = React.createRef<HTMLDivElement>();
@@ -160,29 +187,21 @@ class MapComponent extends Component<Props, State> {
   }
 
   renderMarkers() {
-    const { measurements } = this.props;
+    const { condors } = this.props;
 
-    return measurements.map(({ taskId, data }) => {
-      const keys = Object.keys(data);
-      const lastData = data[keys[keys.length - 1]];
-
-      if (lastData && lastData.length !== 0) {
-        const last = lastData[lastData.length - 1];
-        return (
-          <Marker
-            key={Math.random()}
-            icon={L.icon({
-              iconUrl: 'images/icon.png'
-            })}
-            position={[last.latitude, last.longitude]}
-            onClick={(event: React.MouseEvent) =>
-              this.handleMarkerClick(event, taskId)
-            }
-          />
-        );
-      } else {
-        return null;
-      }
+    return condors.map(({ id, coordinates }) => {
+      return (
+        <Marker
+          key={Math.random()}
+          icon={L.icon({
+            iconUrl: 'images/icon.png'
+          })}
+          position={coordinates}
+          onClick={(event: React.MouseEvent) =>
+            this.handleMarkerClick(event, id)
+          }
+        />
+      );
     });
   }
 
@@ -370,10 +389,15 @@ class MapComponent extends Component<Props, State> {
       setMode,
       setStartDate,
       setEndDate,
-      getHistory
+      getHistory,
+      size = 'large'
     } = this.props;
     return (
-      <div className={this.state.fullscreen ? 'map map_fullscreen' : 'map'}>
+      <div
+        className={
+          this.state.fullscreen ? 'map map_fullscreen' : `map map_${size}`
+        }
+      >
         <div className="map__map">
           <Map center={[lat, lng]} zoom={zoom} ref={this.ref} maxZoom={19}>
             <TileLayer
@@ -430,28 +454,6 @@ class MapComponent extends Component<Props, State> {
     );
   }
 }
-
-const mapState = ({
-  measurements,
-  tasks,
-  chart,
-  map: { mode, history, historyMeasurements, testTrack }
-}: RootState) => ({
-  measurements: mode === 'realTime' ? measurements : historyMeasurements,
-  tasks: tasks.tasks,
-  history,
-  testTrack,
-  chartInfo: chart
-});
-
-const mapDispatch = {
-  openModal,
-  setStartDate,
-  setEndDate,
-  setMode,
-  getHistory,
-  getTrack
-};
 
 export default connect(
   mapState,

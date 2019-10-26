@@ -1,8 +1,8 @@
 import MapView from './views/MapView/MapView';
 import Settings from './views/Settings/Settings';
 import Task from './views/Task/Task';
+import NewTask from './views/NewTask/NewTask';
 import Measurements from './views/Measurements/Measurements';
-import Report from './views/Report/Report';
 import History from './views/HistoryView/HistoryView';
 
 import { Icon } from './layout/Navigation/Navigation';
@@ -18,21 +18,27 @@ export type Route = {
 export default [
   {
     path: '/',
-    title: 'Измерения',
-    icon: Icon.GRAPH,
-    component: Measurements
-  },
-  {
-    path: '/map',
     title: 'Карта',
     icon: Icon.TRUCK,
     component: MapView
+  },
+  {
+    path: '/measurements',
+    title: 'Измерения',
+    icon: Icon.GRAPH,
+    component: Measurements
   },
   {
     path: '/task',
     title: 'Задания',
     icon: Icon.TASK,
     component: Task
+  },
+  {
+    path: '/new-task',
+    title: 'Новое задание',
+    icon: Icon.REPORT,
+    component: NewTask
   },
   {
     path: '/history',
@@ -45,6 +51,5 @@ export default [
     title: 'Настройки',
     icon: Icon.OPTIONS,
     component: Settings
-  },
-  { path: '/report', title: 'Отчёт', icon: Icon.REPORT, component: Report }
+  }
 ];

@@ -6,10 +6,12 @@ import { reducer as chart } from '@features/CompositeChart/redux';
 import { reducer as tasks } from '@features/Task/redux';
 import { reducer as history } from '@features/History/redux';
 import { reducer as map } from '@features/Map/redux';
+import { reducer as newTask } from '@features/OperatorTaskCreator/redux';
 
 import io from './io/reducer';
 import measurements from './measurements/reducer';
 import suggestions from './suggestion/reducer';
+import condors from './condors/reducer';
 
 const rootReducer = combineReducers({
   modals,
@@ -19,7 +21,9 @@ const rootReducer = combineReducers({
   tasks,
   suggestions,
   history,
-  map
+  map,
+  condors,
+  newTask
 });
 
 export type RootState = StateType<typeof rootReducer>;

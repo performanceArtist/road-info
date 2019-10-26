@@ -3,12 +3,13 @@ const path = require('path');
 
 const router = express.Router();
 
-import { TaskFormData } from '@root/client/shared/types';
+import { TaskFormData, GPSTrack } from '@root/client/shared/types';
 import { asyncHandler } from '../utils';
 
 import { createTask } from '../controllers/task';
 import { simulateMeasurement } from '../controllers/simulation';
 import { getCondors } from '../controllers/condor';
+import { getRoute, findLocation } from '../controllers/route';
 
 router.post(
   '/api/task',
@@ -45,6 +46,24 @@ router.get(
 router.get('/api/track', (req, res) => {
   res.sendFile(path.resolve('src/track/result.json'));
 });
+
+router.get(
+  '/api/route',
+  asyncHandler(async (req, res) => {
+    const points: GPSTrack = req.query.points.map(JSON.parse);
+    const route = await getRoute(points);
+    res.json(route);
+  })
+);
+
+router.get(
+  '/api/location',
+  asyncHandler(async (req, res) => {
+    const { search = 'Томск' } = req.query;
+    const location = await findLocation(search);
+    res.json(location);
+  })
+);
 
 router.use(
   (
