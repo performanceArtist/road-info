@@ -7,13 +7,12 @@ export interface ChartLineInfo {
   mainColor?: string;
   warningColor?: string;
   show?: boolean;
-  [key: string]: string | boolean | ColorBreakpoint;
 }
 
 export type ChartLines = { [key: string]: ChartLineInfo };
 
-export interface ChartInfo {
+export type ChartInfo = {
   lines: ChartLines;
   xAxis: { key: string; name: string; units: string };
   maxTicks: number;
-}
+};

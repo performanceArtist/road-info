@@ -3,9 +3,13 @@ import { connect } from 'react-redux';
 import CompositeChart from './CompositeChart';
 import { RootState } from '@redux/reducer';
 
-const mapState = ({ measurements, chart, tasks }: RootState) => ({
+const mapState = ({
+  data: { measurements, jobs, tasks },
+  chart
+}: RootState) => ({
   measurements,
-  tasks: tasks.tasks,
+  jobs,
+  tasks,
   chartInfo: chart
 });
 

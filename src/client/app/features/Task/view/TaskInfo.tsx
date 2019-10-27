@@ -1,76 +1,37 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 
-import { Button } from '@shared/view';
-import { Icon, IconImage } from '@components/Icon/Icon';
-import { MeasurementInfo } from '@features/CompositeChart';
+import { ServerTask } from '@shared/types';
+import { getStatus } from '@shared/utils';
 
-import { Task, TaskInstance } from '@shared/types';
-import { openModal } from '@features/Modal/redux/actions';
+import MeasurementInfo from '@shared/view/MeasurementInfo/MeasurementInfo';
 
 type OwnProps = {
-  task: Task;
-  instances: Array<TaskInstance>;
+  task: ServerTask;
 };
 
-type Props = OwnProps & typeof mapDispatch;
+type Props = OwnProps;
 
-const TaskInfo: React.FC<Props> = ({ task, instances, openModal }) => {
+const TaskInfo: React.FC<Props> = ({ task }) => {
   const items = [
-    { title: 'Регион', value: task.region },
-    { title: 'Город', value: task.city },
-    { title: 'Населённый пункт', value: task.settlement },
-    { title: 'Дорога', value: task.street },
-    { title: 'Участок', value: task.roadPartName },
-    { title: 'Кол-во полос', value: task.lanesCount },
-    { title: 'Старт', value: task.start },
-    { title: 'Финиш', value: task.finish },
-    { title: 'Текущая полоса', value: task.lane },
-    { title: 'Кондор', value: task.condor }
+    { title: 'Статус', value: getStatus(task.status) },
+    { title: 'Кол-во полос', value: task.lane_number },
+    { title: 'Описание', value: task.description },
+    { title: 'Старт', value: task.distance[0] },
+    { title: 'Финиш', value: task.distance[1] }
   ];
 
   return (
     <div className="task-info">
       <header className="task-info__header">
         <div className="task-info__name">{`#${task.id}`}</div>
-        <div className="task-info__icon-container">
-          <div className="task-info__icon">
-            <Button onClick={() => openModal('Generation', { id: task.id })}>
-              Генерация
-            </Button>
-          </div>
-          <div className="task-info__icon">
-            <Icon
-              size="small"
-              image={IconImage.COPY}
-              onClick={() => openModal('Task', { task })}
-            />
-          </div>
-          <div className="task-info__icon">
-            <Icon
-              size="small"
-              image={IconImage.INFO}
-              onClick={() => openModal('TaskHistory', { instances })}
-            />
-          </div>
-        </div>
       </header>
       <div className="task-info__content">
         <MeasurementInfo
-          status={task.status}
-          condor={task.condor}
-          items={items.filter(({ value }) => value)}
+          items={items.filter(({ value }) => value !== undefined)}
         />
       </div>
     </div>
   );
 };
 
-const mapDispatch = {
-  openModal
-};
-
-export default connect(
-  null,
-  mapDispatch
-)(TaskInfo);
+export default TaskInfo;

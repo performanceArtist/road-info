@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { Button } from '@shared/view';
-import { Task, TaskInstance } from '@shared/types';
+import { Task, TaskInstance, ServerTask } from '@shared/types';
 import { RootState } from '@redux/reducer';
 import { openModal } from '@features/Modal/redux/actions';
 
@@ -15,13 +15,23 @@ type OwnProps = {
   instances: { [key: string]: Array<TaskInstance> };
 };
 
-type Props = OwnProps & typeof mapDispatch;
+type MapState = {
+  tasks: ServerTask[];
+};
 
-const TaskPanel: React.FC<Props> = ({ tasks = [], instances, openModal }) => {
+type Props = OwnProps & typeof mapDispatch & MapState;
+
+const mapState = ({ data: { tasks } }: RootState) => ({
+  tasks
+});
+
+const mapDispatch = { openModal };
+
+const TaskPanel: React.FC<Props> = ({ tasks = [], openModal }) => {
   const elements = tasks.map(task => {
     return (
       <div className="task-panel__task" key={`task-${task.id}`}>
-        <TaskInfo task={task} instances={instances[task.id]} />
+        <TaskInfo task={task} />
       </div>
     );
   });
@@ -38,13 +48,6 @@ const TaskPanel: React.FC<Props> = ({ tasks = [], instances, openModal }) => {
     </div>
   );
 };
-
-const mapState = ({ tasks }: RootState) => ({
-  tasks: tasks.tasks,
-  instances: tasks.instances
-});
-
-const mapDispatch = { openModal };
 
 export default connect(
   mapState,

@@ -40,3 +40,7 @@ export type ServerMeasurement = {
   coleinost: number;
   order_job_id: number;
 };
+
+export type Measurements = {
+  [jobId: number]: ServerMeasurement[];
+};

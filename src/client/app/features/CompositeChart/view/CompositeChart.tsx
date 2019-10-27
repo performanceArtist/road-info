@@ -4,16 +4,10 @@ import { useState } from 'react';
 import Chart from '@components/Chart/Chart';
 import Table from '@components/Table/Table';
 import Spinner from '@components/Spinner/Spinner';
-
-import MeasurementInfo from './MeasurementInfo';
-
-import { Tasks } from '@redux/task/types';
-import {
-  Measurements,
-  MeasurementItem,
-  MeasurementData
-} from '@root/client/app/redux/data/types';
-import { ChartInfo } from '@redux/chart/types';
+import MeasurementInfo from '@shared/view/MeasurementInfo/MeasurementInfo';
+import { Measurements, ServerTask, DatabaseJob } from '@shared/types';
+import { ChartInfo } from '@shared/types';
+import { getStatus, extractMeasurements } from '@shared/utils';
 
 import ChartPreview from './ChartPreview';
 import ChartFooter from './ChartFooter';
@@ -21,7 +15,8 @@ import ChartHeader from './ChartHeader';
 
 type OwnProps = {
   measurements: Measurements;
-  tasks: Tasks;
+  jobs: DatabaseJob[];
+  tasks: ServerTask[];
   chartInfo: ChartInfo;
   onSelectChange?: (taskId: string, instanceId: string) => void;
   showSpinner?: boolean;
@@ -32,32 +27,30 @@ type Props = OwnProps;
 const CompositeChart: React.FC<Props> = ({
   measurements,
   tasks,
+  jobs,
   chartInfo,
   onSelectChange,
   showSpinner = false
 }) => {
-  const [currentTask, setcurrentTask] = useState(null);
-  const [currentChart, setCurrentChart] = useState(null);
-  const [bigPreviews, setBigPreviews] = useState([]);
-  const [tables, setTables] = useState([]);
-  const [info, setInfo] = useState([]);
-  const [instances, setInstances] = useState(
-    measurements.map(({ taskId, data }) => {
-      const keys = Object.keys(data);
-      return { taskId, instanceId: keys[keys.length - 1] };
-    })
-  );
+  const [currentTask, setcurrentTask] = useState<number | null>(null);
+  const [currentChart, setCurrentChart] = useState<string | null>(null);
+  const [bigPreviews, setBigPreviews] = useState<number[]>([]);
+  const [tables, setTables] = useState<number[]>([]);
+  const [info, setInfo] = useState<number[]>([]);
+  const [instances, setInstances] = useState([]);
 
   const hasData = () => {
+    /*
     if (!onSelectChange) return true;
 
-    const data = measurements[0].data;
+    const data = measurements[0];
     const keys = Object.keys(data);
 
-    return keys.some(key => data[key].length !== 0);
+    return keys.some(key => data[key].length !== 0);*/
+    return true;
   };
 
-  const toggleExpand = (id: string) => {
+  const toggleExpand = (id: number) => {
     if (bigPreviews.indexOf(id) !== -1) {
       setBigPreviews(bigPreviews.filter(listId => id !== listId));
     } else {
@@ -65,7 +58,7 @@ const CompositeChart: React.FC<Props> = ({
     }
   };
 
-  const toggleInfo = (newId: string) => {
+  const toggleInfo = (newId: number) => {
     const filtered = info.filter(id => id !== newId);
 
     if (filtered.length === info.length) {
@@ -75,44 +68,24 @@ const CompositeChart: React.FC<Props> = ({
     }
   };
 
-  const renderInfo = (newId: string) => {
+  const renderInfo = (newId: number) => {
     const current = info.find(id => id === newId);
-
     if (!current) return null;
+    const task = tasks.find(({ id }) => id == current);
+    if (!task) return null;
 
-    const {
-      status,
-      start,
-      finish,
-      lane,
-      lanesCount,
-      condor,
-      partName,
-      roadName,
-      city,
-      region
-    } = tasks.find(({ id }) => id == current);
+    const items = [
+      { title: 'Статус', value: getStatus(task.status) },
+      { title: 'Кол-во полос', value: task.lane_number },
+      { title: 'Описание', value: task.description },
+      { title: 'Старт', value: task.distance[0] },
+      { title: 'Финиш', value: task.distance[1] }
+    ];
 
-    return (
-      <MeasurementInfo
-        status={status}
-        condor={condor}
-        items={[
-          { title: 'Регион', value: region },
-          { title: 'Город', value: city },
-          { title: 'Дорога', value: roadName },
-          { title: 'Участок', value: partName },
-          { title: 'Кол-во полос', value: lanesCount },
-          { title: 'Текущая полоса', value: lane },
-          { title: 'Кондор', value: condor },
-          { title: 'Старт', value: start },
-          { title: 'Финиш', value: finish }
-        ]}
-      />
-    );
+    return <MeasurementInfo items={items} />;
   };
 
-  const getFooter = (type: 'table' | 'preview', id: string) => {
+  const getFooter = (type: 'table' | 'preview', id: number) => {
     return (
       <ChartFooter
         type={type}
@@ -124,19 +97,12 @@ const CompositeChart: React.FC<Props> = ({
     );
   };
 
-  const getPreview = ({ taskId, data }: MeasurementItem) => {
-    const ids = instances.find(
-      ({ taskId: listTaskId }) => listTaskId === taskId
-    );
-    if (!ids) return;
-
-    const lastData = data[ids.instanceId];
-
+  const getPreview = (taskId: number, data: { [key: string]: number }[]) => {
     return (
       <div className="composite-chart__preview-container">
         <ChartPreview
           chartInfo={chartInfo}
-          data={lastData}
+          data={data}
           expand={bigPreviews.indexOf(taskId) !== -1}
         />
         {getFooter('preview', taskId)}
@@ -144,50 +110,35 @@ const CompositeChart: React.FC<Props> = ({
     );
   };
 
-  const getTable = ({ taskId, data }: MeasurementItem) => {
-    const ids = instances.find(
-      ({ taskId: listTaskId }) => listTaskId === taskId
-    );
-    const lastData = data[ids.instanceId];
-
+  const getTable = (taskId: number, data: { [key: string]: number }[]) => {
     return (
       <div className="composite-chart__table">
-        <Table
-          data={lastData.map(
-            ({ distance, density, iri, rutting, thickness }) => ({
-              distance,
-              density,
-              iri,
-              rutting,
-              thickness
-            })
-          )}
-          chartInfo={chartInfo}
-          maxRows={15}
-        />
+        <Table data={data} chartInfo={chartInfo} maxRows={15} />
         {getFooter('table', taskId)}
       </div>
     );
   };
 
   const getPreviews = () => {
-    return measurements.map(measurement => {
-      const instance = instances.find(
-        ({ taskId }) => taskId === measurement.taskId
-      );
+    return tasks.map(task => {
+      const taskJobs = jobs.filter(job => job.order_id === task.id);
+      const last = taskJobs[0];
+      if (!last) return null;
+
+      const data = measurements[last.id];
 
       const previews =
-        tables.indexOf(measurement.taskId) !== -1
-          ? getTable(measurement)
-          : getPreview(measurement);
+        tables.indexOf(task.id) !== -1
+          ? getTable(task.id, extractMeasurements(data))
+          : getPreview(task.id, extractMeasurements(data));
 
       return (
-        <div key={measurement.taskId}>
-          {getHeader(measurement, instance ? instance.instanceId : '', false)}
-          {renderInfo(measurement.taskId)}
+        <div key={task.id}>
+          {/*getHeader(measurement, instance ? instance.instanceId : '', false)*/}
+          {renderInfo(task.id)}
           <div
             className="composite-chart__chart-container"
-            onDoubleClick={() => setcurrentTask(measurement.taskId)}
+            onDoubleClick={() => setcurrentTask(task.id)}
           >
             {showSpinner ? <Spinner /> : previews}
           </div>
@@ -198,7 +149,7 @@ const CompositeChart: React.FC<Props> = ({
 
   const fullChart = (
     keyY: string,
-    data: Array<MeasurementData>,
+    data: { [key: string]: number }[],
     isOneOnScreen = false
   ) => (
     <div className="composite-chart__chart">
@@ -217,25 +168,25 @@ const CompositeChart: React.FC<Props> = ({
   );
 
   const getCurrentChart = () => {
-    const { data } = measurements.find(({ taskId }) => taskId === currentTask);
-    const ids = instances.find(
-      ({ taskId: listTaskId }) => listTaskId === currentTask
-    );
-    const lastData = data[ids.instanceId];
-
-    if (currentChart) return fullChart(currentChart, lastData, true);
+    const job = jobs.find(job => job.order_id === currentTask);
+    if (!job) return;
+    const lastData = measurements[job.id];
+    if (!lastData) return;
+    const data = extractMeasurements(lastData);
+    if (currentChart) return fullChart(currentChart, data, true);
 
     return (
       <>
-        {fullChart('density', lastData)}
-        {fullChart('rutting', lastData)}
-        {fullChart('iri', lastData)}
-        {fullChart('thickness', lastData)}
+        {fullChart('density', data)}
+        {fullChart('rutting', data)}
+        {fullChart('iri', data)}
+        {fullChart('thickness', data)}
       </>
     );
   };
 
   const handleSelectChange = (value: string, taskId: string) => {
+    /*
     const newInstances = JSON.parse(JSON.stringify(instances));
     const current = newInstances.find(
       ({ taskId: listTaskId }) => listTaskId == taskId
@@ -250,7 +201,7 @@ const CompositeChart: React.FC<Props> = ({
       onSelectChange(taskId, value);
     }
 
-    setInstances(newInstances);
+    setInstances(newInstances);*/
   };
 
   const getHeader = (
@@ -276,12 +227,12 @@ const CompositeChart: React.FC<Props> = ({
 
   return (
     <div className="composite-chart">
-      {currentTask &&
+      {/*currentTask &&
         getHeader(
           measurements.find(({ taskId }) => taskId === currentTask),
           instances.find(({ taskId }) => taskId === currentTask).instanceId
-        )}
-      {renderInfo(currentTask)}
+        )*/}
+      {currentTask && renderInfo(currentTask)}
       <div className="composite-chart__previews">
         {currentTask ? getCurrentChart() : getPreviews()}
       </div>
