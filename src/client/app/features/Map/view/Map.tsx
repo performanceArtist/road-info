@@ -81,7 +81,7 @@ const mapState = ({
   map: { mode, history, historyMeasurements, testTrack },
   condors
 }: RootState) => ({
-  measurements: mode === 'realTime' ? measurements : historyMeasurements,
+  measurements: mode === 'realTime' ? [] : historyMeasurements,
   tasks: tasks.tasks,
   history,
   testTrack,

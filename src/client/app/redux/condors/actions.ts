@@ -1,12 +1,12 @@
 import { actionTree, a } from '@shared/utils';
-import { ServerCondor } from '@shared/types';
+import { CondorValue } from '@shared/types';
 
 export const CONDORS = actionTree('CONDORS')({
   UPDATE: a.plain,
   INIT: a.api
 });
 
-export const updateCondor = (payload: ServerCondor) => ({
+export const updateCondor = (payload: { id: number; info: CondorValue }) => ({
   type: CONDORS.UPDATE,
   payload
 });

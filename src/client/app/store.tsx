@@ -3,6 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from '@redux/reducer';
 import rootSaga from '@redux/saga';
+import fetchMiddleware from '@root/client/app/redux/fetchMiddleware';
 
 export default ({ initialState = {}, browser = false } = {}) => {
   let comp;
@@ -11,9 +12,9 @@ export default ({ initialState = {}, browser = false } = {}) => {
   if (browser) {
     const composeEnhancer =
       window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    comp = composeEnhancer(applyMiddleware(sagaMiddleware));
+    comp = composeEnhancer(applyMiddleware(fetchMiddleware, sagaMiddleware));
   } else {
-    comp = applyMiddleware(sagaMiddleware);
+    comp = applyMiddleware(fetchMiddleware, sagaMiddleware);
   }
 
   const store = createStore(rootReducer, initialState, comp);

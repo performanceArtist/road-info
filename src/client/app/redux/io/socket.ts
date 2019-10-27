@@ -10,9 +10,10 @@ import {
   delay
 } from 'redux-saga/effects';
 
+import { addTask, updateTask } from '@features/Task/redux/actions';
+
 import { IO } from './actions';
 import { addMeasurement } from '../measurements/actions';
-import { addTask, updateTask } from '@features/Task/redux/actions';
 import { updateCondor } from '../condors/actions';
 
 class Socket {

@@ -1,57 +1,41 @@
-import * as R from 'ramda';
-
 import { MEASUREMENTS } from './actions';
-import { MeasurementData, MeasurementItem } from '@shared/types';
+import { DatabaseMeasurement, DatabaseJob, ServerTask } from '@shared/types';
 
-import testData from './testData';
-
-const initialData: MeasurementItem = {
-  taskId: '1',
-  data: testData
+type InitialState = {
+  measurements: {
+    [jobId: number]: DatabaseMeasurement[];
+  };
+  jobs: DatabaseJob[];
+  tasks: ServerTask[];
 };
 
-const initialState: Measurements = [];
+const initialState: InitialState = {
+  measurements: {},
+  jobs: [],
+  tasks: []
+};
 
 export default function reducer(
   state = initialState,
   { type, payload }: { type: string; payload: any }
 ) {
   switch (type) {
-    case MEASUREMENTS.ADD: {
-      const addTask = R.append({
-        taskId: payload.taskId,
-        data: { [payload.instanceId]: [payload.data] }
-      });
+    case MEASUREMENTS.ADD_MEASUREMENT: {
+      const measurement = payload as DatabaseMeasurement;
+      const job = state.measurements[measurement.order_job_id];
 
-      const addInstance = R.assocPath(
-        ['data', payload.instanceId],
-        [payload.data]
-      );
-      const updateInstance = R.evolve({
-        data: {
-          [payload.instanceId]: R.append(payload.data)
+      return {
+        ...state,
+        measurements: {
+          ...state.measurements,
+          [payload.order_job_id]: job ? job.concat(payload) : [payload]
         }
-      });
-
-      const noInstance = R.pipe(
-        (index: number) => R.nth(index, state),
-        R.path(['data', payload.instanceId]),
-        R.isNil
-      );
-
-      const transformInstance = R.ifElse(
-        noInstance,
-        index => R.adjust(index, addInstance, state),
-        index => R.adjust(index, updateInstance, state)
-      );
-
-      const transform = R.pipe(
-        R.findIndex(R.propEq('taskId', payload.taskId)),
-        R.ifElse(R.equals(-1), R.always(addTask(state)), transformInstance)
-      );
-
-      return transform(state);
+      };
     }
+    case MEASUREMENTS.GET_JOB.SUCCESS:
+      return { ...state, jobs: state.jobs.concat(payload) };
+    case MEASUREMENTS.GET_TASK.SUCCESS:
+      return { ...state, tasks: state.tasks.concat(payload) };
     default:
       return state;
   }

@@ -7,8 +7,30 @@ import {
   TaskFormData,
   DatabaseTask,
   ServerTask,
-  GPSCoordinates
+  GPSCoordinates,
+  DatabaseJob
 } from '@shared/types';
+
+export async function getTask(id: number): Promise<ServerTask> {
+  if (!id) throw new Error('No id');
+
+  const rawTask: DatabaseTask = await knex('orders')
+    .select('*')
+    .where({ id })
+    .first();
+  const task = await getServerTask(rawTask);
+  return task;
+}
+
+export async function getJob(id: number): Promise<DatabaseJob> {
+  if (!id) throw new Error('No id');
+
+  const job = await knex('order_jobs')
+    .select('*')
+    .where({ id })
+    .first();
+  return job;
+}
 
 export async function getServerTasks({
   startDate,

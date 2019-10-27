@@ -1,4 +1,4 @@
-import { ServerCondor } from '@shared/types';
+import { ServerCondor, CondorValue } from '@shared/types';
 
 import { CONDORS } from './actions';
 
@@ -12,7 +12,10 @@ export default function reducer(
     case CONDORS.INIT.SUCCESS:
       return state.concat(payload);
     case CONDORS.UPDATE:
-      return state.map(condor => (condor.id === payload.id ? payload : condor));
+      const { id, info }: { id: number; info: CondorValue } = payload;
+      return state.map(condor =>
+        condor.id === id ? { ...condor, [info.key]: info.value } : condor
+      );
     default:
       return state;
   }

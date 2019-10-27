@@ -6,16 +6,40 @@ const router = express.Router();
 import { TaskFormData, GPSTrack } from '@root/client/shared/types';
 import { asyncHandler } from '../utils';
 
-import { createTask } from '../controllers/task';
+import { createTask, getTask, getJob } from '../controllers/task';
 import { simulateMeasurement } from '../controllers/simulation';
 import { getCondors } from '../controllers/condor';
 import { getRoute, findLocation } from '../controllers/route';
+
+router.get(
+  '/api/task',
+  asyncHandler(async (req, res, next) => {
+    const task = await getTask(req.query.id);
+    res.json(task);
+  })
+);
+
+router.get(
+  '/api/job',
+  asyncHandler(async (req, res, next) => {
+    const job = await getJob(req.query.id);
+    res.json(job);
+  })
+);
 
 router.post(
   '/api/task',
   asyncHandler(async (req, res, next) => {
     await createTask(req.body as TaskFormData);
     res.status(200).end();
+  })
+);
+
+router.post(
+  '/api/task/create',
+  asyncHandler(async (req, res) => {
+    await createTask(req.body as TaskFormData);
+    res.sendStatus(200);
   })
 );
 

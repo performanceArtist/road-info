@@ -66,7 +66,7 @@ const OperatorTaskCreator: React.FC<IProps> = ({
     }
   }, [routePoints]);
 
-  const onSearchSubmit = (search: string) => {
+  const handleSearchSubmit = (search: string) => {
     getLocation(search);
   };
 
@@ -87,7 +87,7 @@ const OperatorTaskCreator: React.FC<IProps> = ({
       <div className="operator-task-creator__row">
         <div className="operator-task-creator__map">
           <div className="operator-task-creator__location-search">
-            <LocationSearch onSubmit={onSearchSubmit} />
+            <LocationSearch onSubmit={handleSearchSubmit} />
           </div>
           <TaskMap onMapClick={onMapClick} location={location} track={track} />
         </div>
