@@ -8,7 +8,9 @@ import {
   DatabaseTask,
   ServerTask,
   GPSCoordinates,
-  DatabaseJob
+  DatabaseJob,
+  DatabaseMeasurement,
+  ServerMeasurement
 } from '@shared/types';
 
 export async function getTask(id: number): Promise<ServerTask> {
@@ -157,4 +159,14 @@ export async function createTask(formData: TaskFormData) {
   };
 
   await knex('orders').insert(newTask);
+}
+
+export function toServerMeasurement(
+  data: DatabaseMeasurement
+): ServerMeasurement {
+  return {
+    ...data,
+    iri: (data.iri[0] + data.iri[1]) / 2,
+    coleinost: (data.coleinost[0] + data.coleinost[1]) / 2
+  };
 }

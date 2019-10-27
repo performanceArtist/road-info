@@ -1,22 +1,22 @@
 import { Middleware } from 'redux';
 
 import { RootState } from '@redux/reducer';
-import { DatabaseMeasurement, DatabaseJob } from '@shared/types';
-import { getTask, getJob, MEASUREMENTS } from '@redux/measurements/actions';
+import { ServerMeasurement, DatabaseJob } from '@shared/types';
+import { getTask, getJob, DATA } from '@root/client/app/redux/data/actions';
 
 const fetchMiddleware: Middleware = store => next => action => {
-  if (action.type === MEASUREMENTS.ADD_MEASUREMENT) {
-    const { measurements }: RootState = store.getState();
-    const measurement = action.payload as DatabaseMeasurement;
+  if (action.type === DATA.ADD_MEASUREMENT) {
+    const { data }: RootState = store.getState();
+    const measurement = action.payload as ServerMeasurement;
 
-    if (!measurements.measurements[measurement.order_job_id]) {
+    if (!data.measurements[measurement.order_job_id]) {
       store.dispatch(getJob(measurement.order_job_id));
     }
   }
 
-  if (action.type === MEASUREMENTS.GET_JOB.SUCCESS) {
+  if (action.type === DATA.GET_JOB.SUCCESS) {
     const {
-      measurements: { tasks }
+      data: { tasks }
     }: RootState = store.getState();
     const job = action.payload as DatabaseJob;
 

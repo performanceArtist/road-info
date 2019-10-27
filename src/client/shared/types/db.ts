@@ -1,3 +1,4 @@
+import { GPSCoordinates } from './gps';
 import { UserGroup } from './user';
 
 export type DatabaseTask = {
@@ -40,6 +41,7 @@ export type DatabaseCondorInfo = {
 
 export type DatabaseMeasurement = {
   id: number;
+  coordinates: GPSCoordinates;
   distance: number;
   track: number[];
   time?: Date;

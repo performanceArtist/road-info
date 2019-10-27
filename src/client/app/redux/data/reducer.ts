@@ -1,9 +1,9 @@
-import { MEASUREMENTS } from './actions';
-import { DatabaseMeasurement, DatabaseJob, ServerTask } from '@shared/types';
+import { DATA } from './actions';
+import { ServerMeasurement, DatabaseJob, ServerTask } from '@shared/types';
 
 type InitialState = {
   measurements: {
-    [jobId: number]: DatabaseMeasurement[];
+    [jobId: number]: ServerMeasurement[];
   };
   jobs: DatabaseJob[];
   tasks: ServerTask[];
@@ -20,8 +20,8 @@ export default function reducer(
   { type, payload }: { type: string; payload: any }
 ) {
   switch (type) {
-    case MEASUREMENTS.ADD_MEASUREMENT: {
-      const measurement = payload as DatabaseMeasurement;
+    case DATA.ADD_MEASUREMENT: {
+      const measurement = payload as ServerMeasurement;
       const job = state.measurements[measurement.order_job_id];
 
       return {
@@ -32,9 +32,9 @@ export default function reducer(
         }
       };
     }
-    case MEASUREMENTS.GET_JOB.SUCCESS:
+    case DATA.GET_JOB.SUCCESS:
       return { ...state, jobs: state.jobs.concat(payload) };
-    case MEASUREMENTS.GET_TASK.SUCCESS:
+    case DATA.GET_TASK.SUCCESS:
       return { ...state, tasks: state.tasks.concat(payload) };
     default:
       return state;

@@ -12,7 +12,7 @@ import {
   Measurements,
   MeasurementItem,
   MeasurementData
-} from '@redux/measurements/types';
+} from '@root/client/app/redux/data/types';
 import { ChartInfo } from '@redux/chart/types';
 
 import ChartPreview from './ChartPreview';

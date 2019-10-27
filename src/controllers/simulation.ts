@@ -52,6 +52,7 @@ export async function simulateMeasurement(route: GPSTrack, orderId: number) {
   simulateMovement(0, route, async (index: number) => {
     const measurement: Omit<DatabaseMeasurement, 'id'> = {
       distance: index * 100,
+      coordinates: route[index],
       track: [],
       density: Math.random() * 3,
       thickness: Math.random(),

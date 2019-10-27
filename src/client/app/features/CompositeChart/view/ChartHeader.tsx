@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Icon, IconImage } from '@components/Icon/Icon';
 import ChartControls from './ChartControls';
 
-import { MeasurementItem } from '@redux/measurements/types';
+import { MeasurementItem } from '@root/client/app/redux/data/types';
 
 type Props = {
   measurement: MeasurementItem;

@@ -5,7 +5,10 @@ import { useState } from 'react';
 import Chart from '@components/Chart/Chart';
 import Table from '@components/Table/Table';
 import Spinner from '@components/Spinner/Spinner';
-import { MeasurementData, MeasurementItem } from '@redux/measurements/types';
+import {
+  MeasurementData,
+  MeasurementItem
+} from '@root/client/app/redux/data/types';
 import { ChartInfo } from '@shared/types';
 import { ChartFooter } from '@features/CompositeChart';
 

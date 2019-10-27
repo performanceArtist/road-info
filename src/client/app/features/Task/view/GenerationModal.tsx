@@ -6,7 +6,7 @@ import { Button, FinalInput } from '@shared/view';
 
 import { Modal } from '@features/Modal';
 import { closeModal } from '@features/Modal/redux/actions';
-import { generateMeasurements } from '@redux/measurements/actions';
+import { generateMeasurements } from '@root/client/app/redux/data/actions';
 
 type OwnProps = {
   id: number;

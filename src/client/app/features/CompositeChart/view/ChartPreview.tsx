@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Chart from '@components/Chart/Chart';
-import { MeasurementData } from '@redux/measurements/types';
+import { MeasurementData } from '@root/client/app/redux/data/types';
 import { ChartInfo } from '@redux/chart/types';
 
 type Props = {

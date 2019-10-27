@@ -9,14 +9,14 @@ import { reducer as map } from '@features/Map/redux';
 import { reducer as newTask } from '@features/OperatorTaskCreator/redux';
 
 import io from './io/reducer';
-import measurements from './measurements/reducer';
+import data from './data/reducer';
 import suggestions from './suggestion/reducer';
 import condors from './condors/reducer';
 
 const rootReducer = combineReducers({
   modals,
   io,
-  measurements,
+  data,
   chart,
   tasks,
   suggestions,

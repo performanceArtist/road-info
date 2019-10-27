@@ -1,7 +1,7 @@
 import { MeasurementData } from '@shared/types';
 import { a, actionTree } from '@shared/utils';
 
-export const MEASUREMENTS = actionTree('MEASUREMENTS')({
+export const DATA = actionTree('DATA')({
   ADD_MEASUREMENT: a.plain,
   GET_JOB: a.api,
   GET_TASK: a.api,
@@ -13,7 +13,7 @@ export const addMeasurement = (payload: {
   instanceId: string;
   data: MeasurementData;
 }) => ({
-  type: MEASUREMENTS.ADD_MEASUREMENT,
+  type: DATA.ADD_MEASUREMENT,
   payload
 });
 
@@ -23,16 +23,16 @@ export const generateMeasurements = (payload: {
   condorId: number;
   isForward: boolean;
 }) => ({
-  type: MEASUREMENTS.GENERATE.REQUEST,
+  type: DATA.GENERATE.REQUEST,
   payload
 });
 
 export const getJob = (id: number) => ({
-  type: MEASUREMENTS.GET_JOB.REQUEST,
+  type: DATA.GET_JOB.REQUEST,
   payload: { id }
 });
 
 export const getTask = (id: number) => ({
-  type: MEASUREMENTS.GET_TASK.REQUEST,
+  type: DATA.GET_TASK.REQUEST,
   payload: { id }
 });

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Modal } from '@features/Modal';
 import { RoadChart } from '@features/Road';
 
-import { MeasurementItem } from '@redux/measurements/types';
+import { MeasurementItem } from '@root/client/app/redux/data/types';
 import { ChartInfo } from '../../redux/chart/types';
 
 type OwnProps = {

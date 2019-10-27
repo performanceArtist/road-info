@@ -1,3 +1,5 @@
+import { GPSCoordinates } from './gps';
+
 export interface MeasurementData {
   distance: number;
   longitude: number;
@@ -24,4 +26,17 @@ export type PointData = {
   value: number;
   name: string;
   difference: number;
+};
+
+export type ServerMeasurement = {
+  id: number;
+  coordinates: GPSCoordinates;
+  distance: number;
+  track: number[];
+  time?: Date;
+  density: number;
+  thickness: number;
+  iri: number;
+  coleinost: number;
+  order_job_id: number;
 };

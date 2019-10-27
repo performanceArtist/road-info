@@ -13,7 +13,7 @@ import {
 import { addTask, updateTask } from '@features/Task/redux/actions';
 
 import { IO } from './actions';
-import { addMeasurement } from '../measurements/actions';
+import { addMeasurement } from '../data/actions';
 import { updateCondor } from '../condors/actions';
 
 class Socket {

@@ -5,7 +5,7 @@ import { getMeasurements, getOrders } from '@features/History/redux/sagas';
 import { getHistory, getTrack } from '@features/Map/redux/sagas';
 import * as newTask from '@features/OperatorTaskCreator/redux/sagas';
 import * as condors from './condors/sagas';
-import * as measurements from './measurements/sagas';
+import * as data from './data/sagas';
 import getSuggestions from './suggestion/getSuggestions';
 import socket from './io/socket';
 
@@ -14,9 +14,9 @@ export default function* rootSaga() {
     socket.startStopChannel(),
     postTask(),
     getSuggestions(),
-    measurements.getGenerate(),
-    measurements.getJob(),
-    measurements.getTask(),
+    data.getGenerate(),
+    data.getJob(),
+    data.getTask(),
     getMeasurements(),
     getOrders(),
     getHistory(),

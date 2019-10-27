@@ -1,4 +1,4 @@
-import { MeasurementData } from '@redux/measurements/types';
+import { MeasurementData } from '@root/client/app/redux/data/types';
 
 function pointDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
   const p = 0.017453292519943295;

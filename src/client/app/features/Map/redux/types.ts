@@ -1,4 +1,4 @@
-import { Measurements } from '@redux/measurements/types';
+import { Measurements } from '@root/client/app/redux/data/types';
 
 export type MapHistory = {
   fetching: boolean;
